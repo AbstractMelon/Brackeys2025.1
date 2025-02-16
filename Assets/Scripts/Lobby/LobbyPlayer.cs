@@ -24,7 +24,7 @@ public class LobbyPlayer : NetworkRoomPlayer
         if (isServer)
         {
             bool allReady = true;
-            foreach (LobbyPlayer player in FindObjectsOfType<LobbyPlayer>())
+            foreach (LobbyPlayer player in FindObjectsByType<LobbyPlayer>(FindObjectsSortMode.None))
             {
                 if (!player.IsReady) allReady = false;
             }

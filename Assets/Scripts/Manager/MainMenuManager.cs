@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
@@ -6,7 +7,7 @@ public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] private NetworkManager networkManager;
     [SerializeField] private GameObject mainMenuPanel;
-    [SerializeField] private InputField ipAddressInput;
+    [SerializeField] private TMP_InputField ipAddressInput;
 
     private void Start()
     {
