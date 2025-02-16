@@ -19,7 +19,6 @@ public class CameraOrbit : MonoBehaviour
         // Calculate new position
         Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * orbitRadius;
         transform.position = target.position + offset;
-        
         // Make the camera look at the target
         transform.LookAt(target);
     }
