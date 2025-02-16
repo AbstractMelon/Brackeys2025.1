@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class InventoryItem : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public PlayerInventory inventory;
+    public Item itemObject;
+    public void Use()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        itemObject.Use();
     }
 }
