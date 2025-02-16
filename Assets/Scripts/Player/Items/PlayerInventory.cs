@@ -1,8 +1,9 @@
+using UnityEditor.Search;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    
+    public InventoryItem[] items = new InventoryItem[5];
     void Start()
     {
         
