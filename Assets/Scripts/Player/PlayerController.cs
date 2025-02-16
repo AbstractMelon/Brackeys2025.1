@@ -4,53 +4,65 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float jumpForce = 5f;
+    // Variables
+    [SerializeField] private float moveSpeed = 5f; // Speed of movement when walking
+    [SerializeField] private float jumpForce = 5f; // Force of the jump
+    [SerializeField] private float maxSpeed = 10f; // Maximum speed when walking
+    [SerializeField] private float maxSpeedSprint = 20f; // Maximum speed when sprinting
+    [SerializeField] public float mouseSensitivity = 100f; // Speed of the mouse
 
-    [SerializeField]
-    private float maxSpeed;
-    [SerializeField]
-    private float maxSpeedSprint;
+    // Components
     private Rigidbody rb;
-    [SerializeField]
-    public float mouseSensitivity;
     private Camera cam;
     private Vector3 lastGroundedVelocity;
-    public PlayerInventory inventory;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Inventory
+    private PlayerInventory inventory;
+
+    // Start is called before the first frame update
     void Start()
-    {
-        Camera.main.gameObject.SetActive(false);
+    {   
+        // Get components
         cam = GetComponentInChildren<Camera>();
         rb = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
+
+        // Lock the cursor
+        Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the screen
     }
 
-    // Update is called once per frame
     void Update()
     {
-        bool sprint = Input.GetKey(KeyCode.LeftShift);
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        // Sprinting
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift); // Check if the left shift key is pressed
 
-        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+        // Inputs
+        float horizontalInput = Input.GetAxis("Horizontal"); // Get the horizontal input
+        float verticalInput = Input.GetAxis("Vertical"); // Get the vertical input
 
-        rb.AddForce(transform.rotation * movement * moveSpeed);
+        // Movement
+        Vector3 movement = new Vector3(horizontalInput, 0, verticalInput); // Create a new vector with the inputs
+        rb.AddForce(transform.rotation * movement * moveSpeed, ForceMode.Acceleration); // Apply the movement to the player
 
-        Vector2 movementV2 = Vector2.ClampMagnitude(new Vector2(rb.linearVelocity.x, rb.linearVelocity.z), sprint ? maxSpeedSprint : maxSpeed);
-        rb.linearVelocity = new Vector3(movementV2.x, rb.linearVelocity.y, movementV2.y);
+        // Rotation
+        Vector2 velocity2D = Vector2.ClampMagnitude(new Vector2(rb.linearVelocity.x, rb.linearVelocity.z), isSprinting ? maxSpeedSprint : maxSpeed); // Clamp the velocity to the maximum speed
+        rb.linearVelocity = new Vector3(velocity2D.x, rb.linearVelocity.y, velocity2D.y); // Set the linear velocity of the player
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        // Jump
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded()) // Check if the space key is pressed and if the player is on the ground
         {
-            rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Apply a force up to make the player jump
         }
 
-        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); 
-
+        // Look
+        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime, Space.World); // Rotate the player based on the mouse input
     }
+
+    // Check if the player is on the ground
     bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, 1.1f);
+        // Raycast to check if the player is on the ground
+        return Physics.Raycast(transform.position, Vector3.down, 1.1f); // Check if there is a collision within 1.1f units down from the player
     }
 }
+
+
