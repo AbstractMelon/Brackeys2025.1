@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Look
-        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime, Space.World); // Rotate the player based on the mouse input
+        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the player based on the mouse input
     }
 
     // Check if the player is on the ground
