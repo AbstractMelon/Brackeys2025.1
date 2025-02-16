@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 5f; // Force of the jump
     [SerializeField] private float maxSpeed = 10f; // Maximum speed when walking
     [SerializeField] private float maxSpeedSprint = 20f; // Maximum speed when sprinting
-    [SerializeField] private float mouseSensitivity = 100f; // Speed of the mouse
+    [SerializeField] public float mouseSensitivity = 100f; // Speed of the mouse
 
     // Components
     private Rigidbody rb;
