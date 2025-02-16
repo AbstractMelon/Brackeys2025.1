@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
 
-    private bool isJumping = false;
     [SerializeField]
     private float maxSpeed;
     [SerializeField]
@@ -17,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity;
     private Camera cam;
     private Vector3 lastGroundedVelocity;
+    public PlayerInventory inventory;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,21 +44,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
-            //isJumping = true;
         }
 
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); 
 
     }
-    /*
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isJumping = false;
-        }
-    }
-    */
     bool IsGrounded()
     {
         return Physics.Raycast(transform.position, -Vector3.up, 1.1f);
