@@ -853,8 +853,8 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Brackey's Jam 2025.1
-  metroPackageVersion: 
+  metroPackageName: BrackeysJam2025.1
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -862,7 +862,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: Brackey's Jam 2025.1
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: Brackey's Jam 2025.1
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
