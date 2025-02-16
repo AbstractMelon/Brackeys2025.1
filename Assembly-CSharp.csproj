@@ -70,6 +70,7 @@
     <Compile Include="Assets/Scripts/Manager/MainMenuManager.cs" />
     <Compile Include="Assets/Audio/Scripts/AudioHandler.cs" />
     <Compile Include="Assets/Misc/RaycastUtils.cs" />
+    <Compile Include="Assets/Scripts/Bootstrapper.cs" />
     <Compile Include="Assets/Scripts/Player/Items/PlayerInventory.cs" />
     <Compile Include="Assets/Misc/EffectUtils.cs" />
     <Compile Include="Assets/Scripts/Lobby/LobbyPlayer.cs" />
