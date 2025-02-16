@@ -187,7 +187,7 @@ MonoBehaviour:
   offlineScene: Assets/Scenes/MainMenu.unity
   onlineScene: Assets/Scenes/Game.unity
   offlineSceneLoadDelay: 0
-  transport: {fileID: 0}
+  transport: {fileID: 360138741}
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
