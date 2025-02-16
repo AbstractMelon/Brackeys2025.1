@@ -355,6 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  jumpForce: 5
+  jumpForce: 6
   maxSpeed: 10
-  maxSpeedSprint: 0
+  maxSpeedSprint: 20
+  mouseSensitivity: 2
