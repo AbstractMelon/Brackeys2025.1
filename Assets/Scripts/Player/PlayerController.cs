@@ -11,7 +11,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxSpeed = 10f; // Maximum speed when walking
     [SerializeField] private float maxSpeedSprint = 20f; // Maximum speed when sprinting
     [SerializeField] public float mouseSensitivity = 100f; // Speed of the mouse
+    [SerializeField] private float collectItemDistance = 5f;
     [SerializeField] private int itemLayer;
+    [SerializeField] private int playerLayer;
 
     // Components
     private Rigidbody rb;
@@ -65,7 +67,11 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            //CheckForItem();
+            CheckForItem();
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            inventory.DiscardHeldItem();
         }
     }
 
@@ -78,12 +84,14 @@ public class PlayerController : MonoBehaviour
     public bool CheckForItem()
     {
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        Debug.DrawRay(cam.transform.position, cam.transform.forward, Color.cyan, 5f);
-        if (Physics.Raycast(ray, out RaycastHit hit, 5, itemLayer))
+        Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
+        if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == itemLayer)
         {
+            Debug.Log("Raycast successful");
             OnPickupItem(hit.transform.GetComponent<Item>());
             return true;
         }
+        Debug.Log("Raycast failure");
         return false;
     }
     public void OnPickupItem(Item item)
@@ -100,7 +108,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.layer == itemLayer)
         {
-            OnPickupItem(collision.gameObject.GetComponent<Item>());
+            //OnPickupItem(collision.gameObject.GetComponent<Item>());
         }
     }
     
