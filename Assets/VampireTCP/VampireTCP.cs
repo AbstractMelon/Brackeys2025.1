@@ -3,7 +3,24 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using Newtonsoft.Json;
+
+[System.Serializable]
+public class MessageEvent : UnityEvent<MessageWrapper> { }
+
+[System.Serializable]
+public class MessageWrapper
+{
+    public BroadcastMessage msg;
+    public ErrorMessage err;
+
+    public MessageWrapper(BroadcastMessage msg, ErrorMessage err = null)
+    {
+        this.msg = msg;
+        this.err = err;
+    }
+}
 
 public class BaseMessage
 {
@@ -43,6 +60,8 @@ public class VampireTCP : MonoBehaviour
     public int serverPort = 8888;
     private TcpClient client;
     private NetworkStream stream;
+
+    public MessageEvent onRecieveNewMessage;
 
     async void Start()
     {
@@ -131,7 +150,7 @@ public class VampireTCP : MonoBehaviour
 
     public void OnRecieveNewMessage(BroadcastMessage msg, ErrorMessage err = null)
     {
-        // Override Me
+        onRecieveNewMessage?.Invoke(new MessageWrapper(msg, err));
     }
 
     public void CreateRoom(bool isPublic)

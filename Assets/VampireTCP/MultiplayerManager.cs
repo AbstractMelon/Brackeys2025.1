@@ -23,4 +23,9 @@ public class MultiplayerManager : MonoBehaviour
     {
         UnityEngine.Application.Quit();
     }
+
+    public void OnRecieveNewMessage(MessageWrapper wrapper)
+    {
+        Debug.Log(wrapper);
+    }
 }
