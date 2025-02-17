@@ -5,9 +5,10 @@ using UnityEngine.UI;
 public class PlayerInventory : MonoBehaviour
 {
     public InventoryItem[] items;
-    public int heldSlot;
+    public int heldSlot = 0;
     public int totalSlots;
     public GameObject inventoryItemPrefab;
+    public float selectedItemScale;
     void Awake()
     {
         GetComponent<RectTransform>().anchoredPosition = new Vector2(600, 180);
@@ -17,6 +18,7 @@ public class PlayerInventory : MonoBehaviour
             items[i] = Instantiate(inventoryItemPrefab, transform.GetChild(i)).GetComponent<InventoryItem>();
             items[i].inventory = this;
         }
+        ActivateSlot(heldSlot);
     }
 
     public bool HasOpenSpace()
@@ -68,6 +70,7 @@ public class PlayerInventory : MonoBehaviour
     }
     public void Scroll(bool left)
     {
+        DeactivateSlot(heldSlot);
         items[heldSlot].StopHolding();
         if (left)
         {
@@ -85,14 +88,25 @@ public class PlayerInventory : MonoBehaviour
                 heldSlot -= totalSlots;
             }
         }
+        ActivateSlot(heldSlot);
         items[heldSlot].Hold();
     }
     public bool SetHeldSlot(int slot)
     {
         if (slot < 0 || slot > totalSlots) return false;
+        DeactivateSlot(heldSlot);
         items[heldSlot].StopHolding();
         heldSlot = slot;
+        ActivateSlot(heldSlot);
         items[heldSlot].Hold();
         return true;
+    }
+    public void ActivateSlot(int slot)
+    {
+        transform.GetChild(slot).GetChild(0).GetComponent<Image>().color = Color.gray;
+    }
+    public void DeactivateSlot(int slot)
+    {
+        transform.GetChild(slot).GetChild(0).GetComponent<Image>().color = Color.white;
     }
 }

@@ -208,6 +208,7 @@ MonoBehaviour:
   heldSlot: 0
   totalSlots: 5
   inventoryItemPrefab: {fileID: 8733228637436930016, guid: a2531b6728b8ca84ba1fd261dc51a265, type: 3}
+  selectedItemScale: 1.2
 --- !u!114 &2656240906628802252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +227,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 5
+  m_Spacing: 20
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0

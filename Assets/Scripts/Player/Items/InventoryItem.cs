@@ -7,18 +7,18 @@ public class InventoryItem : MonoBehaviour
     public Item itemObject;
     public void Use()
     {
-        itemObject.Use();
+        if (itemObject != null) itemObject.Use();
     }
     public void Drop()
     {
-        itemObject.Drop();
+        if (itemObject != null) itemObject.Drop();
     }
     public void Hold()
     {
-        itemObject.Hold();
+        if (itemObject != null) itemObject.Hold();
     }
     public void StopHolding()
     {
-        itemObject.StopHolding();
+        if (itemObject != null) itemObject.StopHolding();
     }
 }

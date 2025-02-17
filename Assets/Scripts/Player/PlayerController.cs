@@ -73,6 +73,26 @@ public class PlayerController : MonoBehaviour
         {
             inventory.DiscardHeldItem();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            inventory.SetHeldSlot(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            inventory.SetHeldSlot(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            inventory.SetHeldSlot(2);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            inventory.SetHeldSlot(3);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            inventory.SetHeldSlot(4);
+        }
         HighlightItem();
     }
 
@@ -107,7 +127,7 @@ public class PlayerController : MonoBehaviour
     void HighlightItem()
     {
         Ray ray = new(cam.transform.position, cam.transform.forward);
-        Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
+        //Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
         if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == itemLayer)
         {
             Debug.Log("Raycast successful");
