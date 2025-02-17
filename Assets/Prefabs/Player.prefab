@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 6998201853845396265}
   - component: {fileID: 2023891734290312193}
   - component: {fileID: 4986764271759364003}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,6 +516,7 @@ MonoBehaviour:
   maxSpeedSprint: 20
   mouseSensitivity: 2
   itemLayer: 6
+  playerLayer: 7
 --- !u!1 &3965034497223411061
 GameObject:
   m_ObjectHideFlags: 0

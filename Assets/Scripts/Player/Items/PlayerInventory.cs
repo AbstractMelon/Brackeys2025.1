@@ -1,5 +1,6 @@
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -54,6 +55,7 @@ public class PlayerInventory : MonoBehaviour
         if (!drop) Destroy(items[heldSlot].gameObject);
         else items[heldSlot].Drop();
         items[heldSlot].itemObject = null;
+        items[heldSlot].GetComponent<Image>().sprite = null;
         
         return true;
     }

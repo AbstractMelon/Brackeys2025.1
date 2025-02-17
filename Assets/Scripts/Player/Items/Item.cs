@@ -35,5 +35,6 @@ public class Item : MonoBehaviour
         isHeld = false;
         GetComponent<BoxCollider>().enabled = true;
         GetComponent<Rigidbody>().isKinematic = false;
+        transform.SetParent(null);
     }
 }
