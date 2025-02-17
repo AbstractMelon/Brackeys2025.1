@@ -39,10 +39,10 @@ Material:
     - _SunRadius: 0
     - _TwinkleSpeed: 0.01
     m_Colors:
-    - _BottomColor: {r: 0, g: 0, b: 0, a: 1}
+    - _BottomColor: {r: 0.01, g: 0.01, b: 0.049999982, a: 1}
     - _DayColor: {r: 0.36999997, g: 0.52, b: 0.73, a: 1}
     - _MoonColor: {r: 0.9, g: 0.9, b: 0.8, a: 1}
-    - _MoonDirection: {r: 0, g: 0.5, b: 0.5, a: 1}
+    - _MoonDirection: {r: 0, g: 15, b: 0.5, a: 1}
     - _NightColor: {r: 0.049999982, g: 0.049999982, b: 0.14999998, a: 1}
     - _StarColor: {r: 1, g: 1, b: 1, a: 1}
     - _SunsetColor: {r: 0, g: 0, b: 0, a: 1}
