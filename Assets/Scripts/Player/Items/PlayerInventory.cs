@@ -10,6 +10,7 @@ public class PlayerInventory : MonoBehaviour
     public GameObject inventoryItemPrefab;
     void Awake()
     {
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(600, 180);
         items = new InventoryItem[totalSlots];
         for (int i = 0; i < totalSlots; i++)
         {
@@ -67,6 +68,7 @@ public class PlayerInventory : MonoBehaviour
     }
     public void Scroll(bool left)
     {
+        items[heldSlot].StopHolding();
         if (left)
         {
             heldSlot--;
@@ -83,5 +85,14 @@ public class PlayerInventory : MonoBehaviour
                 heldSlot -= totalSlots;
             }
         }
+        items[heldSlot].Hold();
+    }
+    public bool SetHeldSlot(int slot)
+    {
+        if (slot < 0 || slot > totalSlots) return false;
+        items[heldSlot].StopHolding();
+        heldSlot = slot;
+        items[heldSlot].Hold();
+        return true;
     }
 }
