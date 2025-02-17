@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxSpeed = 10f; // Maximum speed when walking
     [SerializeField] private float maxSpeedSprint = 20f; // Maximum speed when sprinting
     [SerializeField] public float mouseSensitivity = 100f; // Speed of the mouse
+    [SerializeField] private int itemLayer;
 
     // Components
     private Rigidbody rb;
@@ -25,9 +27,11 @@ public class PlayerController : MonoBehaviour
         // Get components
         cam = GetComponentInChildren<Camera>();
         rb = GetComponent<Rigidbody>();
+        inventory = GetComponentInChildren<PlayerInventory>();
 
         // Lock the cursor
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the screen
+        Cursor.visible = true;
     }
 
     void Update()
@@ -55,6 +59,14 @@ public class PlayerController : MonoBehaviour
 
         // Look
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the player based on the mouse input
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            inventory.UseHeldItem();
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            //CheckForItem();
+        }
     }
 
     // Check if the player is on the ground
@@ -63,6 +75,35 @@ public class PlayerController : MonoBehaviour
         // Raycast to check if the player is on the ground
         return Physics.Raycast(transform.position, Vector3.down, 1.1f); // Check if there is a collision within 1.1f units down from the player
     }
+    public bool CheckForItem()
+    {
+        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+        Debug.DrawRay(cam.transform.position, cam.transform.forward, Color.cyan, 5f);
+        if (Physics.Raycast(ray, out RaycastHit hit, 5, itemLayer))
+        {
+            OnPickupItem(hit.transform.GetComponent<Item>());
+            return true;
+        }
+        return false;
+    }
+    public void OnPickupItem(Item item)
+    {
+        bool success = GetComponentInChildren<PlayerInventory>().PickupItem(item);
+        if (success)
+        {
+            item.transform.SetParent(transform.GetChild(1));
+            item.Pickup();
+        }
+    }
+    
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == itemLayer)
+        {
+            OnPickupItem(collision.gameObject.GetComponent<Item>());
+        }
+    }
+    
 }
 
 

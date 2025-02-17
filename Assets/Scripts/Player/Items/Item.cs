@@ -1,19 +1,39 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Item : MonoBehaviour
 {
-    public void Use()
+    //Modify this a bit to allow for inheriting, and just change the texture and what happens during usage
+    public Sprite inventoryTexture;
+    public InventoryItem item;
+    public bool isHeld;
+    public void Pickup()
     {
-        
-    }
-    void Start()
-    {
-        
-    }
+        isHeld = true;
+        item.GetComponent<Image>().sprite = inventoryTexture;
+        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
 
-    // Update is called once per frame
-    void Update()
+        transform.localRotation = Quaternion.identity;
+        transform.localPosition = Vector3.zero;
+    }
+    public virtual void Use()
     {
-        
+        Debug.Log("Item used");
+    }
+    public void Hold()
+    {
+        gameObject.SetActive(true);
+    }
+    public void StopHolding()
+    {
+        gameObject.SetActive(false);
+    }
+    public void Drop()
+    {
+        gameObject.SetActive(true);
+        isHeld = false;
+        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<Rigidbody>().isKinematic = false;
     }
 }
