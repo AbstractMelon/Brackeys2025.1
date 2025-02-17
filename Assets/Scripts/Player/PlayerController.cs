@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -14,6 +13,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int itemLayer;
     [SerializeField] private int playerLayer;
 
+    private VampireTCP networkManager;
+
     // Components
     private Rigidbody rb;
     private Camera cam;
@@ -24,7 +25,9 @@ public class PlayerController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {   
+    {
+        networkManager = UnityEngine.Object.FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
+
         // Get components
         cam = GetComponentInChildren<Camera>();
         rb = GetComponent<Rigidbody>();
@@ -83,6 +86,11 @@ public class PlayerController : MonoBehaviour
                 _ => inventory.heldSlot
             });
         HighlightItem();
+    }
+
+    private void FixedUpdate()
+    {
+        networkManager.BroadcastNewMessage("updatePlayer", new { t = gameObject.transform });
     }
 
     // Check if the player is on the ground

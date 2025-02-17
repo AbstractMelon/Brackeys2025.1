@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a689d91966dfb46499fb63f130d9b905, type: 3}
-  m_Name: RoomTesting
+  m_Name: MultiPlayerTesting
   m_EditorClassIdentifier: 
   m_Description: 
   m_EnableEditors: 1
@@ -21,7 +21,7 @@ MonoBehaviour:
     - Main Editor|0_run
     - Main Editor|0_deploy
     m_PlayerTag: 
-    m_InitialScene: {fileID: 102900000, guid: 854bc347973c23243bd60403602745c0, type: 3}
+    m_InitialScene: {fileID: 102900000, guid: a89827e65368b07319cf19e3bc291849, type: 3}
   m_EditorInstances:
   - Name: Player 2
     <CorrespondingNodeId>k__BackingField: Player 2|1_run
@@ -31,7 +31,17 @@ MonoBehaviour:
     m_PlayerTag: 
     m_InitialScene: {fileID: 0}
     m_AdvancedConfiguration:
-      StreamLogsToMainEditor: 0
+      StreamLogsToMainEditor: 1
+      LogsColor: {r: 0.3643, g: 0.581, b: 0.8679, a: 1}
+  - Name: Player 3
+    <CorrespondingNodeId>k__BackingField: Player 3|2_run
+    m_Nodes:
+    - Player 3|2_run
+    - Player 3|2_deploy
+    m_PlayerTag: 
+    m_InitialScene: {fileID: 0}
+    m_AdvancedConfiguration:
+      StreamLogsToMainEditor: 1
       LogsColor: {r: 0.3643, g: 0.581, b: 0.8679, a: 1}
   m_LocalInstances: []
   m_RemoteInstances: []

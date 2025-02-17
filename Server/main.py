@@ -67,6 +67,7 @@ async def handle_client(reader, writer):
 
             elif action == "broadcast":
                 room_code = client_rooms.get(writer)
+                print(room_code)
                 if room_code:
                     broadcast_message = {
                         "action": "broadcast",

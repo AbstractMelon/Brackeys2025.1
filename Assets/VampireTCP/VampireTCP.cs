@@ -115,16 +115,23 @@ public class VampireTCP : MonoBehaviour
                 break;
             case "broadcast":
                 BroadcastMessage broadcast = JsonConvert.DeserializeObject<BroadcastMessage>(jsonMessage);
+                OnRecieveNewMessage(broadcast, null);
                 Debug.Log("Broadcast from client " + broadcast.from + ": " + broadcast.message + " - Value: " + broadcast.value);
                 break;
             case "error":
                 ErrorMessage errorMsg = JsonConvert.DeserializeObject<ErrorMessage>(jsonMessage);
+                OnRecieveNewMessage(null, errorMsg);
                 Debug.LogError("Error: " + errorMsg.message);
                 break;
             default:
                 Debug.Log("Unknown action: " + baseMsg.action);
                 break;
         }
+    }
+
+    public void OnRecieveNewMessage(BroadcastMessage msg, ErrorMessage err = null)
+    {
+        // Override Me
     }
 
     public void CreateRoom(bool isPublic)
