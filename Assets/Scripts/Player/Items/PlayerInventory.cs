@@ -37,6 +37,12 @@ public class PlayerInventory : MonoBehaviour
     public bool PickupItem(Item item)
     {
         if (!HasOpenSpace()) return false;
+        if (items[heldSlot].itemObject == null) 
+        {
+            items[heldSlot].itemObject = item;
+            item.item = items[heldSlot];
+            return true;
+        }
         for (int i = 0; i < items.Length; i++)
         {
             if (items[i].itemObject == null)
