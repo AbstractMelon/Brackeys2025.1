@@ -25,7 +25,7 @@ public class LobbyUI : MonoBehaviour
         }
 
         // Create new items
-        foreach (LobbyPlayer player in FindObjectsOfType<LobbyPlayer>().OrderBy(p => p.index))
+        foreach (LobbyPlayer player in Object.FindObjectsByType<LobbyPlayer>(FindObjectsSortMode.None).OrderBy(p => p.index))
         {
             GameObject item = Instantiate(playerListItemPrefab, playerListContent);
             // item.GetComponent<LobbyPlayerListItem>().Setup(player);
