@@ -28,6 +28,8 @@ var (
 	clientsLock = sync.RWMutex{}
 )
 
+// generateRoomCode returns a random string of the given length consisting of
+// uppercase letters and numbers. It is used to generate room codes.
 func generateRoomCode(length int) string {
 	b := make([]byte, length)
 	for i := range b {
@@ -38,6 +40,10 @@ func generateRoomCode(length int) string {
 
 var letterBytes = []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
+// handleClient starts a new goroutine to handle a client connection. It
+// generates a new client ID and logs the client's connection. It then enters a
+// loop where it reads JSON messages from the client, unmarshals them into a
+// message struct, and handles the message based on its action field.
 func handleClient(conn net.Conn) {
 	defer conn.Close()
 	clientsLock.Lock()
