@@ -37,4 +37,14 @@ public class Item : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = false;
         transform.SetParent(null);
     }
+
+    public void Highlight()
+    {
+        GetComponent<Renderer>().material.color = Color.green;
+    }
+    public void Unhighlight()
+    {
+        GetComponent<Renderer>().material.color = Color.white;
+    }
 }
+

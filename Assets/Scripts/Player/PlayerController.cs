@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
         {
             inventory.DiscardHeldItem();
         }
+        HighlightItem();
     }
 
     // Check if the player is on the ground
@@ -101,6 +102,28 @@ public class PlayerController : MonoBehaviour
         {
             item.transform.SetParent(transform.GetChild(1));
             item.Pickup();
+        }
+    }
+    void HighlightItem()
+    {
+        Ray ray = new(cam.transform.position, cam.transform.forward);
+        Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
+        if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == itemLayer)
+        {
+            Debug.Log("Raycast successful");
+            Item item = hit.transform.GetComponent<Item>();
+            if (item != null)
+            {
+                item.Highlight();
+            }
+        }
+        else
+        {
+            Item[] items = FindObjectsOfType<Item>();
+            foreach (Item item in items)
+            {
+                item.Unhighlight();
+            }
         }
     }
     
