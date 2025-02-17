@@ -1,27 +1,30 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class MainMenuManager : MonoBehaviour
+public class MultiplayerManager : MonoBehaviour
 {
     [SerializeField] private VampireTCP networkManager;
-    [SerializeField] private GameObject mainMenuPanel;
-    [SerializeField] private TMP_InputField roomCodeInput;
+    private TMP_InputField roomCodeInput;
 
     private void Start()
     {
+        roomCodeInput = Object.FindObjectsByType<TMP_InputField>(FindObjectsSortMode.None)[0];
+        Object.FindObjectsByType<Button>(FindObjectsSortMode.None)[0].onClick.AddListener(HostGame);
         roomCodeInput.text = "Room Code";
     }
 
     public void HostGame()
     {
         networkManager.CreateRoom(true);
-        mainMenuPanel.SetActive(false);
+        SceneManager.LoadScene("Lobby");
     }
 
     public void JoinGame()
     {
         networkManager.JoinRoom(roomCodeInput.text);
-        mainMenuPanel.SetActive(false);
+        SceneManager.LoadScene("Lobby");
     }
 
     public void ExitGame()
