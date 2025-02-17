@@ -75,6 +75,11 @@ public class PlayerController : MonoBehaviour
             inventory.DiscardHeldItem();
 
         // Inventory
+        if (Input.mouseScrollDelta.y != 0)
+        {
+            inventory.Scroll(Input.mouseScrollDelta.y < 0);
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Alpha5))
             inventory.SetHeldSlot(Input.inputString switch
             {
