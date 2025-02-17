@@ -49,6 +49,7 @@ public class PlayerInventory : MonoBehaviour
             {
                 items[i].itemObject = item;
                 item.item = items[i];
+                items[i].StopHolding();
                 return true;
             }
         }

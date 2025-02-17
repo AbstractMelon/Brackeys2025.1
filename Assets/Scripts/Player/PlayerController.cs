@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Item[] items = FindObjectsOfType<Item>();
+            Item[] items = FindObjectsByType<Item>(FindObjectsSortMode.None);
             foreach (Item item in items)
             {
                 item.Unhighlight();
