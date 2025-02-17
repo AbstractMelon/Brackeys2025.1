@@ -8,6 +8,7 @@ public class PlayerInventory : MonoBehaviour
     public int totalSlots;
     public GameObject inventoryItemPrefab;
     public float selectedItemScale;
+    public Sprite defaultSprite;
     void Awake()
     {
         GetComponent<RectTransform>().anchoredPosition = new Vector2(600, 180);
@@ -113,6 +114,6 @@ public class PlayerInventory : MonoBehaviour
     }
     public void DeactivateSlot(int slot)
     {
-        transform.GetChild(slot).GetChild(0).GetComponent<Image>().color = Color.white;
+        transform.GetChild(slot).GetChild(0).GetComponent<Image>().color = Color.clear;
     }
 }
