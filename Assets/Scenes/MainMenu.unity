@@ -403,6 +403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 481999019}
   - component: {fileID: 481999020}
+  - component: {fileID: 481999021}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -437,9 +438,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea32c9a7d0af85beea9789980e63ead3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkManager: {fileID: 0}
+  networkManager: {fileID: 481999021}
   mainMenuPanel: {fileID: 2128423800}
-  ipAddressInput: {fileID: 1284178107}
+  roomCodeInput: {fileID: 1284178107}
+--- !u!114 &481999021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481999018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ad1afde39dada4cb621bf344395755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverAddress: 127.0.0.1
+  serverPort: 8888
 --- !u!1 &506529235
 GameObject:
   m_ObjectHideFlags: 0
