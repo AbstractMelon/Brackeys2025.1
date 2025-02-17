@@ -28,9 +28,8 @@ var (
 	clientsLock = sync.RWMutex{}
 )
 
-// generateRoomCode returns a random string of the given length consisting of
-// uppercase letters and numbers. It is used to generate room codes.
 func generateRoomCode(length int) string {
+	rand.Seed(time.Now().UnixNano())
 	b := make([]byte, length)
 	for i := range b {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]
@@ -40,10 +39,6 @@ func generateRoomCode(length int) string {
 
 var letterBytes = []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
-// handleClient starts a new goroutine to handle a client connection. It
-// generates a new client ID and logs the client's connection. It then enters a
-// loop where it reads JSON messages from the client, unmarshals them into a
-// message struct, and handles the message based on its action field.
 func handleClient(conn net.Conn) {
 	defer conn.Close()
 	clientsLock.Lock()
@@ -52,6 +47,34 @@ func handleClient(conn net.Conn) {
 	nextClientId++
 	clientsLock.Unlock()
 	log.Printf("Client %d connected at %s", clientId, time.Now().Format(time.RFC3339))
+
+	defer func() {
+		// Cleanup on disconnect
+		clientsLock.Lock()
+		roomCode, inRoom := clientRooms[conn]
+		delete(clientRooms, conn)
+		delete(clientIds, conn)
+		clientsLock.Unlock()
+
+		if inRoom {
+			roomLock.Lock()
+			if clients, ok := rooms[roomCode]; ok {
+				for i, c := range clients {
+					if c == conn {
+						newClients := append(clients[:i], clients[i+1:]...)
+						if len(newClients) == 0 {
+							delete(rooms, roomCode)
+						} else {
+							rooms[roomCode] = newClients
+						}
+						break
+					}
+				}
+			}
+			roomLock.Unlock()
+		}
+		log.Printf("Client %d disconnected", clientId)
+	}()
 
 	for {
 		buf := make([]byte, 1024)
@@ -74,22 +97,26 @@ func handleClient(conn net.Conn) {
 			roomCode := generateRoomCode(6)
 			roomLock.Lock()
 			rooms[roomCode] = append(rooms[roomCode], conn)
-			clientRooms[conn] = roomCode
 			roomLock.Unlock()
+			clientsLock.Lock()
+			clientRooms[conn] = roomCode
+			clientsLock.Unlock()
 			log.Printf("Client %d created room %s at %s", clientId, roomCode, time.Now().Format(time.RFC3339))
 			conn.Write([]byte(fmt.Sprintf(`{"action": "roomCreated", "room_code": "%s"}`, roomCode)))
 
 		case "joinRoom":
 			roomCode := msg.Message
-			roomLock.RLock()
-			if _, ok := rooms[roomCode]; ok {
-				rooms[roomCode] = append(rooms[roomCode], conn)
+			roomLock.Lock()
+			if clients, ok := rooms[roomCode]; ok {
+				rooms[roomCode] = append(clients, conn)
+				roomLock.Unlock()
+				clientsLock.Lock()
 				clientRooms[conn] = roomCode
-				roomLock.RUnlock()
+				clientsLock.Unlock()
 				log.Printf("Client %d joined room %s at %s", clientId, roomCode, time.Now().Format(time.RFC3339))
 				conn.Write([]byte(fmt.Sprintf(`{"action": "joinedRoom", "room_code": "%s"}`, roomCode)))
 			} else {
-				roomLock.RUnlock()
+				roomLock.Unlock()
 				conn.Write([]byte(`{"action": "error", "message": "Room not found"}`))
 			}
 
@@ -103,7 +130,9 @@ func handleClient(conn net.Conn) {
 			conn.Write([]byte(fmt.Sprintf(`{"action": "roomsList", "rooms": %s}`, json.RawMessage(`["`+strings.Join(publicRooms, `","`)+`"]`))))
 
 		case "broadcast":
+			clientsLock.RLock()
 			roomCode := clientRooms[conn]
+			clientsLock.RUnlock()
 			if roomCode != "" {
 				broadcastMessage := message{
 					Action:  "broadcast",
@@ -112,7 +141,10 @@ func handleClient(conn net.Conn) {
 					From:    clientId,
 				}
 				roomLock.RLock()
-				for _, clientConn := range rooms[roomCode] {
+				clients := make([]net.Conn, len(rooms[roomCode]))
+				copy(clients, rooms[roomCode])
+				roomLock.RUnlock()
+				for _, clientConn := range clients {
 					if clientConn != conn {
 						jsonBytes, err := json.Marshal(broadcastMessage)
 						if err != nil {
@@ -122,7 +154,6 @@ func handleClient(conn net.Conn) {
 						}
 					}
 				}
-				roomLock.RUnlock()
 				log.Printf("Client %d broadcasted message in room %s at %s", clientId, roomCode, time.Now().Format(time.RFC3339))
 			} else {
 				conn.Write([]byte(`{"action": "error", "message": "Not in a room"}`))
@@ -133,8 +164,6 @@ func handleClient(conn net.Conn) {
 	}
 }
 
-// main starts a TCP server on localhost:8888 that accepts incoming connections
-// and starts a new goroutine to handle each client connection.
 func main() {
 	listener, err := net.Listen("tcp", "127.0.0.1:8888")
 	if err != nil {
