@@ -1,62 +1,73 @@
-Shader "Skybox/Procedural Night Sky Stars" {
-    Properties {
-        _StarDensity ("Star Density", Range(0, 1)) = 0.5
-        _StarTwinkleSpeed ("Star Twinkle Speed", Range(0, 5)) = 2.0
-        _MilkyWayIntensity ("Milky Way Intensity", Range(0, 2)) = 0.5
-        _NoiseTex ("Noise Texture", 2D) = "white" {}
+Shader "Skybox/URP Night Sky"
+{
+    Properties
+    {
+        _TopColor ("Top Color", Color) = (0.05, 0.05, 0.2, 1)
+        _BottomColor ("Bottom Color", Color) = (0.01, 0.01, 0.05, 1)
+        _MoonColor ("Moon Color", Color) = (0.9, 0.9, 0.8, 1)
+        _MoonDirection ("Moon Direction", Vector) = (0, 0.5, 0.5)
+        _MoonSize ("Moon Size", Range(0,0.1)) = 0.005
     }
 
-    SubShader {
+    SubShader
+    {
         Tags { "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" }
         Cull Off ZWrite Off
 
-        Pass {
-            CGPROGRAM
+        Pass
+        {
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #include "UnityCG.cginc"
+            #pragma multi_compile _ _WAVING_STARS
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            struct appdata {
+            struct VertexInput
+            {
                 float4 vertex : POSITION;
-                float3 texcoord : TEXCOORD0;
             };
 
-            struct v2f {
-                float4 pos : SV_POSITION;
-                float3 texcoord : TEXCOORD0;
+            struct VertexOutput
+            {
+                float4 position : SV_POSITION;
+                float3 viewDir : TEXCOORD0;
             };
 
-            v2f vert(appdata v) {
-                v2f o;
-                o.pos = UnityObjectToClipPos(v.vertex);
-                o.texcoord = v.texcoord;
+            CBUFFER_START(UnityPerMaterial)
+                float4 _TopColor;
+                float4 _BottomColor;
+                float4 _MoonColor;
+                float3 _MoonDirection;
+                float _MoonSize;
+            CBUFFER_END
+
+            VertexOutput vert(VertexInput v)
+            {
+                VertexOutput o;
+                o.position = TransformObjectToHClip(v.vertex.xyz);
+                float3 worldPos = TransformObjectToWorld(v.vertex.xyz);
+                o.viewDir = worldPos;
                 return o;
             }
 
-            float _StarDensity, _StarTwinkleSpeed, _MilkyWayIntensity;
-            sampler2D _NoiseTex;
+            half4 frag(VertexOutput i) : SV_Target
+            {
+                float3 viewDir = normalize(i.viewDir);
 
-            fixed4 frag(v2f i) : SV_Target {
-                float3 viewDir = normalize(i.texcoord);
-                
-                // Stars calculation
-                float2 starUV = viewDir.xy * 50.0 + _Time.x * _StarTwinkleSpeed;
-                float starNoise = tex2D(_NoiseTex, starUV).r;
-                float stars = pow(starNoise, 10.0 - (8.0 * _StarDensity));
-                
-                // Milky Way effect
-                float2 milkyUV = viewDir.xz * 2.0 + float2(_Time.x * 0.1, 0);
-                float milky = tex2D(_NoiseTex, milkyUV).r * _MilkyWayIntensity;
-                
-                // Combine all elements
-                float3 finalColor = float3(0, 0, 0);
-                finalColor = lerp(finalColor, float3(1,1,1), stars);
-                finalColor += milky * 0.3;
-                
-                return float4(finalColor, 1);
+                // Sky gradient
+                float gradient = saturate(viewDir.y * 0.5 + 0.5);
+                float3 color = lerp(_BottomColor.rgb, _TopColor.rgb, gradient);
+
+                // Moon
+                float3 moonDir = normalize(_MoonDirection);
+                float moonDot = dot(viewDir, moonDir);
+                float moon = smoothstep(1.0 - _MoonSize - 0.001, 1.0 - _MoonSize, moonDot);
+                color = lerp(color, _MoonColor.rgb, moon);
+
+                return half4(color, 1.0);
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }
- 
+
