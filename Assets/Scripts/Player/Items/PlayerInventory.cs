@@ -8,14 +8,17 @@ public class PlayerInventory : MonoBehaviour
     public int totalSlots;
     public GameObject inventoryItemPrefab;
     public float selectedItemScale;
-    public Sprite defaultSprite;
+    public Sprite itemSprite;
+    public Sprite itemSelectedSprite;
+    public Sprite emptySprite;
     void Awake()
     {
-        GetComponent<RectTransform>().anchoredPosition = new Vector2(600, 180);
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -200);
         items = new InventoryItem[totalSlots];
         for (int i = 0; i < totalSlots; i++)
         {
-            items[i] = Instantiate(inventoryItemPrefab, transform.GetChild(i)).GetComponent<InventoryItem>();
+            RectTransform trans = transform.GetChild(i).GetChild(0).GetComponent<RectTransform>();
+            items[i] = Instantiate(inventoryItemPrefab, trans.transform).GetComponent<InventoryItem>();
             items[i].inventory = this;
         }
         ActivateSlot(heldSlot);
@@ -65,7 +68,7 @@ public class PlayerInventory : MonoBehaviour
         if (!drop) Destroy(items[heldSlot].gameObject);
         else items[heldSlot].Drop();
         items[heldSlot].itemObject = null;
-        items[heldSlot].GetComponent<Image>().sprite = null;
+        items[heldSlot].GetComponent<Image>().sprite = emptySprite;
         
         return true;
     }
@@ -110,10 +113,14 @@ public class PlayerInventory : MonoBehaviour
     }
     public void ActivateSlot(int slot)
     {
-        transform.GetChild(slot).GetChild(0).GetComponent<Image>().color = Color.gray;
+        Image slotImage = transform.GetChild(slot).GetChild(0).GetComponent<Image>();
+        slotImage.transform.GetChild(0).GetComponent<Image>().color = Color.green;
+        slotImage.sprite = itemSelectedSprite;
     }
     public void DeactivateSlot(int slot)
     {
-        transform.GetChild(slot).GetChild(0).GetComponent<Image>().color = Color.clear;
+        Image slotImage = transform.GetChild(slot).GetChild(0).GetComponent<Image>();
+        slotImage.transform.GetChild(0).GetComponent<Image>().color = Color.white;
+        slotImage.sprite = itemSprite;
     }
 }

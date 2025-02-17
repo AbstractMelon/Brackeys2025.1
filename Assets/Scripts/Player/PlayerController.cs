@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //networkManager = UnityEngine.Object.FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
+        networkManager = UnityEngine.Object.FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
 
         // Get components
         cam = GetComponentInChildren<Camera>();
@@ -75,6 +75,11 @@ public class PlayerController : MonoBehaviour
             inventory.DiscardHeldItem();
 
         // Inventory
+        if (Input.mouseScrollDelta.y != 0)
+        {
+            inventory.Scroll(Input.mouseScrollDelta.y < 0);
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Alpha5))
             inventory.SetHeldSlot(Input.inputString switch
             {
@@ -88,9 +93,9 @@ public class PlayerController : MonoBehaviour
         HighlightItem();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        networkManager.BroadcastNewMessage("updatePlayer", new { t = new Vector3(transform.position.x, transform.position.y, transform.position.z).ToString() });
+        networkManager.BroadcastNewMessage("updatePlayerPosition", new { t = new Vector3(transform.position.x, transform.position.y, transform.position.z).ToString() });
     }
 
     // Check if the player is on the ground

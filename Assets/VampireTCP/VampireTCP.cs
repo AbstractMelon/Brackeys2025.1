@@ -107,7 +107,6 @@ public class VampireTCP : MonoBehaviour
             catch (Exception ex)
             {
                 Debug.LogError("Receive error: " + ex.Message);
-                break;
             }
         }
     }
