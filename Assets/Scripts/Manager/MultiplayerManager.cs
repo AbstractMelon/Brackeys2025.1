@@ -6,25 +6,17 @@ using UnityEngine.UI;
 public class MultiplayerManager : MonoBehaviour
 {
     [SerializeField] private VampireTCP networkManager;
-    private TMP_InputField roomCodeInput;
-
-    private void Start()
-    {
-        roomCodeInput = Object.FindObjectsByType<TMP_InputField>(FindObjectsSortMode.None)[0];
-        Object.FindObjectsByType<Button>(FindObjectsSortMode.None)[0].onClick.AddListener(HostGame);
-        roomCodeInput.text = "Room Code";
-    }
 
     public void HostGame()
     {
         networkManager.CreateRoom(true);
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Game");
     }
 
-    public void JoinGame()
+    public void JoinGame(string code)
     {
-        networkManager.JoinRoom(roomCodeInput.text);
-        SceneManager.LoadScene("Lobby");
+        networkManager.JoinRoom(code);
+        SceneManager.LoadScene("Game");
     }
 
     public void ExitGame()
