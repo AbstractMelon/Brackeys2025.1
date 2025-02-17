@@ -1,35 +1,31 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Mirror;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private NetworkManager networkManager;
+    [SerializeField] private VampireTCP networkManager;
     [SerializeField] private GameObject mainMenuPanel;
-    [SerializeField] private TMP_InputField ipAddressInput;
+    [SerializeField] private TMP_InputField roomCodeInput;
 
     private void Start()
     {
-        // Auto-fill local IP
-        ipAddressInput.text = "localhost";
+        roomCodeInput.text = "Room Code";
     }
 
     public void HostGame()
     {
-        networkManager.StartHost();
+        networkManager.CreateRoom(true);
         mainMenuPanel.SetActive(false);
     }
 
     public void JoinGame()
     {
-        networkManager.networkAddress = ipAddressInput.text;
-        networkManager.StartClient();
+        networkManager.JoinRoom(roomCodeInput.text);
         mainMenuPanel.SetActive(false);
     }
 
     public void ExitGame()
     {
-        Application.Quit();
+        UnityEngine.Application.Quit();
     }
 }
