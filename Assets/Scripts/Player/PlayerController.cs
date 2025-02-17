@@ -61,38 +61,28 @@ public class PlayerController : MonoBehaviour
 
         // Look
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the player based on the mouse input
+
+        // Inventory
         if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
             inventory.UseHeldItem();
-        }
+
         if (Input.GetKeyDown(KeyCode.E))
-        {
             CheckForItem();
-        }
+
         if (Input.GetKeyDown(KeyCode.Q))
-        {
             inventory.DiscardHeldItem();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            inventory.SetHeldSlot(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            inventory.SetHeldSlot(1);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            inventory.SetHeldSlot(2);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            inventory.SetHeldSlot(3);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            inventory.SetHeldSlot(4);
-        }
+
+        // Inventory
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Alpha5))
+            inventory.SetHeldSlot(Input.inputString switch
+            {
+                "1" => 0,
+                "2" => 1,
+                "3" => 2,
+                "4" => 3,
+                "5" => 4,
+                _ => inventory.heldSlot
+            });
         HighlightItem();
     }
 
