@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //networkManager.BroadcastNewMessage("updatePlayer", new { t = gameObject.transform });
+        networkManager.BroadcastNewMessage("updatePlayer", new { t = new Vector3(transform.position.x, transform.position.y, transform.position.z).ToString() });
     }
 
     // Check if the player is on the ground
