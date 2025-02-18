@@ -24,7 +24,7 @@ public class MultiplayerManager : MonoBehaviour
     public void HostGame()
     {
         networkManager.CreateRoom(true);
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Lobby");
     }
 
     public void JoinGame(string code)
