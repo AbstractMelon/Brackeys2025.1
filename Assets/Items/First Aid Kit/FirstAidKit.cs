@@ -13,3 +13,4 @@ public class FirstAidKit : Item
         return Quaternion.Euler(-90f, 0f, 0f);
     }
 }
+
