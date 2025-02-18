@@ -76,6 +76,7 @@ public class MultiplayerManager : MonoBehaviour
             GameObject newPlayer = Instantiate(newPlayerInstance);
             newPlayer.name = "Player" + wrapper.msg.from;
             numPlayers++;
+            LobbyManager.instance.UpdatePlayerCount(numPlayers);
             if(numPlayers >= 2)
             {
                 GameObject.Find("GoTime Text").SetActive(true);
@@ -99,3 +100,4 @@ public class MultiplayerManager : MonoBehaviour
     }
 
 }
+
