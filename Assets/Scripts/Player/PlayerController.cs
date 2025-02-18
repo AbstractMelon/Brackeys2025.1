@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float collectItemDistance = 5f;
     [SerializeField] private int itemLayer;
     [SerializeField] private int playerLayer;
-    [SerializeField] private float acceleration = 5f;
-    [SerializeField] private float deceleration = 5f;
 
     private VampireTCP networkManager;
     private MultiplayerManager multiplayerManager;
@@ -24,7 +22,6 @@ public class PlayerController : MonoBehaviour
     // Components
     private Rigidbody rb;
     private Camera cam;
-    private Vector3 lastGroundedVelocity;
 
     // Inventory
     private PlayerInventory inventory;
