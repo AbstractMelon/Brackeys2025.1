@@ -1,8 +1,11 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public MultiplayerManager multiplayerManager;
+
     // Variables
     [SerializeField] private float moveSpeed = 5f; // Speed of movement when walking
     [SerializeField] private float jumpForce = 5f; // Force of the jump
@@ -35,7 +38,6 @@ public class PlayerController : MonoBehaviour
 
         // Lock the cursor
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the screen
-        Cursor.visible = true;
     }
 
     void Update()
@@ -59,6 +61,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded()) // Check if the space key is pressed and if the player is on the ground
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Apply a force up to make the player jump
+        }
+
+        if(Input.GetKeyDown(KeyCode.B) && multiplayerManager.numPlayers >= 2)
+        {
+            multiplayerManager.StartGame();
         }
 
         // Look

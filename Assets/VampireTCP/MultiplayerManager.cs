@@ -15,8 +15,11 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField] private VampireTCP networkManager;
 
     public GameObject newPlayerInstance;
+    private GameObject startText;
 
-    private int numPlayers = 1;
+    public int numPlayers = 1;
+
+    private bool beginningGame = false;
 
     public void HostGame()
     {
@@ -33,6 +36,12 @@ public class MultiplayerManager : MonoBehaviour
     public void ExitGame()
     {
         UnityEngine.Application.Quit();
+    }
+
+    public void StartGame()
+    {
+        networkManager.BroadcastNewMessage("beginGame", 0);
+        beginningGame = true;
     }
 
     Vector3 StringToVector3(string input)
@@ -62,15 +71,19 @@ public class MultiplayerManager : MonoBehaviour
                 PositionData posData = JsonConvert.DeserializeObject<PositionData>(wrapper.msg.value.ToString());
                 Vector3 targetPosition = StringToVector3(posData.t);
                 StartCoroutine(LerpPosition(otherPlayer.transform, targetPosition, 0.1f));
+            } else if (wrapper.msg.message == "beginGame" && !beginningGame)
+            {
+                beginningGame = true;
+                SceneManager.LoadScene("Lobby");
             }
         } else
         {
             GameObject newPlayer = Instantiate(newPlayerInstance);
             newPlayer.name = "Player" + wrapper.msg.from;
             numPlayers++;
-            if(numPlayers >= 3)
+            if(numPlayers >= 2)
             {
-                // E
+                GameObject.Find("GoTime Text").SetActive(true);
             }
         }
     }
