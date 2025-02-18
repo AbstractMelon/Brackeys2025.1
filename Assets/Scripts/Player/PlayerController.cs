@@ -38,7 +38,6 @@ public class PlayerController : MonoBehaviour
 
         // Lock the cursor
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the screen
-        Cursor.visible = true;
     }
 
     void Update()
