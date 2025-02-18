@@ -1580,7 +1580,8 @@ MonoBehaviour:
   renderer: {fileID: 0}
   throwPower: 10
   damage: 5
-  rotationalMult: 10
+  playerLayer: 7
+  holdingPlayer: {fileID: 0}
 --- !u!1 &2053059129
 GameObject:
   m_ObjectHideFlags: 0
