@@ -65,7 +65,7 @@ public class DemonController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.B) && multiplayerManager.numPlayers >= 2)
         {
-            multiplayerManager.StartGame();
+            //multiplayerManager.StartGame();
         }
 
         // Look
