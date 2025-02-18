@@ -10,13 +10,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 5f; // Force of the jump
     [SerializeField] private float maxSpeed = 10f; // Maximum speed when walking
     [SerializeField] private float maxSpeedSprint = 20f; // Maximum speed when sprinting
-    [SerializeField] public float mouseSensitivity = 100f; // Speed of the mouse
+    [SerializeField]  public float mouseSensitivity = 100f; // Speed of the mouse
     [SerializeField] private float collectItemDistance = 5f;
     [SerializeField] private int itemLayer;
     [SerializeField] private int playerLayer;
+    [SerializeField] private float acceleration = 5f;
+    [SerializeField] private float deceleration = 5f;
 
     private VampireTCP networkManager;
     private MultiplayerManager multiplayerManager;
+    private HealthSystem healthSystem;
 
     // Components
     private Rigidbody rb;
@@ -31,8 +34,8 @@ public class PlayerController : MonoBehaviour
     {
         try
         {
-            networkManager = UnityEngine.Object.FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
-            multiplayerManager = UnityEngine.Object.FindObjectsByType<MultiplayerManager>(FindObjectsSortMode.None)[0];
+            networkManager = FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
+            multiplayerManager = FindObjectsByType<MultiplayerManager>(FindObjectsSortMode.None)[0];
         }
         catch {
             Debug.LogError("Unable to get network manager, ignoring for now");
@@ -42,6 +45,7 @@ public class PlayerController : MonoBehaviour
         cam = GetComponentInChildren<Camera>();
         rb = GetComponent<Rigidbody>();
         inventory = GetComponentInChildren<PlayerInventory>();
+        healthSystem = GetComponent<HealthSystem>();
 
         // Lock the cursor
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the screen
@@ -164,6 +168,10 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-}
 
+    public bool IsDead()
+    {
+        return healthSystem.currentHealth <= 0;
+    }
+}
 
