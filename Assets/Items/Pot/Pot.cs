@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Pot : MonoBehaviour
+public class Pot : Item
 {
     public float durability;
     public bool isFilled;
@@ -29,7 +29,7 @@ public class Pot : MonoBehaviour
         }
     }
 
-    public void Use()
+    public override void Use()
     {
         if (isFilled)
         {
