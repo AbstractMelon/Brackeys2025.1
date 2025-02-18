@@ -155,15 +155,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == itemLayer)
-        {
-            //OnPickupItem(collision.gameObject.GetComponent<Item>());
-        }
-    }
-    
 }
 
 
