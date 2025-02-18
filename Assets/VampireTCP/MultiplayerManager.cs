@@ -19,7 +19,7 @@ public class MultiplayerManager : MonoBehaviour
 
     public int numPlayers = 1;
 
-    private bool beginningGame = false;
+    public bool beginningGame = false;
 
     public void HostGame()
     {
@@ -36,12 +36,6 @@ public class MultiplayerManager : MonoBehaviour
     public void ExitGame()
     {
         UnityEngine.Application.Quit();
-    }
-
-    public void StartGame()
-    {
-        networkManager.BroadcastNewMessage("beginGame", 0);
-        beginningGame = true;
     }
 
     Vector3 StringToVector3(string input)
@@ -73,6 +67,7 @@ public class MultiplayerManager : MonoBehaviour
                 StartCoroutine(LerpPosition(otherPlayer.transform, targetPosition, 0.1f));
             } else if (wrapper.msg.message == "beginGame" && !beginningGame)
             {
+                Debug.Log("Im a problem");
                 beginningGame = true;
                 SceneManager.LoadScene("Lobby");
             }

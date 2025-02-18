@@ -113,8 +113,6 @@ public class VampireTCP : MonoBehaviour
 
     void ProcessMessage(string jsonMessage)
     {
-        Debug.Log("Received: " + jsonMessage);
-
         BaseMessage baseMsg = JsonConvert.DeserializeObject<BaseMessage>(jsonMessage);
 
         switch (baseMsg.action)
@@ -136,7 +134,7 @@ public class VampireTCP : MonoBehaviour
             case "broadcast":
                 BroadcastMessage broadcast = JsonConvert.DeserializeObject<BroadcastMessage>(jsonMessage);
                 OnRecieveNewMessage(broadcast, null);
-                Debug.Log("Broadcast from client " + broadcast.from + ": " + broadcast.message + " - Value: " + broadcast.value);
+                //Debug.Log("Broadcast from client " + broadcast.from + ": " + broadcast.message + " - Value: " + broadcast.value);
                 break;
             case "error":
                 ErrorMessage errorMsg = JsonConvert.DeserializeObject<ErrorMessage>(jsonMessage);
