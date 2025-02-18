@@ -67,7 +67,6 @@ async def handle_client(reader, writer):
 
             elif action == "broadcast":
                 room_code = client_rooms.get(writer)
-                print(room_code)
                 if room_code:
                     broadcast_message = {
                         "action": "broadcast",
@@ -84,9 +83,6 @@ async def handle_client(reader, writer):
                                 await client_writer.drain()
                             except ConnectionResetError:
                                 continue
-                    print(
-                        f"Client {client_id} broadcasted message in room {room_code}."
-                    )
                 else:
                     response = {"action": "error", "message": "Not in a room"}
                     writer.write((json.dumps(response) + "\n").encode())
