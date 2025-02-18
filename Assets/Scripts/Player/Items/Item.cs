@@ -5,11 +5,11 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour
 {
     //Modify this a bit to allow for inheriting, and just change the texture and what happens during usage
-    public Sprite inventoryTexture;
+    [SerializeField] private Sprite inventoryTexture;
     public InventoryItem item;
-    public bool isHeld;
-    public Color[] defaultColors;
-    public new Renderer renderer;
+    public bool isHeld { get; private set; }
+    private Color[] defaultColors;
+    private new Renderer renderer;
     void Awake()
     {
         renderer = GetComponent<Renderer>();

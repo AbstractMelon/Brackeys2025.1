@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Gun : Item
 {
-    public Transform muzzleTransform;
-    public GameObject impactEffectPrefab;
-    public float range = 100f;
-    public float fireRate = 0.5f;
+    [SerializeField] private Transform muzzleTransform;
+    [SerializeField] private GameObject impactEffectPrefab;
+    [SerializeField] private float range = 100f;
+    [SerializeField] private float fireRate = 0.5f;
     private float nextFireTime;
 
     public override Quaternion DefaultRotation()
