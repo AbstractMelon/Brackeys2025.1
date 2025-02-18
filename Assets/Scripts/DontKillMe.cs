@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class dontdie : MonoBehaviour
+public class DontKillMe : MonoBehaviour
 {
     void Awake()
     {
