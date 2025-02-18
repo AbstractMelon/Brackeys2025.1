@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -110,6 +111,18 @@ public class PlayerInventory : MonoBehaviour
         ActivateSlot(heldSlot);
         items[heldSlot].Hold();
         return true;
+    }
+    public void DestroyItem(Item item)
+    {
+        for (int i = 0; i < totalSlots; i++)
+        {
+            if (items[i].itemObject == item)
+            {
+                items[i].itemObject = null;
+                items[i].GetComponent<Image>().sprite = emptySprite;
+            }
+        }
+        Destroy(item.gameObject);
     }
     public void ActivateSlot(int slot)
     {

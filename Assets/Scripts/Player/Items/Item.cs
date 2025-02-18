@@ -37,6 +37,10 @@ public class Item : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = false;
         transform.SetParent(null);
     }
+    public void Delete()
+    {
+        item.inventory.DestroyItem(this);
+    }
 
     public void Highlight()
     {
