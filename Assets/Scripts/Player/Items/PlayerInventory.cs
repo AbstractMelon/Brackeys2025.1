@@ -4,14 +4,13 @@ using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public InventoryItem[] items;
-    public int heldSlot = 0;
-    public int totalSlots;
-    public GameObject inventoryItemPrefab;
-    public float selectedItemScale;
-    public Sprite itemSprite;
-    public Sprite itemSelectedSprite;
-    public Sprite emptySprite;
+    private InventoryItem[] items;
+    public int heldSlot { get; private set; } = 0;
+    public int totalSlots { get; private set; } = 5;
+    [SerializeField] private GameObject inventoryItemPrefab;
+    [SerializeField] private Sprite itemSprite;
+    [SerializeField] private Sprite itemSelectedSprite;
+    [SerializeField] private Sprite emptySprite;
     void Awake()
     {
         GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -200);
@@ -58,10 +57,6 @@ public class PlayerInventory : MonoBehaviour
             }
         }
         return false;
-    }
-    public Vector2 ItemSlotToScreenPosition(int slot)
-    {
-        return Vector2.zero;
     }
     public bool DiscardHeldItem(bool drop = true)
     {
@@ -124,13 +119,13 @@ public class PlayerInventory : MonoBehaviour
         }
         Destroy(item.gameObject);
     }
-    public void ActivateSlot(int slot)
+    private void ActivateSlot(int slot)
     {
         Image slotImage = transform.GetChild(slot).GetChild(0).GetComponent<Image>();
         slotImage.transform.GetChild(0).GetComponent<Image>().color = Color.green;
         slotImage.sprite = itemSelectedSprite;
     }
-    public void DeactivateSlot(int slot)
+    private void DeactivateSlot(int slot)
     {
         Image slotImage = transform.GetChild(slot).GetChild(0).GetComponent<Image>();
         slotImage.transform.GetChild(0).GetComponent<Image>().color = Color.white;
