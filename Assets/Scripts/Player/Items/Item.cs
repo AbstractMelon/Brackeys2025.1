@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,17 @@ public class Item : MonoBehaviour
     public Sprite inventoryTexture;
     public InventoryItem item;
     public bool isHeld;
+    public Color[] defaultColors;
+    public new Renderer renderer;
+    void Awake()
+    {
+        renderer = GetComponent<Renderer>();
+        defaultColors = new Color[renderer.materials.Length];
+        for (int i = 0; i < renderer.materials.Length; i++)
+        {
+            defaultColors[i] = renderer.materials[i].color;
+        }
+    }
     public void Pickup()
     {
         isHeld = true;
@@ -50,11 +62,17 @@ public class Item : MonoBehaviour
 
     public void Highlight()
     {
-        GetComponent<Renderer>().material.color = Color.green;
+        for (int i = 0; i < renderer.materials.Length; i++)
+        {
+            renderer.materials[i].color = Color.green;
+        }
     }
     public void Unhighlight()
     {
-        GetComponent<Renderer>().material.color = Color.white;
+        for (int i = 0; i < renderer.materials.Length; i++)
+        {
+            renderer.materials[i].color = defaultColors[i];
+        }
     }
 }
 
