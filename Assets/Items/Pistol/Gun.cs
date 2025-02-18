@@ -1,11 +1,13 @@
 using UnityEngine;
+
 public class Gun : Item
 {
     public Transform muzzleTransform;
-    public GameObject bulletPrefab;
-    public float bulletSpeed = 50f;
+    public GameObject impactEffectPrefab;
+    public float range = 100f;
     public float fireRate = 0.5f;
     private float nextFireTime;
+
     public override Quaternion DefaultRotation()
     {
         return Quaternion.Euler(-90f, 90f, 0f);
@@ -13,7 +15,7 @@ public class Gun : Item
 
     public override void Use()
     {
-        if(Time.time >= nextFireTime)
+        if (Time.time >= nextFireTime)
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
@@ -22,11 +24,23 @@ public class Gun : Item
 
     void Shoot()
     {
-        if(bulletPrefab && muzzleTransform)
+        RaycastHit hit;
+        if (Physics.Raycast(muzzleTransform.position, muzzleTransform.forward, out hit, range))
         {
-            GameObject bullet = Instantiate(bulletPrefab, muzzleTransform.position, muzzleTransform.rotation);
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            if(rb) rb.AddForce(muzzleTransform.forward * bulletSpeed, ForceMode.Impulse);
+            Debug.Log("Hit: " + hit.transform.name);
+
+            if (impactEffectPrefab)
+            {
+                GameObject impactEffect = Instantiate(impactEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impactEffect, 2f);
+            }
+
+            HealthSystem targetHealth = hit.transform.GetComponent<HealthSystem>();
+            if (targetHealth)
+            {
+                targetHealth.TakeDamage(10); 
+            }
         }
     }
 }
+
