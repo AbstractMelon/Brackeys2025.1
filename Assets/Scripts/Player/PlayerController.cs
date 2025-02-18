@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
         //Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
         if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == itemLayer)
         {
-            Debug.Log("Raycast successful");
+            //Debug.Log("Raycast successful");
             Item item = hit.transform.GetComponent<Item>();
             if (item != null)
             {
