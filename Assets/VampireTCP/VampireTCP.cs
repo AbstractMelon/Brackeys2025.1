@@ -122,10 +122,12 @@ public class VampireTCP : MonoBehaviour
             case "roomCreated":
                 RoomCreatedMessage roomCreated = JsonConvert.DeserializeObject<RoomCreatedMessage>(jsonMessage);
                 Debug.Log("Room created with code: " + roomCreated.room_code);
+                LobbyManager.instance.UpdateRoomCode(roomCreated.room_code);
                 break;
             case "joinedRoom":
                 JoinedRoomMessage joinedRoom = JsonConvert.DeserializeObject<JoinedRoomMessage>(jsonMessage);
                 Debug.Log("Joined room: " + joinedRoom.room_code);
+                LobbyManager.instance.UpdateRoomCode(joinedRoom.room_code);
                 break;
             case "roomsList":
                 RoomsListMessage roomsList = JsonConvert.DeserializeObject<RoomsListMessage>(jsonMessage);
@@ -217,3 +219,4 @@ public class VampireTCP : MonoBehaviour
         }
     }
 }
+
