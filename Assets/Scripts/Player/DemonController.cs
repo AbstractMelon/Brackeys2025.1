@@ -102,7 +102,7 @@ public class DemonController : MonoBehaviour
     bool IsGrounded()
     {
         // Raycast to check if the player is on the ground
-        return Physics.Raycast(transform.position, Vector3.down, 1.1f); // Check if there is a collision within 1.1f units down from the player
+        return Physics.Raycast(transform.position, Vector3.down, 2.1f); // Check if there is a collision within 1.1f units down from the player
     }
     void HighlightPlayer()
     {
@@ -121,7 +121,8 @@ public class DemonController : MonoBehaviour
             {
                 player.GetComponent<Renderer>().material.color = Color.white;
             }
-            FindFirstObjectByType<PlayerController>().GetComponent<Renderer>().material.color = Color.white;
+            PlayerController localPlayer = FindFirstObjectByType<PlayerController>();
+            if (localPlayer != null) localPlayer.GetComponent<Renderer>().material.color = Color.white;
         }
     }
 }

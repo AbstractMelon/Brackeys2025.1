@@ -29,7 +29,11 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        networkManager = UnityEngine.Object.FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
+        try
+        {
+            networkManager = UnityEngine.Object.FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
+        }
+        catch {}
 
         // Get components
         cam = GetComponentInChildren<Camera>();
@@ -102,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        networkManager.BroadcastNewMessage("updatePlayerPosition", new { t = new Vector3(transform.position.x, transform.position.y, transform.position.z).ToString() });
+        if (networkManager != null) networkManager.BroadcastNewMessage("updatePlayerPosition", new { t = new Vector3(transform.position.x, transform.position.y, transform.position.z).ToString() });
     }
 
     // Check if the player is on the ground
