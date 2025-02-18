@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Items
 {
-    public class Torch : MonoBehaviour
+    public class WoodTorch : MonoBehaviour
     {
         public Light torchLight;
         public float burnDuration = 30f;
