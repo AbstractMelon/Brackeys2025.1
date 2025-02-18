@@ -14,7 +14,7 @@ public class Item : MonoBehaviour
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
 
-        transform.localRotation = Quaternion.identity;
+        transform.localRotation = DefaultRotation();
         transform.localPosition = Vector3.zero;
     }
     public virtual void Use()
@@ -24,6 +24,12 @@ public class Item : MonoBehaviour
     public void Hold()
     {
         gameObject.SetActive(true);
+        transform.localRotation = DefaultRotation();
+
+    }
+    public virtual Quaternion DefaultRotation()
+    {
+        return Quaternion.identity;
     }
     public void StopHolding()
     {

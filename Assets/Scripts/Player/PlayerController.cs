@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
     {
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
-        if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == itemLayer)
+        if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == itemLayer && !hit.transform.GetComponent<Item>().isHeld)
         {
             Debug.Log("Raycast successful");
             OnPickupItem(hit.transform.GetComponent<Item>());
@@ -158,15 +158,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == itemLayer)
-        {
-            //OnPickupItem(collision.gameObject.GetComponent<Item>());
-        }
-    }
-    
 }
 
 
