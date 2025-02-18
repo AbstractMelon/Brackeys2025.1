@@ -7,7 +7,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roomCodeText;
 
     public static LobbyManager instance;
-
+    public int alivePlayers { get; private set; }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -40,5 +40,9 @@ public class LobbyManager : MonoBehaviour
     public void UpdateRoomCode(string roomCode)
     {
         roomCodeText.text = $"Room Code: {roomCode}";
+    }
+    public void PlayerDied()
+    {
+        alivePlayers--;
     }
 }
