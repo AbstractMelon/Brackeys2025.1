@@ -9,13 +9,13 @@ public class Pan : ThrowableItem
 
     private Vector3 initialPosition;
 
-    protected override void Start()
-    {
-        base.Start();
-        initialPosition = transform.position;
-    }
+    // protected override void Start()
+    // {
+    //     base.Start();
+    //     initialPosition = transform.position;
+    // }
 
-    protected override void Use()
+    public override void Use()
     {
         base.Use();
         StartCoroutine(Swing());
@@ -36,3 +36,4 @@ public class Pan : ThrowableItem
         }
     }
 }
+

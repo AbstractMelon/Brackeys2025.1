@@ -37,7 +37,7 @@ public class Knife : ThrowableItem
             var enemyHealth = hit.transform.GetComponent<HealthSystem>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(stabDamage);
+                enemyHealth.TakeDamage((int)stabDamage);
             }
         }
 
