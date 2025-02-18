@@ -95,9 +95,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fce3477e847bce66bc05d69117d386f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryTexture: {fileID: 21300000, guid: 4d87461aef44dc7b8ad286c5786319a1, type: 3}
+  inventoryTexture: {fileID: 21300000, guid: fc80354fba00f2b4a894769a53b12b6d, type: 3}
   item: {fileID: 0}
   isHeld: 0
+  defaultColors: []
+  renderer: {fileID: 0}
   stabDistance: 2
   stabSpeed: 10
   damage: 20

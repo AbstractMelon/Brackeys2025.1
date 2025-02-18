@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 09d1f9d9022835e2993c86740458a3eb, type: 3}
       propertyPath: m_Name
-      value: Can_Red
+      value: FoodCan
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 09d1f9d9022835e2993c86740458a3eb, type: 3}
       propertyPath: m_Layer
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2ada6b817f4e5429fe6944f77283b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryTexture: {fileID: 0}
+  inventoryTexture: {fileID: 21300000, guid: 0bfd0713b8d24cf489a6bfeef0738b12, type: 3}
   item: {fileID: 0}
   isHeld: 0
   defaultColors: []

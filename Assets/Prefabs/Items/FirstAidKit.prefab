@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b3f9a993dd4ca4eb900fd96174be52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryTexture: {fileID: 0}
+  inventoryTexture: {fileID: 21300000, guid: 2d020bd43577f19489b29e1dd6905f78, type: 3}
   item: {fileID: 0}
   isHeld: 0
   defaultColors: []
