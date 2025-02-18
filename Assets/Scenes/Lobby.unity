@@ -1724,9 +1724,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryTexture: {fileID: 21300000, guid: 6ec78ba128719844eab5e5a3538f5183, type: 3}
   item: {fileID: 0}
-  isHeld: 0
-  defaultColors: []
-  renderer: {fileID: 0}
 --- !u!54 &2147200514
 Rigidbody:
   m_ObjectHideFlags: 0

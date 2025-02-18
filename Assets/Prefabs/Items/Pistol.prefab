@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5391386354162569039}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,6 +95,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pistol
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: af24a08999df0ee42aaf979b4385785b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -136,9 +140,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryTexture: {fileID: 21300000, guid: 37236229b3d0aafeeaa9b7e3efd15475, type: 3}
   item: {fileID: 0}
-  isHeld: 0
-  defaultColors: []
-  renderer: {fileID: 0}
   muzzleTransform: {fileID: 5391386354162569039}
   impactEffectPrefab: {fileID: 65848454396948471, guid: 285545badc68f2cab91dfe4af09c39e8, type: 3}
   range: 100
