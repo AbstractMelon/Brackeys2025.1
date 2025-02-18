@@ -6,6 +6,10 @@ public class Gun : Item
     public float bulletSpeed = 50f;
     public float fireRate = 0.5f;
     private float nextFireTime;
+    public override Quaternion DefaultRotation()
+    {
+        return Quaternion.Euler(-90f, 90f, 0f);
+    }
 
     public override void Use()
     {
