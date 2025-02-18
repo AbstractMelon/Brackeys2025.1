@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d410d647bf392b4a9ba1572feacc62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryTexture: {fileID: 21300000, guid: 9df41b89582068540b468985aa44e2bc, type: 3}
+  inventoryTexture: {fileID: 21300000, guid: 37236229b3d0aafeeaa9b7e3efd15475, type: 3}
   item: {fileID: 0}
   isHeld: 0
   muzzleTransform: {fileID: 5391386354162569039}
