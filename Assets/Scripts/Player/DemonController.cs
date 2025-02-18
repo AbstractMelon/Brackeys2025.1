@@ -11,7 +11,7 @@ public class DemonController : MonoBehaviour
     [SerializeField] private float jumpForce = 7f; // Force of the jump
     [SerializeField] private float maxSpeed = 15f; // Maximum speed when walking
     [SerializeField] private float maxSpeedSprint = 25f; // Maximum speed when sprinting
-    [SerializeField] public float mouseSensitivity = 100f; // Speed of the mouse
+    [SerializeField] public float mouseSensitivity = 3f; // Speed of the mouse
     [SerializeField] private float attackPlayerDistance = 5f;
     [SerializeField] private int playerLayer = 6;
     [SerializeField] private int attackPower = 20;
