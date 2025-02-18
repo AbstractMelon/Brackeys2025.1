@@ -1,11 +1,10 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public MultiplayerManager multiplayerManager;
-
     // Variables
     [SerializeField] private float moveSpeed = 5f; // Speed of movement when walking
     [SerializeField] private float jumpForce = 5f; // Force of the jump
@@ -17,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int playerLayer;
 
     private VampireTCP networkManager;
+    private MultiplayerManager multiplayerManager;
 
     // Components
     private Rigidbody rb;
@@ -32,8 +32,11 @@ public class PlayerController : MonoBehaviour
         try
         {
             networkManager = UnityEngine.Object.FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
+            multiplayerManager = UnityEngine.Object.FindObjectsByType<MultiplayerManager>(FindObjectsSortMode.None)[0];
         }
-        catch {}
+        catch {
+            Debug.LogError("Unable to get network manager, ignoring for now");
+        }
 
         // Get components
         cam = GetComponentInChildren<Camera>();
@@ -66,10 +69,12 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Apply a force up to make the player jump
         }
-
-        if(Input.GetKeyDown(KeyCode.B) && multiplayerManager.numPlayers >= 2)
+        if (Input.GetKeyDown(KeyCode.B) && multiplayerManager.numPlayers >= 2 && !multiplayerManager.beginningGame)
         {
-            multiplayerManager.StartGame();
+            networkManager.BroadcastNewMessage("beginGame", new { t = new Vector3(transform.position.x, transform.position.y, transform.position.z).ToString() });
+            multiplayerManager.beginningGame = true;
+            Debug.Log("Starting");
+            SceneManager.LoadScene("Lobby");
         }
 
         // Look
