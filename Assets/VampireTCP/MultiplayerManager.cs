@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PositionData
 {
@@ -14,6 +15,8 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField] private VampireTCP networkManager;
 
     public GameObject newPlayerInstance;
+
+    private int numPlayers = 1;
 
     public void HostGame()
     {
@@ -55,14 +58,36 @@ public class MultiplayerManager : MonoBehaviour
         {
             if (wrapper.msg.message == "updatePlayerPosition")
             {
+                GameObject otherPlayer = GameObject.Find("Player" + wrapper.msg.from);
                 PositionData posData = JsonConvert.DeserializeObject<PositionData>(wrapper.msg.value.ToString());
-
-                GameObject.Find("Player" + wrapper.msg.from).transform.position = StringToVector3(posData.t);
+                Vector3 targetPosition = StringToVector3(posData.t);
+                StartCoroutine(LerpPosition(otherPlayer.transform, targetPosition, 0.1f));
             }
         } else
         {
             GameObject newPlayer = Instantiate(newPlayerInstance);
             newPlayer.name = "Player" + wrapper.msg.from;
+            numPlayers++;
+            if(numPlayers >= 3)
+            {
+                // E
+            }
         }
     }
+
+    IEnumerator LerpPosition(Transform playerTransform, Vector3 targetPosition, float duration)
+    {
+        float elapsedTime = 0f;
+        Vector3 startPosition = playerTransform.position;
+
+        while (elapsedTime < duration)
+        {
+            playerTransform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        playerTransform.position = targetPosition;
+    }
+
 }
