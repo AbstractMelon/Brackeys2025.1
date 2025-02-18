@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
             networkManager.BroadcastNewMessage("beginGame", new { t = new Vector3(transform.position.x, transform.position.y, transform.position.z).ToString() });
             multiplayerManager.beginningGame = true;
             Debug.Log("Starting");
-            SceneManager.LoadScene("Lobby");
+            SceneManager.LoadScene("Map1");
         }
 
         // Look
