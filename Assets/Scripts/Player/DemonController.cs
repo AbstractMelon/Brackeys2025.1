@@ -11,10 +11,12 @@ public class DemonController : MonoBehaviour
     [SerializeField] private float jumpForce = 7f; // Force of the jump
     [SerializeField] private float maxSpeed = 15f; // Maximum speed when walking
     [SerializeField] private float maxSpeedSprint = 25f; // Maximum speed when sprinting
-    [SerializeField] public float mouseSensitivity = 100f; // Speed of the mouse
+    [SerializeField] public float mouseSensitivity = 3f; // Speed of the mouse
     [SerializeField] private float attackPlayerDistance = 5f;
-    [SerializeField] private int playerLayer;
-    [SerializeField] private int attackPower;
+    [SerializeField] private int playerLayer = 6;
+    [SerializeField] private int attackPower = 20;
+    [SerializeField] private float shrinkSpeed = 0.01f;
+    [SerializeField] private float endOnceReachedSize = 1f;
 
     private VampireTCP networkManager;
 
@@ -42,6 +44,16 @@ public class DemonController : MonoBehaviour
 
     void Update()
     {
+        if (transform.localScale.x <= endOnceReachedSize)
+        {
+            return;
+        }
+        transform.localScale -= new Vector3(shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime);
+        if (transform.localScale.x <= endOnceReachedSize)
+        {
+            Die();
+            return;
+        }
         // Sprinting
         bool isSprinting = Input.GetKey(KeyCode.LeftShift); // Check if the left shift key is pressed
 
@@ -76,6 +88,11 @@ public class DemonController : MonoBehaviour
             Attack();
 
         HighlightPlayer();
+    }
+    public void Die()
+    {
+        Debug.Log("Demon has died!");
+        Destroy(gameObject);
     }
     private bool Attack()
     {
