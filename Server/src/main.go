@@ -260,7 +260,7 @@ func main() {
 		nextClientID: 1,
 	}
 
-	listener, err := net.Listen("tcp", "127.0.0.1:8888")
+	listener, err := net.Listen("tcp", "0.0.0.0:8888")
 	if err != nil {
 		log.Fatal(err)
 	}

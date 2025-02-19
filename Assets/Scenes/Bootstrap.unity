@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ad1afde39dada4cb621bf344395755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverAddress: 127.0.0.1
+  serverAddress: hiwth-server.abstractmelon.net/
   serverPort: 8888
   onRecieveNewMessage:
     m_PersistentCalls:
