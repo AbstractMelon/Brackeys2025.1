@@ -10,6 +10,7 @@ public class PositionData
 {
     public string t { get; set; }
     public string r { get; set; }
+    public string s { get; set; }
 }
 
 public class MultiplayerManager : MonoBehaviour
@@ -127,7 +128,8 @@ public class MultiplayerManager : MonoBehaviour
                 PositionData posData = JsonConvert.DeserializeObject<PositionData>(newMessage.msg.value.ToString());
                 Vector3 targetPosition = StringToVector3(posData.t);
                 Vector3 targetRotation = StringToVector3(posData.r);
-                StartCoroutine(LerpPosition(otherPlayer.transform, targetPosition, targetRotation, 0.1f));
+                Vector3 targetScale = StringToVector3(posData.s);
+                StartCoroutine(LerpPosition(otherPlayer.transform, targetPosition, targetRotation, targetScale, 0.1f));
             } else if (newMessage.msg.message == "startGame" && !startable)
             {
                 startable = true;
@@ -140,16 +142,18 @@ public class MultiplayerManager : MonoBehaviour
         }
     }
 
-    IEnumerator LerpPosition(Transform playerTransform, Vector3 targetPosition, Vector3 targetRotation, float duration)
+    IEnumerator LerpPosition(Transform playerTransform, Vector3 targetPosition, Vector3 targetRotation, Vector3 targetScale, float duration)
     {
         float elapsedTime = 0f;
         Vector3 startPosition = playerTransform.position;
         Vector3 startRotation = playerTransform.rotation.eulerAngles;
+        Vector3 startScale = playerTransform.localScale;
 
         while (elapsedTime < duration)
         {
             playerTransform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
             playerTransform.eulerAngles = Vector3.Lerp(startRotation, targetRotation, elapsedTime / duration);
+            playerTransform.localScale = Vector3.Lerp(startScale, targetScale, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
