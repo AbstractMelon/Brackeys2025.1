@@ -23,7 +23,7 @@ public class MultiplayerManager : MonoBehaviour
     public MultiplayerUIManager multiplayerUIManager;
     private bool startable = false;
 
-    private static MultiplayerManager instance;
+    public static MultiplayerManager instance;
 
     private void Awake()
     {
@@ -43,18 +43,27 @@ public class MultiplayerManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    public void StartGame()
+    {
+        if (numPlayers >= 2)
+        {
+            networkManager.BroadcastNewMessage("startGame", new { });
+            startable = true;
+            SceneManager.LoadScene("Map1");
+            return;
+        }
+        Debug.Log("Unable to start game, not enough players");
+    }
     private void Update()
     {
         numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
         if (multiplayerUIManager)
         {
-            if(numPlayers >= 2 && Input.GetKeyDown(KeyCode.B))
+            if(Input.GetKeyDown(KeyCode.B))
             {
-                networkManager.BroadcastNewMessage("startGame", new { });
-                startable = true;
-                SceneManager.LoadScene("Map1");
+                StartGame();
             }
-            multiplayerUIManager.DisplayGoTime(numPlayers >= 2);
+            //multiplayerUIManager.DisplayGoTime(numPlayers >= 2);
             multiplayerUIManager.SetPlayerCount(numPlayers);
         }
     }

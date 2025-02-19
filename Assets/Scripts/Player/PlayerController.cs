@@ -76,7 +76,14 @@ public class PlayerController : MonoBehaviour
 
         // Inventory
         if (Input.GetKeyDown(KeyCode.Mouse0))
-            inventory.UseHeldItem();
+        {
+            Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+            Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
+            if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == 11)
+            {
+                MultiplayerManager.instance.StartGame();
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.E))
             CheckForItem();
