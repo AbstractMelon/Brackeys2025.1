@@ -178,6 +178,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkManager: {fileID: 5851693431008938849}
   newPlayerInstance: {fileID: 3917788537246358859, guid: 3ee83d789070aa94eaae230699b0066c, type: 3}
+  numPlayers: 0
+  multiplayerUIManager: {fileID: 0}
 --- !u!4 &1568758382272390149
 Transform:
   m_ObjectHideFlags: 0
@@ -223,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82ad1afde39dada4cb621bf344395755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverAddress: 127.0.0.1
+  serverAddress: 192.168.1.32
   serverPort: 8888
   onRecieveNewMessage:
     m_PersistentCalls:
