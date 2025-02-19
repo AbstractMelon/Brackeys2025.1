@@ -1074,6 +1074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GoTime: {fileID: 148728463}
+  lobbyManager: {fileID: 2091872088}
 --- !u!1 &1382815483
 GameObject:
   m_ObjectHideFlags: 0

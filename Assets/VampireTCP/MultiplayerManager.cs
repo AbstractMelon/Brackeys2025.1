@@ -9,6 +9,7 @@ using System;
 public class PositionData
 {
     public string t { get; set; }
+    public string r { get; set; }
 }
 
 public class MultiplayerManager : MonoBehaviour
@@ -54,6 +55,7 @@ public class MultiplayerManager : MonoBehaviour
                 SceneManager.LoadScene("Map1");
             }
             multiplayerUIManager.DisplayGoTime(numPlayers >= 2);
+            multiplayerUIManager.SetPlayerCount(numPlayers);
         }
     }
 
@@ -115,7 +117,8 @@ public class MultiplayerManager : MonoBehaviour
                 GameObject otherPlayer = GameObject.Find("Player" + newMessage.msg.from);
                 PositionData posData = JsonConvert.DeserializeObject<PositionData>(newMessage.msg.value.ToString());
                 Vector3 targetPosition = StringToVector3(posData.t);
-                StartCoroutine(LerpPosition(otherPlayer.transform, targetPosition, 0.1f));
+                Vector3 targetRotation = StringToVector3(posData.r);
+                StartCoroutine(LerpPosition(otherPlayer.transform, targetPosition, targetRotation, 0.1f));
             } else if (newMessage.msg.message == "startGame" && !startable)
             {
                 startable = true;
@@ -128,19 +131,22 @@ public class MultiplayerManager : MonoBehaviour
         }
     }
 
-    IEnumerator LerpPosition(Transform playerTransform, Vector3 targetPosition, float duration)
+    IEnumerator LerpPosition(Transform playerTransform, Vector3 targetPosition, Vector3 targetRotation, float duration)
     {
         float elapsedTime = 0f;
         Vector3 startPosition = playerTransform.position;
+        Vector3 startRotation = playerTransform.rotation.eulerAngles;
 
         while (elapsedTime < duration)
         {
             playerTransform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            playerTransform.eulerAngles = Vector3.Lerp(startRotation, targetRotation, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         playerTransform.position = targetPosition;
+        playerTransform.eulerAngles = targetRotation;
     }
 
 }
