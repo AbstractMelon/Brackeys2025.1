@@ -29,11 +29,14 @@ public class MultiplayerManager : MonoBehaviour
 
     private void Update()
     {
+        numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
         if (multiplayerUIManager)
         {
             if(numPlayers >= 2 && Input.GetKeyDown(KeyCode.B))
             {
                 networkManager.BroadcastNewMessage("startGame", new { });
+                startable = true;
+                SceneManager.LoadScene("Map1");
             }
             multiplayerUIManager.DisplayGoTime(numPlayers >= 2);
         }
