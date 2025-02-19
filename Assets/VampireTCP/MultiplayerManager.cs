@@ -60,6 +60,9 @@ public class MultiplayerManager : MonoBehaviour
         {
             multiplayerUIManager = FindObjectsByType<MultiplayerUIManager>(FindObjectsSortMode.None)[0];
             startable = false;
+        } else if (scene.name == "MainMenu")
+        {
+            networkManager.Reconnect();
         }
     }
 

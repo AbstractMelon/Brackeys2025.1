@@ -85,6 +85,33 @@ public class VampireTCP : MonoBehaviour
         }
     }
 
+    public async void Reconnect()
+    {
+        Debug.Log("Reconnecting to server...");
+
+        if (client != null)
+        {
+            try
+            {
+                if (client.Connected)
+                {
+                    client.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Error while disconnecting: " + ex.Message);
+            }
+            finally
+            {
+                client = null;
+                stream = null;
+            }
+        }
+
+        await ConnectToServer();
+    }
+
     async void StartReceiving()
     {
         byte[] buffer = new byte[1024];
