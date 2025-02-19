@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class PositionData
 {
@@ -15,11 +16,31 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField] private VampireTCP networkManager;
 
     public GameObject newPlayerInstance;
-    private GameObject startText;
 
-    public int numPlayers = 1;
+    public int numPlayers;
 
-    public bool beginningGame = false;
+    public MultiplayerUIManager multiplayerUIManager;
+    private bool startable = false;
+
+    private void Start()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Update()
+    {
+        numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
+        if (multiplayerUIManager)
+        {
+            if(numPlayers >= 2 && Input.GetKeyDown(KeyCode.B))
+            {
+                networkManager.BroadcastNewMessage("startGame", new { });
+                startable = true;
+                SceneManager.LoadScene("Map1");
+            }
+            multiplayerUIManager.DisplayGoTime(numPlayers >= 2);
+        }
+    }
 
     public void HostGame()
     {
@@ -31,6 +52,15 @@ public class MultiplayerManager : MonoBehaviour
     {
         networkManager.JoinRoom(code);
         SceneManager.LoadScene("Lobby");
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Lobby")
+        {
+            multiplayerUIManager = FindObjectsByType<MultiplayerUIManager>(FindObjectsSortMode.None)[0];
+            startable = false;
+        }
     }
 
     public void ExitGame()
@@ -55,32 +85,28 @@ public class MultiplayerManager : MonoBehaviour
         return Vector3.zero;
     }
 
-    public void OnRecieveNewMessage(MessageWrapper wrapper)
+    public void OnRecieveNewMessage(MessageWrapper newMessage)
     {
-        if(GameObject.Find("Player" +wrapper.msg.from))
+        if(newMessage.err.message != null)
         {
-            if (wrapper.msg.message == "updatePlayerPosition")
+            Debug.LogError(newMessage.err.message);
+        } else if(GameObject.Find("Player" + newMessage.msg.from))
+        {
+            if (newMessage.msg.message == "updatePlayerPosition")
             {
-                GameObject otherPlayer = GameObject.Find("Player" + wrapper.msg.from);
-                PositionData posData = JsonConvert.DeserializeObject<PositionData>(wrapper.msg.value.ToString());
+                GameObject otherPlayer = GameObject.Find("Player" + newMessage.msg.from);
+                PositionData posData = JsonConvert.DeserializeObject<PositionData>(newMessage.msg.value.ToString());
                 Vector3 targetPosition = StringToVector3(posData.t);
                 StartCoroutine(LerpPosition(otherPlayer.transform, targetPosition, 0.1f));
-            } else if (wrapper.msg.message == "beginGame" && !beginningGame)
+            } else if (newMessage.msg.message == "startGame" && !startable)
             {
-                Debug.Log("Im a problem");
-                beginningGame = true;
-                SceneManager.LoadScene("Lobby");
+                startable = true;
+                SceneManager.LoadScene("Map1");
             }
         } else
         {
             GameObject newPlayer = Instantiate(newPlayerInstance);
-            newPlayer.name = "Player" + wrapper.msg.from;
-            numPlayers++;
-            LobbyManager.instance.UpdatePlayerCount(numPlayers);
-            if(numPlayers >= 2)
-            {
-                GameObject.Find("GoTime Text").SetActive(true);
-            }
+            newPlayer.name = "Player" + newMessage.msg.from;
         }
     }
 

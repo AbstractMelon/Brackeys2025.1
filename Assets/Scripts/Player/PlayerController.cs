@@ -70,13 +70,6 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Apply a force up to make the player jump
         }
-        if (Input.GetKeyDown(KeyCode.B) && multiplayerManager.numPlayers >= 2 && !multiplayerManager.beginningGame)
-        {
-            networkManager.BroadcastNewMessage("beginGame", new { t = new Vector3(transform.position.x, transform.position.y, transform.position.z).ToString() });
-            multiplayerManager.beginningGame = true;
-            Debug.Log("Starting");
-            SceneManager.LoadScene("Map1");
-        }
 
         // Look
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the player based on the mouse input

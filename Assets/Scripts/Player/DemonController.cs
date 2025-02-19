@@ -75,11 +75,6 @@ public class DemonController : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Apply a force up to make the player jump
         }
 
-        if(Input.GetKeyDown(KeyCode.B) && multiplayerManager.numPlayers >= 2)
-        {
-            //multiplayerManager.StartGame();
-        }
-
         // Look
         transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the demon based on the mouse input
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using Newtonsoft.Json;
+using UnityEngine.Windows;
 
 [System.Serializable]
 public class MessageEvent : UnityEvent<MessageWrapper> { }
@@ -15,7 +16,7 @@ public class MessageWrapper
     public BroadcastMessage msg;
     public ErrorMessage err;
 
-    public MessageWrapper(BroadcastMessage msg, ErrorMessage err = null)
+    public MessageWrapper(BroadcastMessage msg, ErrorMessage err)
     {
         this.msg = msg;
         this.err = err;
@@ -101,12 +102,22 @@ public class VampireTCP : MonoBehaviour
                 string[] messages = message.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string msg in messages)
                 {
-                    ProcessMessage(msg);
+                    if ((msg.StartsWith("{") && msg.EndsWith("}")))
+                    {
+                        ProcessMessage(msg);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError("Receive error: " + ex.Message);
+                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                if (bytesRead == 0)
+                {
+                    Debug.Log("Disconnected from server.");
+                    break;
+                }
+                string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                Debug.LogError("Receive error: " + ex.Message + " | Recieved: "+ message);
             }
         }
     }
@@ -133,12 +144,12 @@ public class VampireTCP : MonoBehaviour
                 break;
             case "broadcast":
                 BroadcastMessage broadcast = JsonConvert.DeserializeObject<BroadcastMessage>(jsonMessage);
-                OnRecieveNewMessage(broadcast, null);
+                OnRecieveNewMessage(broadcast, new ErrorMessage());
                 //Debug.Log("Broadcast from client " + broadcast.from + ": " + broadcast.message + " - Value: " + broadcast.value);
                 break;
             case "error":
                 ErrorMessage errorMsg = JsonConvert.DeserializeObject<ErrorMessage>(jsonMessage);
-                OnRecieveNewMessage(null, errorMsg);
+                OnRecieveNewMessage(new BroadcastMessage(), errorMsg);
                 Debug.LogError("Error: " + errorMsg.message);
                 break;
             default:
@@ -147,7 +158,7 @@ public class VampireTCP : MonoBehaviour
         }
     }
 
-    public void OnRecieveNewMessage(BroadcastMessage msg, ErrorMessage err = null)
+    public void OnRecieveNewMessage(BroadcastMessage msg, ErrorMessage err)
     {
         onRecieveNewMessage?.Invoke(new MessageWrapper(msg, err));
     }
