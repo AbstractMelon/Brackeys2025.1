@@ -20,7 +20,7 @@ public class LobbyManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        UpdatePlayerCount(0);
+        UpdatePlayerCount(1);
         UpdateRoomCode(string.Empty);
     }
 
