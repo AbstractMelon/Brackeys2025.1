@@ -22,6 +22,20 @@ public class MultiplayerManager : MonoBehaviour
     public MultiplayerUIManager multiplayerUIManager;
     private bool startable = false;
 
+    private static MultiplayerManager instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
