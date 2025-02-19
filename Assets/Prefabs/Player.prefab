@@ -204,11 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52df6989cacecc74bbd020a06c1cec22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items: []
-  heldSlot: 0
-  totalSlots: 5
   inventoryItemPrefab: {fileID: 8733228637436930016, guid: a2531b6728b8ca84ba1fd261dc51a265, type: 3}
-  selectedItemScale: 1
   itemSprite: {fileID: 21300000, guid: 15a82c892ca5ea47681f7969bfda4f54, type: 3}
   itemSelectedSprite: {fileID: 21300000, guid: be309f43dc776248e8f8b2175d938e6c, type: 3}
   emptySprite: {fileID: 21300000, guid: b92dc7c7e223aa845ab66345e6aeebee, type: 3}
@@ -327,7 +323,7 @@ GameObject:
   - component: {fileID: 4405345808299831212}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -486,6 +482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 0
 --- !u!1 &3965034497223411061
 GameObject:
   m_ObjectHideFlags: 0
