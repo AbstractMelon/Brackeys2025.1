@@ -62,6 +62,7 @@ func handleClient(conn net.Conn, state *ServerState) {
 					}
 				}
 				if len(state.rooms[roomCode]) == 0 {
+					log.Printf("Room %s deleted", roomCode)
 					delete(state.rooms, roomCode)
 				}
 			}
@@ -76,17 +77,20 @@ func handleClient(conn net.Conn, state *ServerState) {
 	for {
 		data, err := reader.ReadString('\n')
 		if err != nil {
+			log.Printf("Client %d read error: %v", clientID, err)
 			break
 		}
 		data = data[:len(data)-1]
 
 		var msg map[string]interface{}
 		if err := json.Unmarshal([]byte(data), &msg); err != nil {
+			log.Printf("Client %d JSON unmarshal error: %v", clientID, err)
 			continue
 		}
 
 		action, ok := msg["action"].(string)
 		if !ok {
+			log.Printf("Client %d sent invalid action", clientID)
 			continue
 		}
 
@@ -127,6 +131,7 @@ func handleClient(conn net.Conn, state *ServerState) {
 			} else {
 				state.mu.Unlock()
 				sendError(conn, "Room not found")
+				log.Printf("Client %d attempted to join non-existent room %s", clientID, roomCode)
 			}
 
 		case "listRooms":
@@ -156,6 +161,7 @@ func handleClient(conn net.Conn, state *ServerState) {
 
 			if !inRoom {
 				sendError(conn, "Not in a room")
+				log.Printf("Client %d attempted to broadcast without being in a room", clientID)
 				continue
 			}
 
@@ -174,9 +180,11 @@ func handleClient(conn net.Conn, state *ServerState) {
 					sendResponse(client, broadcastMsg)
 				}
 			}
+			// log.Printf("Client %d broadcasted message in room %s", clientID, roomCode)
 
 		default:
 			sendError(conn, "Unknown action")
+			log.Printf("Client %d sent unknown action: %s", clientID, action)
 		}
 	}
 }
@@ -184,10 +192,12 @@ func handleClient(conn net.Conn, state *ServerState) {
 func sendResponse(conn net.Conn, response map[string]interface{}) {
 	jsonData, err := json.Marshal(response)
 	if err != nil {
+		log.Printf("Error marshaling response: %v", err)
 		return
 	}
 	jsonData = append(jsonData, '\n')
 	conn.Write(jsonData)
+	log.Printf("Sent response: %v", response)
 }
 
 func sendError(conn net.Conn, message string) {
@@ -195,6 +205,7 @@ func sendError(conn net.Conn, message string) {
 		"action":  "error",
 		"message": message,
 	})
+	log.Printf("Sent error: %s", message)
 }
 
 func dumpState(state *ServerState) {
@@ -210,6 +221,7 @@ func dumpState(state *ServerState) {
 	for roomCode, conns := range state.rooms {
 		fmt.Printf("%s - %d players\n", roomCode, len(conns))
 	}
+	log.Println("State dumped")
 }
 
 func usage(state *ServerState) {
@@ -220,6 +232,7 @@ func usage(state *ServerState) {
 		formatNumber(len(state.rooms)), 
 		formatBytes(mem.Alloc), 
 		formatBytes(mem.Sys))
+	log.Println("Usage stats displayed")
 }
 
 func formatNumber(n int) string {
@@ -247,13 +260,6 @@ func main() {
 		nextClientID: 1,
 	}
 
-	// go func() {
-	// 	ticker := time.NewTicker(time.Second * 3).C
-	// 	for range ticker {
-	// 		usage(state)
-	// 	}
-	// }()
-
 	listener, err := net.Listen("tcp", "127.0.0.1:8888")
 	if err != nil {
 		log.Fatal(err)
@@ -275,11 +281,13 @@ func main() {
 				fmt.Println("stop - stop the server")
 				fmt.Println("usage - show the usage of the server")
 			case "stop":
+				log.Println("Server stopping...")
 				os.Exit(0)
 			case "usage":
 				usage(state)
 			default:
 				fmt.Println("Unknown command")
+				log.Printf("Unknown command: %s", command)
 			}
 		}
 	}()
