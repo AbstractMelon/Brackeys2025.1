@@ -6,9 +6,9 @@ import (
 	"log"
 	"net"
 
-	"vampriretcp/config"
-	"vampriretcp/models"
-	"vampriretcp/utils"
+	"vampiretcp/config"
+	"vampiretcp/models"
+	"vampiretcp/utils"
 )
 
 type ClientHandler struct {

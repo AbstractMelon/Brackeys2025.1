@@ -6,7 +6,7 @@ import (
 	"net"
 	"time"
 
-	"vampriretcp/models"
+	"vampiretcp/models"
 )
 
 type HeartbeatMonitor struct {
