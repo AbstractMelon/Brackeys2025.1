@@ -16,10 +16,16 @@ import (
 
 type ServerState struct {
 	mu           sync.Mutex
-	rooms        map[string][]net.Conn
+	rooms        map[string]*Lobby
 	clientRooms  map[net.Conn]string
 	clientIDs    map[net.Conn]int
 	nextClientID int
+}
+
+type Lobby struct {
+	code    string
+	clients []net.Conn
+	seed    string
 }
 
 const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -29,6 +35,14 @@ func init() {
 }
 
 func generateRoomCode(length int) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
+}
+
+func generateSeedCode(length int) string {
 	b := make([]byte, length)
 	for i := range b {
 		b[i] = charset[rand.Intn(len(charset))]
@@ -54,14 +68,14 @@ func handleClient(conn net.Conn, state *ServerState) {
 		delete(state.clientIDs, conn)
 
 		if roomCode, ok := state.clientRooms[conn]; ok {
-			if conns, ok := state.rooms[roomCode]; ok {
-				for i, c := range conns {
+			if lobby, ok := state.rooms[roomCode]; ok {
+				for i, c := range lobby.clients {
 					if c == conn {
-						state.rooms[roomCode] = append(conns[:i], conns[i+1:]...)
+						lobby.clients = append(lobby.clients[:i], lobby.clients[i+1:]...)
 						break
 					}
 				}
-				if len(state.rooms[roomCode]) == 0 {
+				if len(lobby.clients) == 0 {
 					log.Printf("Room %s deleted", roomCode)
 					delete(state.rooms, roomCode)
 				}
@@ -98,16 +112,21 @@ func handleClient(conn net.Conn, state *ServerState) {
 		case "createRoom":
 			roomCode := generateRoomCode(6)
 			state.mu.Lock()
-			state.rooms[roomCode] = append(state.rooms[roomCode], conn)
+			state.rooms[roomCode] = &Lobby{
+				code:    roomCode,
+				clients: []net.Conn{conn},
+				seed:    generateSeedCode(8),
+			}
 			state.clientRooms[conn] = roomCode
 			state.mu.Unlock()
 
 			response := map[string]interface{}{
 				"action":    "roomCreated",
 				"room_code": roomCode,
+				"seed":      state.rooms[roomCode].seed,
 			}
 			sendResponse(conn, response)
-			log.Printf("Client %d created room %s", clientID, roomCode)
+			log.Printf("Client %d created room %s with seed %s", clientID, roomCode, state.rooms[roomCode].seed)
 
 		case "joinRoom":
 			roomCode, ok := msg["room_code"].(string)
@@ -117,17 +136,18 @@ func handleClient(conn net.Conn, state *ServerState) {
 			}
 
 			state.mu.Lock()
-			if conns, ok := state.rooms[roomCode]; ok {
-				state.rooms[roomCode] = append(conns, conn)
+			if lobby, ok := state.rooms[roomCode]; ok {
+				lobby.clients = append(lobby.clients, conn)
 				state.clientRooms[conn] = roomCode
 				state.mu.Unlock()
 
 				response := map[string]interface{}{
 					"action":    "joinedRoom",
 					"room_code": roomCode,
+					"seed":      lobby.seed,
 				}
 				sendResponse(conn, response)
-				log.Printf("Client %d joined room %s", clientID, roomCode)
+				log.Printf("Client %d joined room %s with seed %s", clientID, roomCode, lobby.seed)
 			} else {
 				state.mu.Unlock()
 				sendError(conn, "Room not found")
@@ -154,8 +174,8 @@ func handleClient(conn net.Conn, state *ServerState) {
 			roomCode, inRoom := state.clientRooms[conn]
 			var clients []net.Conn
 			if inRoom {
-				clients = make([]net.Conn, len(state.rooms[roomCode]))
-				copy(clients, state.rooms[roomCode])
+				clients = make([]net.Conn, len(state.rooms[roomCode].clients))
+				copy(clients, state.rooms[roomCode].clients)
 			}
 			state.mu.Unlock()
 
@@ -181,6 +201,33 @@ func handleClient(conn net.Conn, state *ServerState) {
 				}
 			}
 			// log.Printf("Client %d broadcasted message in room %s", clientID, roomCode)
+
+		case "refreshSeed":
+			roomCode, ok := msg["room_code"].(string)
+			if !ok {
+				sendError(conn, "Invalid room code")
+				continue
+			}
+
+			state.mu.Lock()
+			if lobby, ok := state.rooms[roomCode]; ok {
+				lobby.seed = generateSeedCode(8)
+				state.mu.Unlock()
+
+				response := map[string]interface{}{
+					"action":    "seedRefreshed",
+					"room_code": roomCode,
+					"seed":      lobby.seed,
+				}
+				for _, client := range lobby.clients {
+					sendResponse(client, response)
+				}
+				log.Printf("Client %d refreshed seed for room %s", clientID, roomCode)
+			} else {
+				state.mu.Unlock()
+				sendError(conn, "Room not found")
+				log.Printf("Client %d attempted to refresh seed for non-existent room %s", clientID, roomCode)
+			}
 
 		default:
 			sendError(conn, "Unknown action")
@@ -218,8 +265,8 @@ func dumpState(state *ServerState) {
 	}
 
 	fmt.Println("Created rooms:")
-	for roomCode, conns := range state.rooms {
-		fmt.Printf("%s - %d players\n", roomCode, len(conns))
+	for roomCode, lobby := range state.rooms {
+		fmt.Printf("%s - %d players, seed: %s\n", roomCode, len(lobby.clients), lobby.seed)
 	}
 	log.Println("State dumped")
 }
@@ -254,7 +301,7 @@ func formatBytes(b uint64) string {
 
 func main() {
 	state := &ServerState{
-		rooms:        make(map[string][]net.Conn),
+		rooms:        make(map[string]*Lobby),
 		clientRooms:  make(map[net.Conn]string),
 		clientIDs:    make(map[net.Conn]int),
 		nextClientID: 1,
@@ -301,4 +348,6 @@ func main() {
 		go handleClient(conn, state)
 	}
 }
+
+
 

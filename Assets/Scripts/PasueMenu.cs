@@ -29,7 +29,6 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
         isPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -37,7 +36,6 @@ public class PauseMenu : MonoBehaviour
     void Pause()
     {
         pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
         isPaused = true;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -49,7 +47,6 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }
 }
