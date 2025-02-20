@@ -38,6 +38,11 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
         if (waitingForRooms)
         {
             string[] rooms = message.msg.msg;
+            if (rooms == null) 
+            {
+                waitingForRooms = false;
+                return;
+            }
             List<string> publicRooms = new List<string>();
             for (int i = 0; i < rooms.Length; i++)
             {
