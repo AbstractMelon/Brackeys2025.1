@@ -24,6 +24,10 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
     {
         multiplayerManager.JoinGame(roomCodeInput.text);
     }
+    public void JoinRandomGame()
+    {
+        //multiplayerManager.JoinGame();
+    }
     public void TogglePublic()
     {
         publicRoom = !publicRoom;

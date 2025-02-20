@@ -120,6 +120,9 @@ public class PlayerController : MonoBehaviour
     {
         // Raycast to check if the player is on the ground
         return Physics.Raycast(transform.position, Vector3.down, 1.1f); // Check if there is a collision within 1.1f units down from the player
+
+        //return Physics.SphereCast(new Ray(transform.position, Vector3.down), 0.5f, 1);
+        
     }
     public bool CheckForItem()
     {
