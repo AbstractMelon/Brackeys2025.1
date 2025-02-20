@@ -11,6 +11,9 @@ using UnityEngine.Windows;
 public class MessageEvent : UnityEvent<MessageWrapper> { }
 
 [System.Serializable]
+public class GenericMessageEvent : UnityEvent<GenericMessageWrapper> { }
+
+[System.Serializable]
 public class MessageWrapper
 {
     public BroadcastMessage msg;
@@ -20,6 +23,30 @@ public class MessageWrapper
     {
         this.msg = msg;
         this.err = err;
+    }
+}
+
+[System.Serializable]
+public class GenericMessageWrapper
+{
+    public GenericMessage msg;
+    public ErrorMessage err;
+
+    public GenericMessageWrapper(GenericMessage msg, ErrorMessage err)
+    {
+        this.msg = msg;
+        this.err = err;
+    }
+}
+
+
+public class GenericMessage
+{
+    public string[] msg { get; set; }
+
+    public GenericMessage(string[] msg)
+    {
+        this.msg = msg;
     }
 }
 
@@ -63,6 +90,8 @@ public class VampireTCP : MonoBehaviour
     private NetworkStream stream;
 
     public MessageEvent onRecieveNewMessage;
+
+    public GenericMessageEvent onRecieveNewBaseMessage;
 
     async void Start()
     {
@@ -167,6 +196,7 @@ public class VampireTCP : MonoBehaviour
                 break;
             case "roomsList":
                 RoomsListMessage roomsList = JsonConvert.DeserializeObject<RoomsListMessage>(jsonMessage);
+                onRecieveNewBaseMessage?.Invoke(new GenericMessageWrapper(new GenericMessage(roomsList.rooms), new ErrorMessage()));
                 Debug.Log("Available rooms: " + string.Join(", ", roomsList.rooms));
                 break;
             case "broadcast":
@@ -196,6 +226,18 @@ public class VampireTCP : MonoBehaviour
         {
             action = "createRoom",
             publicRoom = isPublic
+        };
+        SendNewMessage(JsonConvert.SerializeObject(msg));
+    }
+
+
+
+    public void refreshToken(string roomCode)
+    {
+        var msg = new
+        {
+            action = "createRoom",
+            room_code = roomCode
         };
         SendNewMessage(JsonConvert.SerializeObject(msg));
     }
