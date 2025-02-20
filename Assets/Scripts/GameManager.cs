@@ -3,15 +3,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<PlayerController> players; // List of players in the game
-    private PlayerController demon; // The player who is the demon
-    private int alivePlayers; // Count of players still alive
+    private MultiplayerManager multiplayerManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        AssignRandomDemon();
-        alivePlayers = players.Count;
+        multiplayerManager = FindObjectsByType<MultiplayerManager>(FindObjectsSortMode.None)[0];
     }
 
     // Update is called once per frame
@@ -20,26 +17,10 @@ public class GameManager : MonoBehaviour
         CheckGameOver();
     }
 
-    // Assign a random player as the demon
-    void AssignRandomDemon()
-    {
-        int randomIndex = Random.Range(0, players.Count);
-        demon = players[randomIndex];
-    }
-
     // Check if the game is over
     void CheckGameOver()
     {
-        alivePlayers = 0;
-        foreach (var player in players)
-        {
-            if (!player.IsDead())
-            {
-                alivePlayers++;
-            }
-        }
-
-        if (alivePlayers <= 1)
+        if (multiplayerManager.numPlayers <= 0)
         {
             EndGame();
         }
@@ -48,7 +29,7 @@ public class GameManager : MonoBehaviour
     // Ends the game and declares the winner
     void EndGame()
     {
-        string winner = (alivePlayers == 1) ? "Survivors" : "Demon";
+        string winner = (multiplayerManager.numPlayers >= 1) ? "Survivors" : "Demon";
         Debug.Log($"{winner} wins!");
     }
 }
