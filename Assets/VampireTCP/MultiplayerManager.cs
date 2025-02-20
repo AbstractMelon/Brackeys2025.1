@@ -64,7 +64,6 @@ public class MultiplayerManager : MonoBehaviour
             {
                 StartGame();
             }
-            //multiplayerUIManager.DisplayGoTime(numPlayers >= 2);
             multiplayerUIManager.SetPlayerCount(numPlayers);
         }
     }
