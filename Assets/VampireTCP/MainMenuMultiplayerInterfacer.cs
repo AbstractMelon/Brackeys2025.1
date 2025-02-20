@@ -26,7 +26,7 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
 
     public void JoinGame()
     {
-        multiplayerManager.JoinGame(roomCodeInput.text);
+        multiplayerManager.JoinGame(roomCodeInput.text.ToUpper());
     }
     public void JoinRandomGame()
     {
@@ -55,7 +55,6 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
     }
     public void TogglePublic()
     {
-        Debug.Log(!publicRoom);
         publicRoom = !publicRoom;
     }
     public void OnCodeInputChange()
