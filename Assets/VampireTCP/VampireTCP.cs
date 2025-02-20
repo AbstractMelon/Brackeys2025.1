@@ -67,7 +67,7 @@ public class JoinedRoomMessage : BaseMessage
 
 public class RoomsListMessage : BaseMessage
 {
-    public string[] rooms { get; set; }
+    public string[] value { get; set; }
 }
 
 public class BroadcastMessage : BaseMessage
@@ -196,8 +196,8 @@ public class VampireTCP : MonoBehaviour
                 break;
             case "roomsList":
                 RoomsListMessage roomsList = JsonConvert.DeserializeObject<RoomsListMessage>(jsonMessage);
-                onRecieveNewBaseMessage?.Invoke(new GenericMessageWrapper(new GenericMessage(roomsList.rooms), new ErrorMessage()));
-                Debug.Log("Available rooms: " + string.Join(", ", roomsList.rooms));
+                onRecieveNewBaseMessage?.Invoke(new GenericMessageWrapper(new GenericMessage(roomsList.value), new ErrorMessage()));
+                Debug.Log("Available rooms: " + string.Join(", ", roomsList.value));
                 break;
             case "broadcast":
                 BroadcastMessage broadcast = JsonConvert.DeserializeObject<BroadcastMessage>(jsonMessage);

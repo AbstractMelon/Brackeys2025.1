@@ -68,10 +68,17 @@ public class MultiplayerManager : MonoBehaviour
             multiplayerUIManager.SetPlayerCount(numPlayers);
         }
     }
-
-    public void HostGame()
+    public void GetMessage(GenericMessageWrapper message)
     {
-        networkManager.CreateRoom(true);
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            FindObjectsByType<MainMenuMultiplayerInterfacer>(FindObjectsSortMode.None)[0].GetMessageForRooms(message);
+        }
+    }
+
+    public void HostGame(bool isPublic)
+    {
+        networkManager.CreateRoom(isPublic);
         SceneManager.LoadScene("Lobby");
     }
 

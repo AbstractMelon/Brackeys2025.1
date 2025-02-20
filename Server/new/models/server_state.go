@@ -25,6 +25,7 @@ func NewServerState() *ServerState {
 type Message struct {
     Action    string      `json:"action"`
     RoomCode  string      `json:"room_code,omitempty"`
+    IsPublic  bool        `json:"publicRoom,omitempty"`
     Message   string      `json:"message,omitempty"`
     Value     interface{} `json:"value,omitempty"`
     From      int         `json:"from,omitempty"`

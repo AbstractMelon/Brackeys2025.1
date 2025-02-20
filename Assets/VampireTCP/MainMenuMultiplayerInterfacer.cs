@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public class MainMenuMultiplayerInterfacer : MonoBehaviour
 {
@@ -8,6 +11,7 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
     public TMP_InputField roomCodeInput;
     public Button joinButton;
     public bool publicRoom;
+    public bool waitingForRooms;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,7 +21,7 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
 
     public void HostGame()
     {
-        multiplayerManager.HostGame();
+        multiplayerManager.HostGame(publicRoom);
     }
 
     public void JoinGame()
@@ -26,15 +30,37 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
     }
     public void JoinRandomGame()
     {
-        //multiplayerManager.JoinGame();
+        waitingForRooms = true;
+        FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0].RequestRoomsList();
+    }
+    public void GetMessageForRooms(GenericMessageWrapper message)
+    {
+        if (waitingForRooms)
+        {
+            string[] rooms = message.msg.msg;
+            List<string> publicRooms = new List<string>();
+            for (int i = 0; i < rooms.Length; i++)
+            {
+                if (rooms[i].EndsWith("PUBLIC"))
+                {
+                    publicRooms.Add(rooms[i]);
+                }
+            }
+            if (publicRooms.Count != 0)
+            {
+                multiplayerManager.JoinGame(publicRooms[Random.Range(0, publicRooms.Count)]);
+            }
+            waitingForRooms = false;
+        }
     }
     public void TogglePublic()
     {
+        Debug.Log(!publicRoom);
         publicRoom = !publicRoom;
     }
     public void OnCodeInputChange()
     {
-        if (roomCodeInput.text.Length == 6)
+        if (roomCodeInput.text.Length == 6 || (roomCodeInput.text.Length == 12 && roomCodeInput.text.EndsWith("PUBLIC")))
         {
             joinButton.interactable = true;
         }

@@ -61,7 +61,7 @@ func (h *ClientHandler) Handle() {
 func (h *ClientHandler) handleMessage(msg models.Message, clientID int) {
     switch msg.Action {
     case "createRoom":
-        h.handleCreateRoom(clientID)
+        h.handleCreateRoom(clientID, msg.IsPublic)
     case "joinRoom":
         h.handleJoinRoom(msg.RoomCode, clientID)
     case "listRooms":
@@ -74,8 +74,11 @@ func (h *ClientHandler) handleMessage(msg models.Message, clientID int) {
     }
 }
 
-func (h *ClientHandler) handleCreateRoom(clientID int) {
+func (h *ClientHandler) handleCreateRoom(clientID int, public bool) {
     roomCode := utils.GenerateRoomCode(h.config.RoomCodeLength)
+    if public {
+        roomCode += "PUBLIC"
+    } 
     h.state.Mu.Lock()
     h.state.Rooms[roomCode] = append(h.state.Rooms[roomCode], h.conn)
     h.state.ClientRooms[h.conn] = roomCode
