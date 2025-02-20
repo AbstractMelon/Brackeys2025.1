@@ -14,7 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float collectItemDistance = 5f;
     [SerializeField] private int itemLayer;
     [SerializeField] private int playerLayer;
-
+    [SerializeField] private ParticleSystem stepParticles;
+    [SerializeField] private AudioClip walkingSFX;
+    [SerializeField] private AudioSource audioSource;
     private VampireTCP networkManager;
     private MultiplayerManager multiplayerManager;
     private HealthSystem healthSystem;
@@ -97,6 +99,26 @@ public class PlayerController : MonoBehaviour
             inventory.Scroll(Input.mouseScrollDelta.y < 0);
         }
 
+        if (movement.magnitude > 0 && IsGrounded() && !audioSource.isPlaying)
+        {
+            audioSource.clip = walkingSFX;
+            audioSource.Play();
+        }
+        else if (movement.magnitude == 0 || !IsGrounded())
+        {
+            audioSource.Stop();
+        }
+
+        if (movement.magnitude > 0 && IsGrounded() && !stepParticles.isPlaying)
+        {
+            stepParticles.transform.position = transform.position + Vector3.down * 0.4f;
+            stepParticles.Play();
+        }
+        else if (movement.magnitude == 0 || !IsGrounded())
+        {
+            stepParticles.Stop();
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Alpha5))
             inventory.SetHeldSlot(Input.inputString switch
             {
@@ -120,9 +142,6 @@ public class PlayerController : MonoBehaviour
     {
         // Raycast to check if the player is on the ground
         return Physics.Raycast(transform.position, Vector3.down, 1.1f); // Check if there is a collision within 1.1f units down from the player
-
-        //return Physics.SphereCast(new Ray(transform.position, Vector3.down), 0.5f, 1);
-        
     }
     public bool CheckForItem()
     {
