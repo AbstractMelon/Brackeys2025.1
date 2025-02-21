@@ -123,6 +123,7 @@ public class VampireTCP : MonoBehaviour
     public AudioMessageEvent onRecieveNewAudioMessage;
 
     public GenericMessageEvent onRecieveNewBaseMessage;
+    public int localID;
 
     async void Start()
     {
@@ -189,7 +190,7 @@ public class VampireTCP : MonoBehaviour
                 string[] messages = message.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string msg in messages)
                 {
-                    if ((msg.StartsWith("{") && msg.EndsWith("}")))
+                    if (msg.StartsWith("{") && msg.EndsWith("}"))
                     {
                         ProcessMessage(msg);
                     }

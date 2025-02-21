@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private MultiplayerManager multiplayerManager;
+    public static GameManager instance;
 
     // Start is called before the first frame update
     void Start()
@@ -14,12 +15,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckGameOver();
+        //CheckGameOver();
     }
 
     // Check if the game is over
-    void CheckGameOver()
+    public void CheckGameOver()
     {
+        Debug.Log(multiplayerManager.numPlayers);
         if (multiplayerManager.numPlayers <= 0)
         {
             EndGame();
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Ends the game and declares the winner
-    void EndGame()
+    public void EndGame()
     {
         string winner = (multiplayerManager.numPlayers >= 1) ? "Survivors" : "Demon";
         Debug.Log($"{winner} wins!");

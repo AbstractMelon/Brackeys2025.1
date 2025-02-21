@@ -5,12 +5,17 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using Mono.Cecil.Cil;
 
 public class PositionData
 {
     public string t { get; set; }
     public string r { get; set; }
     public string s { get; set; }
+}
+public class DemonData
+{
+    public int id { get; set; }
 }
 
 public class MultiplayerManager : MonoBehaviour
@@ -50,6 +55,19 @@ public class MultiplayerManager : MonoBehaviour
         {
             networkManager.BroadcastNewMessage("startGame", new { });
             startable = true;
+            OtherPlayerController[] players = FindObjectsByType<OtherPlayerController>(FindObjectsSortMode.None);
+            int[] ids = new int[players.Length + 1];
+            for (int i = 0; i < players.Length; i++)
+            {
+                ids[i] = int.Parse(players[i].gameObject.name.Substring(6));
+            }
+            ids[ids.Length - 1] = networkManager.localID;
+            // Set current ID to last index
+            int demonID = ids[UnityEngine.Random.Range(0, ids.Length)];
+            networkManager.BroadcastNewMessage("demonID", new { 
+                id = demonID
+            });
+            Debug.Log("The demon is: " + demonID);
             SceneManager.LoadScene("Game");
             return;
         }
@@ -96,6 +114,9 @@ public class MultiplayerManager : MonoBehaviour
         } else if (scene.name == "MainMenu")
         {
             networkManager.Reconnect();
+        } else if (scene.name.Contains("Game"))
+        {
+
         }
     }
 
@@ -140,12 +161,19 @@ public class MultiplayerManager : MonoBehaviour
             {
                 startable = true;
                 SceneManager.LoadScene("Game");
+            } else if (newMessage.msg.message == "demonID")
+            {
+                SetDemonToID(JsonConvert.DeserializeObject<DemonData>(newMessage.msg.value.ToString()).id);
             }
         } else
         {
             GameObject newPlayer = Instantiate(newPlayerInstance);
             newPlayer.name = "Player" + newMessage.msg.from;
         }
+    }
+    public void SetDemonToID(int id)
+    {
+        Debug.Log("Recieved demon as: " + id);
     }
 
     public void OnRecieveNewAudioMessage(AudioMessageWrapper newAudioMessage)
@@ -166,13 +194,13 @@ public class MultiplayerManager : MonoBehaviour
 
         while (elapsedTime < duration)
         {
+            if (playerTransform == null) yield break;
             playerTransform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
             playerTransform.eulerAngles = Vector3.Lerp(startRotation, targetRotation, elapsedTime / duration);
             playerTransform.localScale = Vector3.Lerp(startScale, targetScale, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
         playerTransform.position = targetPosition;
         playerTransform.eulerAngles = targetRotation;
     }

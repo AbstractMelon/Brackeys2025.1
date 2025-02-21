@@ -1741,7 +1741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3917788537246358859, guid: bc787485472cc6b209187f719ca5aea9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4707283184954389887, guid: bc787485472cc6b209187f719ca5aea9, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4984,13 +4984,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3dfbe5af1a4189d48676cf4c2a4d109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadResolution: 10
-  roadWidth: 1
-  worldSpaceUV: 0
-  meshFilter: {fileID: 0}
-  splineContainer: {fileID: 0}
-  vertPoints01: []
-  vertPoints02: []
 --- !u!1001 &916111680
 PrefabInstance:
   m_ObjectHideFlags: 0
