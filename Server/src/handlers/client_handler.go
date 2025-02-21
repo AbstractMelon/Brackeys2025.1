@@ -76,17 +76,16 @@ func (h *ClientHandler) handleMessage(msg models.Message, clientID int) {
 
 func (h *ClientHandler) handleCreateRoom(clientID int, public bool) {
     roomCode := utils.GenerateRoomCode(h.config.RoomCodeLength)
-    if public {
-        roomCode += "PUBLIC"
-    } 
     h.state.Mu.Lock()
     h.state.Rooms[roomCode] = append(h.state.Rooms[roomCode], h.conn)
     h.state.ClientRooms[h.conn] = roomCode
+    h.state.PublicRooms[roomCode] = public
     h.state.Mu.Unlock()
 
     response := models.Response{
         Action:   "roomCreated",
         RoomCode: roomCode,
+        Value:    public,
     }
     h.sendResponse(response)
     log.Printf("Client %d created room %s", clientID, roomCode)
@@ -119,15 +118,17 @@ func (h *ClientHandler) handleJoinRoom(roomCode string, clientID int) {
 
 func (h *ClientHandler) handleListRooms(clientID int) {
     h.state.Mu.Lock()
-    roomCodes := make([]string, 0, len(h.state.Rooms))
-    for code := range h.state.Rooms {
-        roomCodes = append(roomCodes, code)
+    publicRooms := make([]string, 0, len(h.state.PublicRooms))
+    for roomCode, isPublic := range h.state.PublicRooms {
+        if isPublic {
+            publicRooms = append(publicRooms, roomCode)
+        }
     }
     h.state.Mu.Unlock()
 
     response := models.Response{
         Action: "roomsList",
-        Value:  roomCodes,
+        Value:  publicRooms,
     }
     h.sendResponse(response)
     log.Printf("Client %d listed rooms", clientID)
@@ -180,6 +181,7 @@ func (h *ClientHandler) cleanupClient(clientID int) {
             if len(h.state.Rooms[roomCode]) == 0 {
                 log.Printf("Room %s deleted", roomCode)
                 delete(h.state.Rooms, roomCode)
+                delete(h.state.PublicRooms, roomCode)
             }
         }
         delete(h.state.ClientRooms, h.conn)
