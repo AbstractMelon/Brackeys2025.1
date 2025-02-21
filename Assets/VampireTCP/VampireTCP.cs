@@ -69,6 +69,10 @@ public class RoomsListMessage : BaseMessage
 {
     public string[] value { get; set; }
 }
+public class ClientIDMessage : BaseMessage
+{
+    public int value { get; set; }
+}
 
 public class BroadcastMessage : BaseMessage
 {
@@ -92,6 +96,7 @@ public class VampireTCP : MonoBehaviour
     public MessageEvent onRecieveNewMessage;
 
     public GenericMessageEvent onRecieveNewBaseMessage;
+    public int localID;
 
     async void Start()
     {
@@ -158,7 +163,7 @@ public class VampireTCP : MonoBehaviour
                 string[] messages = message.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string msg in messages)
                 {
-                    if ((msg.StartsWith("{") && msg.EndsWith("}")))
+                    if (msg.StartsWith("{") && msg.EndsWith("}"))
                     {
                         ProcessMessage(msg);
                     }
@@ -203,6 +208,10 @@ public class VampireTCP : MonoBehaviour
                 BroadcastMessage broadcast = JsonConvert.DeserializeObject<BroadcastMessage>(jsonMessage);
                 OnRecieveNewMessage(broadcast, new ErrorMessage());
                 //Debug.Log("Broadcast from client " + broadcast.from + ": " + broadcast.message + " - Value: " + broadcast.value);
+                break;
+            case "clientId":
+                ClientIDMessage id = JsonConvert.DeserializeObject<ClientIDMessage>(jsonMessage);
+                localID = id.value;
                 break;
             case "error":
                 ErrorMessage errorMsg = JsonConvert.DeserializeObject<ErrorMessage>(jsonMessage);

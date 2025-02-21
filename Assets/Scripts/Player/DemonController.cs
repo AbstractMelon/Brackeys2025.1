@@ -87,6 +87,7 @@ public class DemonController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Demon has died!");
+        GameManager.instance.EndGame();
         Destroy(gameObject);
     }
     private bool Attack()
