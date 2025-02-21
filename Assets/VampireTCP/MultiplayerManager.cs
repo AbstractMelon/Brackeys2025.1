@@ -30,13 +30,6 @@ public class MultiplayerManager : MonoBehaviour
 
     public string microphoneDevice;
 
-    private void OnPostRender()
-    {
-        microphoneDevice = Microphone.devices[0];
-        microphoneClip = Microphone.Start(microphoneDevice, true, 1, 44100);
-        StartCoroutine(ProcessAudio());
-    }
-
     private IEnumerator ProcessAudio()
     {
         while (Microphone.IsRecording(microphoneDevice))
@@ -58,6 +51,11 @@ public class MultiplayerManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        microphoneDevice = Microphone.devices[0];
+        Debug.Log(microphoneDevice);
+        microphoneClip = Microphone.Start(microphoneDevice, true, 1, 44100);
+        StartCoroutine(ProcessAudio());
     }
 
     private void Start()

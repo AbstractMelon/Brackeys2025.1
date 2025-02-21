@@ -86,6 +86,11 @@ public class RoomsListMessage : BaseMessage
     public string[] value { get; set; }
 }
 
+public class ClientIDMessage : BaseMessage
+{
+    public int value { get; set; }
+}
+
 public class BroadcastMessage : BaseMessage
 {
     public int from { get; set; }
@@ -110,6 +115,8 @@ public class VampireTCP : MonoBehaviour
     public int serverPort = 8888;
     private TcpClient client;
     private NetworkStream stream;
+
+    public int clientId;
 
     public MessageEvent onRecieveNewMessage;
 
@@ -208,6 +215,10 @@ public class VampireTCP : MonoBehaviour
 
         switch (baseMsg.action)
         {
+            case "clientId":
+                ClientIDMessage NewClientID = JsonConvert.DeserializeObject<ClientIDMessage>(jsonMessage);
+                clientId = NewClientID.value;
+                break;
             case "roomCreated":
                 RoomCreatedMessage roomCreated = JsonConvert.DeserializeObject<RoomCreatedMessage>(jsonMessage);
                 Debug.Log("Room created with code: " + roomCreated.room_code);
