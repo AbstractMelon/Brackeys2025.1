@@ -26,6 +26,26 @@ public class MultiplayerManager : MonoBehaviour
 
     public static MultiplayerManager instance;
 
+    private AudioClip microphoneClip;
+
+    public string microphoneDevice;
+
+    private void OnPostRender()
+    {
+        microphoneClip = Microphone.Start(microphoneDevice, true, 1, 44100);
+        StartCoroutine(ProcessAudio());
+    }
+
+    private IEnumerator ProcessAudio()
+    {
+        while (Microphone.IsRecording(microphoneDevice))
+        {
+            yield return new WaitForSeconds(0.2f);
+            byte[] audioData = WavUtility.FromAudioClip(microphoneClip);
+            networkManager.SendVoiceMessage(audioData);
+        }
+    }
+
     private void Awake()
     {
         if (instance == null)
@@ -145,6 +165,15 @@ public class MultiplayerManager : MonoBehaviour
         {
             GameObject newPlayer = Instantiate(newPlayerInstance);
             newPlayer.name = "Player" + newMessage.msg.from;
+        }
+    }
+
+    public void OnRecieveNewAudioMessage(AudioMessageWrapper newAudioMessage)
+    {
+        if (GameObject.Find("Player" + newAudioMessage.msg.from))
+        {
+            OtherPlayerController otherPlayerScript = GameObject.Find("Player" + newAudioMessage.msg.from).GetComponent<OtherPlayerController>();
+            otherPlayerScript.PlayAudio(newAudioMessage.msg.audio);
         }
     }
 
