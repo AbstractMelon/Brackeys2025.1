@@ -32,6 +32,7 @@ public class MultiplayerManager : MonoBehaviour
 
     private void OnPostRender()
     {
+        microphoneDevice = Microphone.devices[0];
         microphoneClip = Microphone.Start(microphoneDevice, true, 1, 44100);
         StartCoroutine(ProcessAudio());
     }
