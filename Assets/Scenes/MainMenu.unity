@@ -4783,10 +4783,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flickerChance: 0.95
   updateDelay: 0.1
-  syncWithOtherLights: 1
-  otherLights:
-  - {fileID: 1844760235}
-  minOffTime: 0.5
+  syncWithOtherLights: 0
+  otherLights: []
+  minOffTime: 0.3
   maxOffTime: 1
 --- !u!108 &1072714074
 Light:
