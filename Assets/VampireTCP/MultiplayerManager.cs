@@ -50,7 +50,7 @@ public class MultiplayerManager : MonoBehaviour
         {
             networkManager.BroadcastNewMessage("startGame", new { });
             startable = true;
-            SceneManager.LoadScene("Map1");
+            SceneManager.LoadScene("Game");
             return;
         }
         Debug.Log("Unable to start game, not enough players");
@@ -139,7 +139,7 @@ public class MultiplayerManager : MonoBehaviour
             } else if (newMessage.msg.message == "startGame" && !startable)
             {
                 startable = true;
-                SceneManager.LoadScene("Map1");
+                SceneManager.LoadScene("Game");
             }
         } else
         {
