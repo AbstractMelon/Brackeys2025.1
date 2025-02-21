@@ -31,6 +31,7 @@ type Message struct {
     Message   string      `json:"message,omitempty"`
     Value     interface{} `json:"value,omitempty"`
     From      int         `json:"from,omitempty"`
+    Audio     []byte      `json:"audio,omitempty"`
 }
 
 type Response struct {
@@ -43,7 +44,7 @@ type Response struct {
 }
 
 type AudioBroadcastMessage struct {
-    From int `json:"from"`
+    From int    `json:"from"`
     Audio []byte `json:"audio"`
 }
 

@@ -195,7 +195,7 @@ func (h *ClientHandler) handleVoice(msg models.Message, clientID int) {
 
 	broadcastMsg := models.AudioBroadcastMessage{
 		From: clientID,
-		Audio: msg.Value.([]byte),
+		Audio: msg.Audio,
 	}
 	jsonData, err := json.Marshal(broadcastMsg)
 	if err != nil {
