@@ -177,8 +177,8 @@ public class VampireTCP : MonoBehaviour
         byte[] buffer = new byte[4096];
         while (client.Connected)
         {
-            //try
-            //{
+            try
+            {
                 int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                 if (bytesRead == 0)
                 {
@@ -194,7 +194,7 @@ public class VampireTCP : MonoBehaviour
                         ProcessMessage(msg);
                     }
                 }
-            /*}
+            }
             catch (Exception ex)
             {
                 int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
@@ -206,7 +206,7 @@ public class VampireTCP : MonoBehaviour
                 string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                 Debug.LogError("Receive error: " + ex.Message + " | Recieved: "+ message);
             }
-            */
+            
         }
     }
 
