@@ -13,8 +13,7 @@ public class OtherPlayerController : MonoBehaviour
 
     public void PlayAudio(byte[] data)
     {
-        // Implement audio decoding based on your format
-        // Example using WAV format:
+        Debug.Log(data);
         AudioClip clip = WavUtility.ToAudioClip(data);
         audioSource.PlayOneShot(clip);
     }

@@ -26,20 +26,6 @@ public class MultiplayerManager : MonoBehaviour
 
     public static MultiplayerManager instance;
 
-    private AudioClip microphoneClip;
-
-    public string microphoneDevice;
-
-    private IEnumerator ProcessAudio()
-    {
-        while (Microphone.IsRecording(microphoneDevice))
-        {
-            yield return new WaitForSeconds(0.2f);
-            byte[] audioData = WavUtility.FromAudioClip(microphoneClip);
-            networkManager.SendVoiceMessage(audioData);
-        }
-    }
-
     private void Awake()
     {
         if (instance == null)
@@ -51,11 +37,6 @@ public class MultiplayerManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        microphoneDevice = Microphone.devices[0];
-        Debug.Log(microphoneDevice);
-        microphoneClip = Microphone.Start(microphoneDevice, true, 1, 44100);
-        StartCoroutine(ProcessAudio());
     }
 
     private void Start()

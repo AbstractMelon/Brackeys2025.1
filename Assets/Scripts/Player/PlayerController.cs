@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,20 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Camera cam;
 
+    private AudioClip microphoneClip;
+
+    public string microphoneDevice;
+
+    private IEnumerator ProcessAudio()
+    {
+        while (Microphone.IsRecording(microphoneDevice))
+        {
+            yield return new WaitForSeconds(0.2f);
+            byte[] audioData = WavUtility.FromAudioClip(microphoneClip);
+            networkManager.SendVoiceMessage(audioData);
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +60,11 @@ public class PlayerController : MonoBehaviour
 
         // Lock the cursor
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the screen
+
+        microphoneDevice = Microphone.devices[0];
+        Debug.Log(microphoneDevice);
+        microphoneClip = Microphone.Start(microphoneDevice, true, 1, 44100);
+        StartCoroutine(ProcessAudio());
     }
 
     void Update()
