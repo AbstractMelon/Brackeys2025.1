@@ -43,17 +43,9 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
                 waitingForRooms = false;
                 return;
             }
-            List<string> publicRooms = new List<string>();
-            for (int i = 0; i < rooms.Length; i++)
+            if (rooms.Length != 0)
             {
-                if (rooms[i].EndsWith("PUBLIC"))
-                {
-                    publicRooms.Add(rooms[i]);
-                }
-            }
-            if (publicRooms.Count != 0)
-            {
-                multiplayerManager.JoinGame(publicRooms[Random.Range(0, publicRooms.Count)]);
+                multiplayerManager.JoinGame(rooms[Random.Range(0, rooms.Length)]);
             }
             waitingForRooms = false;
         }
@@ -64,7 +56,7 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
     }
     public void OnCodeInputChange()
     {
-        if (roomCodeInput.text.Length == 6 || (roomCodeInput.text.Length == 12 && roomCodeInput.text.EndsWith("PUBLIC")))
+        if (roomCodeInput.text.Length == 6)
         {
             joinButton.interactable = true;
         }
@@ -79,3 +71,4 @@ public class MainMenuMultiplayerInterfacer : MonoBehaviour
         multiplayerManager.ExitGame();
     }
 }
+

@@ -176,6 +176,15 @@ public class MultiplayerManager : MonoBehaviour
         Debug.Log("Recieved demon as: " + id);
     }
 
+    public void OnRecieveNewAudioMessage(AudioMessageWrapper newAudioMessage)
+    {
+        if (GameObject.Find("Player" + newAudioMessage.msg.from))
+        {
+            OtherPlayerController otherPlayerScript = GameObject.Find("Player" + newAudioMessage.msg.from).GetComponent<OtherPlayerController>();
+            otherPlayerScript.PlayAudio(newAudioMessage.msg.audio);
+        }
+    }
+
     IEnumerator LerpPosition(Transform playerTransform, Vector3 targetPosition, Vector3 targetRotation, Vector3 targetScale, float duration)
     {
         float elapsedTime = 0f;

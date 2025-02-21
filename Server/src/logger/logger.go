@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -18,6 +19,7 @@ func NewLogger(filename string, debug bool) (*Logger, error) {
     var file *os.File
     var err error
 
+
     if filename != "" {
         // Create logs directory if it doesn't exist
         dir := filepath.Dir(filename)
@@ -32,7 +34,9 @@ func NewLogger(filename string, debug bool) (*Logger, error) {
         }
 
         // Configure standard logger
-        log.SetOutput(file)
+        log.SetOutput(io.MultiWriter(file, os.Stdout))
+    } else {
+        log.SetOutput(os.Stdout)
     }
 
     if debug {
@@ -96,6 +100,21 @@ func (l *Logger) RotateLogs() error {
         return fmt.Errorf("failed to rotate log file: %v", err)
     }
 
+    // Remove old log files
+    dir := filepath.Dir(oldPath)
+    files, err := os.ReadDir(dir)
+    if err != nil {
+        return fmt.Errorf("failed to read log directory: %v", err)
+    }
+
+    for _, file := range files {
+        if file.Name() != filepath.Base(oldPath) && file.Name() != filepath.Base(newPath) {
+            if err := os.Remove(filepath.Join(dir, file.Name())); err != nil {
+                return fmt.Errorf("failed to remove old log file: %v", err)
+            }
+        }
+    }
+
     // Open new log file
     file, err := os.OpenFile(oldPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
     if err != nil {
@@ -103,6 +122,6 @@ func (l *Logger) RotateLogs() error {
     }
 
     l.logFile = file
-    log.SetOutput(file)
+    log.SetOutput(io.MultiWriter(file, os.Stdout))
     return nil
 }
