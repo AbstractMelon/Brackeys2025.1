@@ -79,6 +79,8 @@ func (h *ClientHandler) handleMessage(msg models.Message, clientID int) {
 		h.handleListRooms(clientID)
 	case "broadcast":
 		h.handleBroadcast(msg, clientID)
+	case "voice":
+		h.handleVoice(msg, clientID)
 	default:
 		h.sendError("Unknown action")
 		h.logger.Warning("Client %d sent unknown action: %s", clientID, msg.Action)
@@ -175,6 +177,40 @@ func (h *ClientHandler) handleBroadcast(msg models.Message, clientID int) {
 	}
 }
 
+func (h *ClientHandler) handleVoice(msg models.Message, clientID int) {
+	h.state.Mu.Lock()
+	roomCode, inRoom := h.state.ClientRooms[h.conn]
+	var clients []net.Conn
+	if inRoom {
+		clients = make([]net.Conn, len(h.state.Rooms[roomCode]))
+		copy(clients, h.state.Rooms[roomCode])
+	}
+	h.state.Mu.Unlock()
+
+	if !inRoom {
+		h.sendError("Not in a room")
+		h.logger.Warning("Client %d attempted to voice without being in a room", clientID)
+		return
+	}
+
+	broadcastMsg := models.AudioBroadcastMessage{
+		From: clientID,
+		Audio: msg.Audio,
+	}
+	jsonData, err := json.Marshal(broadcastMsg)
+	if err != nil {
+		h.logger.Warning("Error marshaling voice message: %v", err)
+		return
+	}
+	jsonData = append(jsonData, '\n')
+
+	for _, client := range clients {
+		if client != h.conn {
+			client.Write(jsonData)
+		}
+	}
+}
+
 func (h *ClientHandler) cleanupClient(clientID int) {
 	h.state.Mu.Lock()
 	defer h.state.Mu.Unlock()
@@ -233,3 +269,9 @@ func sendToClient(conn net.Conn, response models.Response) {
 	conn.Write(jsonData)
 	log.Printf("Sent response: %v", response)
 }
+
+
+
+
+
+
