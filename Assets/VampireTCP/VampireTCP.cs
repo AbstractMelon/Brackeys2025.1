@@ -175,7 +175,7 @@ public class VampireTCP : MonoBehaviour
 
     async void StartReceiving()
     {
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[4096];
         while (client.Connected)
         {
             try

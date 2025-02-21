@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityOpus;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,17 +25,61 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Camera cam;
 
-    private AudioClip microphoneClip;
-
     public string microphoneDevice;
+    public AudioClip microphoneClip;
+
+    // Opus parameters – adjust as needed
+    private int sampleRate = 48000;         // Recommended sample rate for Opus
+    private int channels = 1;               // Mono is typical for voice chat
+    private int frameSize;                  // Number of samples per frame per channel (e.g. 20ms frames)
+
+    private Encoder encoder;
+
+    private int lastSamplePos = 0;
 
     private IEnumerator ProcessAudio()
     {
+        // Allocate buffers:
+        // A buffer for one frame of audio (float samples)
+        float[] frameBuffer = new float[frameSize * channels];
+        // A temporary buffer for the encoded data (size can be adjusted as needed)
+        byte[] encodedBuffer = new byte[4000];
+
         while (Microphone.IsRecording(microphoneDevice))
         {
             yield return new WaitForSeconds(0.2f);
-            byte[] audioData = WavUtility.FromAudioClip(microphoneClip);
-            networkManager.SendVoiceMessage(audioData);
+
+            // Get the current recording position
+            int currentPos = Microphone.GetPosition(microphoneDevice);
+            int samplesAvailable = currentPos - lastSamplePos;
+            if (samplesAvailable < 0)
+            {
+                // Handle wrap-around
+                samplesAvailable += microphoneClip.samples;
+            }
+
+            // Process as many full frames as available
+            while (samplesAvailable >= frameSize)
+            {
+                // Get 'frameSize' samples from the clip starting at lastSamplePos
+                microphoneClip.GetData(frameBuffer, lastSamplePos);
+
+                // Encode the frame:
+                // The Encoder.Encode method uses the length of frameBuffer to calculate the frame size.
+                int encodedBytes = encoder.Encode(frameBuffer, encodedBuffer);
+                if (encodedBytes > 0)
+                {
+                    // Copy the encoded data into an array of the correct length.
+                    byte[] opusFrame = new byte[encodedBytes];
+                    Array.Copy(encodedBuffer, opusFrame, encodedBytes);
+                    // Send the encoded frame over the network.
+                    networkManager.SendVoiceMessage(opusFrame);
+                }
+
+                // Update our position:
+                lastSamplePos = (lastSamplePos + frameSize) % microphoneClip.samples;
+                samplesAvailable -= frameSize;
+            }
         }
     }
 
@@ -64,6 +107,13 @@ public class PlayerController : MonoBehaviour
         microphoneDevice = Microphone.devices[0];
         Debug.Log(microphoneDevice);
         microphoneClip = Microphone.Start(microphoneDevice, true, 1, 44100);
+        frameSize = sampleRate / 50; // 20ms frame
+
+        // Initialize the Opus encoder and decoder
+        encoder = new Encoder(SamplingFrequency.Frequency_48000, NumChannels.Mono, OpusApplication.VoIP);
+        encoder.Bitrate = 16000;      // Example bitrate
+        encoder.Complexity = 5;       // Adjust complexity as needed
+        encoder.Signal = OpusSignal.Voice;
         StartCoroutine(ProcessAudio());
     }
 
