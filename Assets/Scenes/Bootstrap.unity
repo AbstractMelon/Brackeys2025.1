@@ -135,6 +135,7 @@ MonoBehaviour:
   newPlayerInstance: {fileID: 3917788537246358859, guid: 3ee83d789070aa94eaae230699b0066c, type: 3}
   numPlayers: 0
   multiplayerUIManager: {fileID: 0}
+  microphoneDevice: 
 --- !u!4 &1568758382272390149
 Transform:
   m_ObjectHideFlags: 0
@@ -197,6 +198,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
+  onRecieveNewAudioMessage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 562893281698499304}
+        m_TargetAssemblyTypeName: MultiplayerManager, Assembly-CSharp
+        m_MethodName: OnRecieveNewAudioMessage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
   onRecieveNewBaseMessage:
     m_PersistentCalls:
       m_Calls:
@@ -211,7 +227,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

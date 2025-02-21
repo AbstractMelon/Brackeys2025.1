@@ -11,6 +11,9 @@ using UnityEngine.Windows;
 public class MessageEvent : UnityEvent<MessageWrapper> { }
 
 [System.Serializable]
+public class AudioMessageEvent : UnityEvent<AudioMessageWrapper> { }
+
+[System.Serializable]
 public class GenericMessageEvent : UnityEvent<GenericMessageWrapper> { }
 
 [System.Serializable]
@@ -20,6 +23,19 @@ public class MessageWrapper
     public ErrorMessage err;
 
     public MessageWrapper(BroadcastMessage msg, ErrorMessage err)
+    {
+        this.msg = msg;
+        this.err = err;
+    }
+}
+
+[System.Serializable]
+public class AudioMessageWrapper
+{
+    public AudioBroadcastMessage msg;
+    public ErrorMessage err;
+
+    public AudioMessageWrapper(AudioBroadcastMessage msg, ErrorMessage err)
     {
         this.msg = msg;
         this.err = err;
@@ -77,6 +93,12 @@ public class BroadcastMessage : BaseMessage
     public object value { get; set; }
 }
 
+public class AudioBroadcastMessage : BaseMessage
+{
+    public int from { get; set; }
+    public byte[] audio { get; set; }
+}
+
 public class ErrorMessage : BaseMessage
 {
     public string message { get; set; }
@@ -90,6 +112,8 @@ public class VampireTCP : MonoBehaviour
     private NetworkStream stream;
 
     public MessageEvent onRecieveNewMessage;
+
+    public AudioMessageEvent onRecieveNewAudioMessage;
 
     public GenericMessageEvent onRecieveNewBaseMessage;
 
@@ -204,6 +228,11 @@ public class VampireTCP : MonoBehaviour
                 OnRecieveNewMessage(broadcast, new ErrorMessage());
                 //Debug.Log("Broadcast from client " + broadcast.from + ": " + broadcast.message + " - Value: " + broadcast.value);
                 break;
+            case "voice":
+                AudioBroadcastMessage voiceMsg = JsonConvert.DeserializeObject<AudioBroadcastMessage>(jsonMessage);
+                OnRecieveNewAudioMessage(voiceMsg, new ErrorMessage());
+                //Debug.Log("Broadcast from client " + broadcast.from + ": " + broadcast.message + " - Value: " + broadcast.value);
+                break;
             case "error":
                 ErrorMessage errorMsg = JsonConvert.DeserializeObject<ErrorMessage>(jsonMessage);
                 OnRecieveNewMessage(new BroadcastMessage(), errorMsg);
@@ -220,6 +249,11 @@ public class VampireTCP : MonoBehaviour
         onRecieveNewMessage?.Invoke(new MessageWrapper(msg, err));
     }
 
+    public void OnRecieveNewAudioMessage(AudioBroadcastMessage msg, ErrorMessage err)
+    {
+        onRecieveNewAudioMessage?.Invoke(new AudioMessageWrapper(msg, err));
+    }
+
     public void CreateRoom(bool isPublic)
     {
         var msg = new
@@ -230,7 +264,15 @@ public class VampireTCP : MonoBehaviour
         SendNewMessage(JsonConvert.SerializeObject(msg));
     }
 
-
+    public void SendVoiceMessage(byte[] audioData)
+    {
+        var msg = new
+        {
+            action = "voice",
+            audio = Convert.ToBase64String(audioData)
+        };
+        SendNewMessage(JsonConvert.SerializeObject(msg));
+    }
 
     public void refreshToken(string roomCode)
     {
