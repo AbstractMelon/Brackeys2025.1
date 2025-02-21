@@ -49,7 +49,7 @@ public class DemonController : MonoBehaviour
             return;
         }
         transform.localScale -= new Vector3(shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime);
-        if (transform.localScale.x <= endOnceReachedSize)
+        if (transform.localScale.y <= endOnceReachedSize)
         {
             Die();
             return;

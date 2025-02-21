@@ -133,9 +133,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkManager: {fileID: 5851693431008938849}
   newPlayerInstance: {fileID: 3917788537246358859, guid: 3ee83d789070aa94eaae230699b0066c, type: 3}
+  newDemonInstance: {fileID: 3922044743862069382, guid: 341823c0306bcb54ca44acd1f8a06789, type: 3}
   numPlayers: 0
   multiplayerUIManager: {fileID: 0}
-  microphoneDevice: 
 --- !u!4 &1568758382272390149
 Transform:
   m_ObjectHideFlags: 0
@@ -183,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serverAddress: hiwth-server.abstractmelon.net
   serverPort: 8888
+  clientId: 0
   onRecieveNewMessage:
     m_PersistentCalls:
       m_Calls:
