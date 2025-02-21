@@ -1,0 +1,13 @@
+{
+  "host": "0.0.0.0",
+  "port": 8888,
+  "room_code_length": 6,
+  "max_players_room": 100,
+  "log_file": "server.log",
+  "enable_debug": true,
+  "heartbeat_interval": 30,
+  "connection_timeout": 300,
+  "max_message_size": 8192,
+  "max_rooms": 1000,
+  "cleanup_interval": 60
+}
