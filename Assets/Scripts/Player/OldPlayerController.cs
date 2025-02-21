@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+public class OldPlayerController : MonoBehaviour
 {
     // Variables
     [SerializeField] private float moveSpeed = 5f; // Speed of movement when walking
@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Camera cam;
 
+    // Inventory
+    private PlayerInventory inventory;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
         // Get components
         cam = GetComponentInChildren<Camera>();
         rb = GetComponent<Rigidbody>();
+        inventory = GetComponentInChildren<PlayerInventory>();
         healthSystem = GetComponent<HealthSystem>();
 
         // Lock the cursor
@@ -84,6 +87,18 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+            CheckForItem();
+
+        if (Input.GetKeyDown(KeyCode.Q))
+            inventory.DiscardHeldItem();
+
+        // Inventory
+        if (Input.mouseScrollDelta.y != 0)
+        {
+            inventory.Scroll(Input.mouseScrollDelta.y < 0);
+        }
+
         if (movement.magnitude > 0 && IsGrounded() && !audioSource.isPlaying)
         {
             audioSource.clip = walkingSFX;
@@ -103,6 +118,18 @@ public class PlayerController : MonoBehaviour
         {
             stepParticles.Stop();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Alpha5))
+            inventory.SetHeldSlot(Input.inputString switch
+            {
+                "1" => 0,
+                "2" => 1,
+                "3" => 2,
+                "4" => 3,
+                "5" => 4,
+                _ => inventory.heldSlot
+            });
+        HighlightItem();
     }
 
     void FixedUpdate()
@@ -115,6 +142,50 @@ public class PlayerController : MonoBehaviour
     {
         // Raycast to check if the player is on the ground
         return Physics.Raycast(transform.position, Vector3.down, 1.1f); // Check if there is a collision within 1.1f units down from the player
+    }
+    public bool CheckForItem()
+    {
+        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
+        Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
+        if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == itemLayer && !hit.transform.GetComponent<Item>().isHeld)
+        {
+            Debug.Log("Raycast successful");
+            OnPickupItem(hit.transform.GetComponent<Item>());
+            return true;
+        }
+        Debug.Log("Raycast failure");
+        return false;
+    }
+    public void OnPickupItem(Item item)
+    {
+        bool success = GetComponentInChildren<PlayerInventory>().PickupItem(item);
+        if (success)
+        {
+            item.transform.SetParent(transform.GetChild(1));
+            item.Pickup();
+        }
+    }
+    void HighlightItem()
+    {
+        Ray ray = new(cam.transform.position, cam.transform.forward);
+        //Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
+        if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == itemLayer)
+        {
+            //Debug.Log("Raycast successful");
+            Item item = hit.transform.GetComponent<Item>();
+            if (item != null)
+            {
+                item.Highlight();
+            }
+        }
+        else
+        {
+            Item[] items = FindObjectsByType<Item>(FindObjectsSortMode.None);
+            foreach (Item item in items)
+            {
+                item.Unhighlight();
+            }
+        }
     }
 
     public bool IsDead()
