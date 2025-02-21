@@ -8,6 +8,7 @@ import (
 type ServerState struct {
     Mu           sync.Mutex
     Rooms        map[string][]net.Conn
+    PublicRooms  map[string]bool
     ClientRooms  map[net.Conn]string
     ClientIDs    map[net.Conn]int
     NextClientID int
@@ -16,6 +17,7 @@ type ServerState struct {
 func NewServerState() *ServerState {
     return &ServerState{
         Rooms:        make(map[string][]net.Conn),
+        PublicRooms:  make(map[string]bool),
         ClientRooms:  make(map[net.Conn]string),
         ClientIDs:    make(map[net.Conn]int),
         NextClientID: 1,
