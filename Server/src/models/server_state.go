@@ -41,3 +41,9 @@ type Response struct {
     From      int         `json:"from,omitempty"`
     Error     string      `json:"error,omitempty"`
 }
+
+type AudioBroadcastMessage struct {
+    From int `json:"from"`
+    Audio []byte `json:"audio"`
+}
+
