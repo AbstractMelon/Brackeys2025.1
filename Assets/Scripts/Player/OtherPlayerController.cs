@@ -13,8 +13,11 @@ public class OtherPlayerController : MonoBehaviour
     private float[] audioBuffer;
     private int writePosition = 0;
 
+    private GameObject Player;
+
     private void Start()
     {
+        Player = GameObject.Find("Player");
         audioSource = gameObject.GetComponent<AudioSource>();
         audioClip = AudioClip.Create("VoiceChat", BufferSize, 1, SamplingFrequency, false);
         audioSource.clip = audioClip;
@@ -22,6 +25,25 @@ public class OtherPlayerController : MonoBehaviour
         audioSource.Play();
 
         audioBuffer = new float[ChunkSize];
+    }
+
+    public float GetScaledDistance(GameObject obj1, GameObject obj2)
+    {
+        float distance = Vector3.Distance(obj1.transform.position, obj2.transform.position);
+
+        if (distance >= 50f) return 0f;
+        if (distance <= 4f) return 1f;
+
+        // Normalize the distance between 4 and 50
+        float normalizedDistance = (distance - 4f) / (50f - 4f);
+
+        // Apply logarithmic scaling and invert (1 - result) so closer = 1, farther = 0
+        return 1f - (Mathf.Log(normalizedDistance * 9f + 1f) / Mathf.Log(10f));
+    }
+
+    private void Update()
+    {
+        audioSource.volume = GetScaledDistance(gameObject, Player);
     }
 
     public void OnVoiceDataReceived(byte[] data)
