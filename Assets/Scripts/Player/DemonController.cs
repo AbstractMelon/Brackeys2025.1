@@ -21,6 +21,8 @@ public class DemonController : MonoBehaviour
     [SerializeField] private float gravity = -9f;
     [SerializeField] private float friction = 7f;
     [SerializeField] private float interactDistance;
+    public float attackCooldown;
+    public float timeSinceAttack;
     private Vector3 velocity;
     private VampireTCP networkManager;
 
@@ -47,6 +49,7 @@ public class DemonController : MonoBehaviour
 
     void Update()
     {
+        timeSinceAttack += Time.deltaTime;
         if (transform.localScale.x <= endOnceReachedSize)
         {
             return;
@@ -71,6 +74,8 @@ public class DemonController : MonoBehaviour
     }
     private bool Attack()
     {
+        if (timeSinceAttack < attackCooldown) return false;
+        timeSinceAttack = 0f;
         Ray ray = new Ray(cam.transform.position, cam.transform.forward);
         Debug.DrawRay(cam.transform.position, cam.transform.forward * attackPlayerDistance, Color.red, 10f);
         if (Physics.Raycast(ray, out RaycastHit hit, attackPlayerDistance) && hit.transform.gameObject.layer == playerLayer)
