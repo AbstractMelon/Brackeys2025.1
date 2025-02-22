@@ -5306,6 +5306,7 @@ MonoBehaviour:
   mouseSensitivity: 2
   stepParticles: {fileID: 8837588298922581805}
   walkingSFX: {fileID: 8300000, guid: 19709514d2d9f38ca9f057484fbbf4b2, type: 3}
+  beginSFX: {fileID: 8300000, guid: b73079d6931ba9040ab3ed8b32f65220, type: 3}
   audioSource: {fileID: 7265787415937534239}
   accelerationMultiplyer: 1
   gravity: -9

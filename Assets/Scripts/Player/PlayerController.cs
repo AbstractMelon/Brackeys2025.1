@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]  public float mouseSensitivity = 2f; // Speed of the mouse
     [SerializeField] private ParticleSystem stepParticles;
     [SerializeField] private AudioClip walkingSFX;
+    [SerializeField] private AudioClip beginSFX;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private float accelerationMultiplyer = 1f;
     [SerializeField] private float gravity = -9f;
@@ -40,6 +41,9 @@ public class PlayerController : MonoBehaviour
             GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
             Transform spawnPos = spawnPositions[UnityEngine.Random.Range(0, spawnPositions.Length)].transform;
             transform.position = spawnPos.transform.position;
+            AudioSource audioSource2 = gameObject.AddComponent<AudioSource>();
+            audioSource2.clip = beginSFX;
+            audioSource2.Play();
         }
         try
         {
