@@ -5338,9 +5338,9 @@ GameObject:
   - component: {fileID: 6119477462094798663}
   - component: {fileID: 623141196892510877}
   - component: {fileID: 5182528400768939202}
-  - component: {fileID: 7497257142376628296}
   - component: {fileID: 4986764271759364003}
   - component: {fileID: 4405345808299831212}
+  - component: {fileID: 783697577808960280}
   m_Layer: 7
   m_Name: OldPlayer
   m_TagString: Player
@@ -5444,33 +5444,6 @@ CapsuleCollider:
   m_Height: 4.916663
   m_Direction: 1
   m_Center: {x: 0, y: 2.4026237, z: 0}
---- !u!54 &7497257142376628296
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3917788537246358859}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!114 &4986764271759364003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5483,17 +5456,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dac9611b7f718e94a880886f3b16dab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   jumpForce: 6
   maxSpeed: 10
   maxSpeedSprint: 20
   mouseSensitivity: 2
-  collectItemDistance: 5
-  itemLayer: 6
-  playerLayer: 7
   stepParticles: {fileID: 8837588298922581805}
   walkingSFX: {fileID: 8300000, guid: 19709514d2d9f38ca9f057484fbbf4b2, type: 3}
   audioSource: {fileID: 7265787415937534239}
+  accelerationMultiplyer: 1
+  gravity: -9
+  friction: 7
+  interactDistance: 0
+  microphoneDevice: 
+  microphoneClip: {fileID: 0}
 --- !u!114 &4405345808299831212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5508,6 +5483,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+--- !u!143 &783697577808960280
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3917788537246358859}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 4.916663
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 1
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 2.402624, z: 0}
 --- !u!1 &3965034497223411061
 GameObject:
   m_ObjectHideFlags: 0

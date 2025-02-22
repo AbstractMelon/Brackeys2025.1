@@ -5182,7 +5182,6 @@ GameObject:
   - component: {fileID: 6119477462094798663}
   - component: {fileID: 623141196892510877}
   - component: {fileID: 5182528400768939202}
-  - component: {fileID: 7497257142376628296}
   - component: {fileID: 4986764271759364003}
   - component: {fileID: 4405345808299831212}
   - component: {fileID: 2073017239566551760}
@@ -5210,7 +5209,6 @@ Transform:
   - {fileID: 889312964013862597}
   - {fileID: 7218149227723575288}
   - {fileID: 1666290732925825858}
-  - {fileID: 689731533936231495}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6119477462094798663
@@ -5289,33 +5287,6 @@ CapsuleCollider:
   m_Height: 4.916663
   m_Direction: 1
   m_Center: {x: 0, y: 2.4026237, z: 0}
---- !u!54 &7497257142376628296
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3917788537246358859}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!114 &4986764271759364003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5328,14 +5299,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dac9611b7f718e94a880886f3b16dab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 7
+  jumpForce: 10
   maxSpeed: 10
   maxSpeedSprint: 20
   mouseSensitivity: 2
-  collectItemDistance: 5
-  itemLayer: 6
-  playerLayer: 7
   stepParticles: {fileID: 8837588298922581805}
   walkingSFX: {fileID: 8300000, guid: 19709514d2d9f38ca9f057484fbbf4b2, type: 3}
   audioSource: {fileID: 7265787415937534239}
@@ -5392,37 +5359,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.3, y: 0.2, z: 0.8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 822496169644860592}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5962027486050948376
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 689731533936231495}
-  m_Layer: 0
-  m_Name: Feet
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &689731533936231495
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5962027486050948376}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
