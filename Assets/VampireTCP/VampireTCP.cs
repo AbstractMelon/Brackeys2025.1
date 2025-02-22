@@ -252,6 +252,8 @@ public class VampireTCP : MonoBehaviour
                 break;
             default:
                 Debug.Log("Unknown action: " + baseMsg.action);
+                Debug.Log("Message: " + jsonMessage);
+                Debug.Log("Mesage: " + baseMsg);
                 break;
         }
     }
@@ -351,4 +353,6 @@ public class VampireTCP : MonoBehaviour
         }
     }
 }
+
+
 
