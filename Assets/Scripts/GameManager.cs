@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -18,7 +19,6 @@ public class GameManager : MonoBehaviour
     private VampireTCP networkManager;
     public GameObject newDemonInstance;
     public static GameManager instance;
-    private static bool decideDemonOnLoad;
     private float timeSinceStart;
     private int demonId;
     private bool demonSet;
@@ -30,26 +30,23 @@ public class GameManager : MonoBehaviour
         networkManager = FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
 
         networkManager.onRecieveNewMessage.AddListener(GetBroadcast);
-        if (decideDemonOnLoad) DecideDemon();
     }
 
     // Update is called once per frame
     void Update()
     {
         timeSinceStart += Time.deltaTime;
-        if (timeSinceStart >= 1 && !demonSet)
+        if (timeSinceStart >= 2 && !demonSet)
         {
             SetDemonToID(demonId);
         }
     }
-    public static void DoDecideDemonOnLoad()
-    {
-        decideDemonOnLoad = true;
-    }
     public void GetBroadcast(MessageWrapper newMessage)
     {
-        if (newMessage.msg.message == "demonID")
+        if (newMessage.msg.message == "demonId")
         {
+            // Not going through?
+            Debug.Log("Recieved demon as: " + JsonConvert.DeserializeObject<DemonData>(newMessage.msg.value.ToString()).id);
             if (timeSinceStart >= 1)
                 SetDemonToID(JsonConvert.DeserializeObject<DemonData>(newMessage.msg.value.ToString()).id);
             else
@@ -70,8 +67,10 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public void DecideDemon()
+    public IEnumerator DecideDemon()
     {
+        yield return new WaitForSeconds(1f);
+        VampireTCP networkManager = FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
         OtherPlayerController[] players = FindObjectsByType<OtherPlayerController>(FindObjectsSortMode.None);
         int[] ids = new int[players.Length + 1];
         for (int i = 0; i < players.Length; i++)
@@ -81,12 +80,13 @@ public class GameManager : MonoBehaviour
         }
         ids[ids.Length - 1] = networkManager.clientId;
         // Set current ID to last index
-        int demonId = ids[Random.Range(0, ids.Length)];
-        networkManager.BroadcastNewMessage("demonID", new { 
-            id = demonId
+        int demonId2 = ids[Random.Range(0, ids.Length)];
+        // Not going through?
+        networkManager.BroadcastNewMessage("demonId", new { 
+            id = demonId2
         });
-        Debug.Log("The demon is: " + demonId);
-        this.demonId = demonId;
+        Debug.Log("The demon is: " + demonId2);
+        demonId = demonId2;
         demonSet = false;
     }
     public void SetDemonToID(int id)
