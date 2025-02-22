@@ -126,10 +126,7 @@ public class VampireTCP : MonoBehaviour
 
     async void Start()
     {
-        if (client != null && client.Connected)
-        {
-            await ConnectToServer();
-        }
+        await ConnectToServer();
     }
 
     async Task ConnectToServer()
