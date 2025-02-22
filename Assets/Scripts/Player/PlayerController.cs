@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public string microphoneDevice;
     public AudioClip microphoneClip;
 
-    // Opus parameters – adjust as needed
+    // Opus parameters ï¿½ adjust as needed
     private int sampleRate = 48000;         // Recommended sample rate for Opus
     private int channels = 1;               // Mono is typical for voice chat
     private int frameSize;                  // Number of samples per frame per channel (e.g. 20ms frames)
@@ -151,6 +151,10 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, collectItemDistance) && hit.transform.gameObject.layer == 11)
             {
                 MultiplayerManager.instance.StartGame();
+                if (GameManager.instance != null)
+                    GameManager.instance.DecideDemon();
+                else
+                    GameManager.DoDecideDemonOnLoad();
             }
         }
 
