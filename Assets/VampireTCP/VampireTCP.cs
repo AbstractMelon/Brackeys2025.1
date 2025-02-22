@@ -225,6 +225,10 @@ public class VampireTCP : MonoBehaviour
                 Debug.Log("Room created with code: " + roomCreated.room_code);
                 LobbyManager.instance.UpdateRoomCode(roomCreated.room_code);
                 break;
+            case "leave":
+                BroadcastMessage leave = JsonConvert.DeserializeObject<BroadcastMessage>(jsonMessage);
+                Destroy(GameObject.Find("Player" + leave.from));
+                break;
             case "joinedRoom":
                 JoinedRoomMessage joinedRoom = JsonConvert.DeserializeObject<JoinedRoomMessage>(jsonMessage);
                 Debug.Log("Joined room: " + joinedRoom.room_code);

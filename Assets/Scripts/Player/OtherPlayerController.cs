@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OtherPlayerController : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class OtherPlayerController : MonoBehaviour
 
     private void Update()
     {
-        audioSource.volume = GetScaledDistance(gameObject, Player);
+        if (SceneManager.GetActiveScene().name != "MainMenu") audioSource.volume = GetScaledDistance(gameObject, Player);
     }
 
     public void OnVoiceDataReceived(byte[] data)
