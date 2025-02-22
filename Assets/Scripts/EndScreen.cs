@@ -1,48 +1,58 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class EndScreen : MonoBehaviour
 {
-    [SerializeField] private Text winText;
-    [SerializeField] private Text loseText;
+    [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Animator animator;
+
+    private bool demonWon = true;
+
+    // Parameter names for the Animator
+    private const string DemonWonParam = "DemonWon";
+    private const string ShowTrigger = "Show";
 
     private void Start()
     {
-        if (Application.isEditor)
-        {
-            TestEndScreen();
-        }
+        ShowEndScreen(demonWon);
     }
 
     public void ShowEndScreen(bool demonWon)
     {
-        animator.SetBool("DemonWon", demonWon);
-        if (demonWon)
+        // Update the message text
+        messageText.text = demonWon ? "Demon Wins! - Killed all survivors!" : "Players Win! - Survived for " + (int)Time.time + " minutes";
+        
+        // Update the Animator parameters
+        if (animator != null)
         {
-            winText.gameObject.SetActive(false);
-            loseText.gameObject.SetActive(true);
+            animator.SetBool(DemonWonParam, demonWon);
+            animator.SetTrigger(ShowTrigger);
         }
         else
         {
-            winText.gameObject.SetActive(true);
-            loseText.gameObject.SetActive(false);
+            Debug.LogWarning("Animator reference not set in EndScreen.", this);
         }
-        animator.SetTrigger("Show");
     }
 
-    private void TestEndScreen()
+#if UNITY_EDITOR
+    [CustomEditor(typeof(EndScreen))]
+    public class EndScreenEditor : Editor
     {
-        StartCoroutine(ShowEndScreenTest());
-    }
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
 
-    private IEnumerator ShowEndScreenTest()
-    {
-        yield return new WaitForSeconds(2);
-        ShowEndScreen(true);
-        yield return new WaitForSeconds(5);
-        ShowEndScreen(false);
+            EndScreen endScreen = (EndScreen)target;
+            if (GUILayout.Button("Toggle End Screen"))
+            {
+                // Toggle the demonWon state and update the screen
+                endScreen.demonWon = !endScreen.demonWon;
+                endScreen.ShowEndScreen(endScreen.demonWon);
+                EditorUtility.SetDirty(endScreen); // Save the state change
+            }
+        }
     }
+#endif
 }
-
