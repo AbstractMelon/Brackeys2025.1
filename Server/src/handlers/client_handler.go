@@ -194,6 +194,7 @@ func (h *ClientHandler) handleVoice(msg models.Message, clientID int) {
 	}
 
 	broadcastMsg := models.AudioBroadcastMessage{
+		Action: "voice",
 		From: clientID,
 		Audio: msg.Audio,
 	}
@@ -269,6 +270,7 @@ func sendToClient(conn net.Conn, response models.Response) {
 	conn.Write(jsonData)
 	log.Printf("Sent response: %v", response)
 }
+
 
 
 
