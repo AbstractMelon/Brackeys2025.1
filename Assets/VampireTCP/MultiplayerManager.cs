@@ -152,7 +152,7 @@ public class MultiplayerManager : MonoBehaviour
         if (GameObject.Find("Player" + newAudioMessage.msg.from))
         {
             OtherPlayerController otherPlayerScript = GameObject.Find("Player" + newAudioMessage.msg.from).GetComponent<OtherPlayerController>();
-            otherPlayerScript.OnVoiceDataReceived(newAudioMessage.msg.audio);
+            otherPlayerScript.OnVoiceDataReceived(Convert.FromBase64String(newAudioMessage.msg.audio));
         }
     }
 
