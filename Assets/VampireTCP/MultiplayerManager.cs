@@ -177,6 +177,7 @@ public class MultiplayerManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        if (playerTransform == null) yield break;
         playerTransform.position = targetPosition;
         playerTransform.eulerAngles = targetRotation;
     }
