@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     private int demonId;
     private bool demonSet;
 
+    public EndScreen endScreenManager;
+
     void Awake()
     {
         instance = this;
@@ -117,6 +119,7 @@ public class GameManager : MonoBehaviour
     // Ends the game and declares the winner
     public void EndGame(bool demonWins)
     {
+        endScreenManager.ShowEndScreen(demonWins);
         string winner = !demonWins ? "Survivors" : "Demon";
         Debug.Log($"{winner} wins!");
     }
