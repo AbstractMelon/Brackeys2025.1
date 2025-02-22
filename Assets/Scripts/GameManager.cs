@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         }
         ids[ids.Length - 1] = networkManager.clientId;
         // Set current ID to last index
-        int demonId = ids[UnityEngine.Random.Range(0, ids.Length)];
+        int demonId = ids[Random.Range(0, ids.Length)];
         networkManager.BroadcastNewMessage("demonID", new { 
             id = demonId
         });
