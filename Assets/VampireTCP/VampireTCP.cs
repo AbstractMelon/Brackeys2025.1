@@ -101,7 +101,7 @@ public class BroadcastMessage : BaseMessage
 public class AudioBroadcastMessage : BaseMessage
 {
     public int from { get; set; }
-    public byte[] audio { get; set; }
+    public string audio { get; set; }
 }
 
 public class ErrorMessage : BaseMessage
