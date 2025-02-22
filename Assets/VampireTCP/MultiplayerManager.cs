@@ -23,7 +23,6 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField] private VampireTCP networkManager;
 
     public GameObject newPlayerInstance;
-    public GameObject newDemonInstance;
 
     public int numPlayers;
 
@@ -54,35 +53,9 @@ public class MultiplayerManager : MonoBehaviour
     {
         if (numPlayers >= 2)
         {
+            SceneManager.LoadScene("Game");
             networkManager.BroadcastNewMessage("startGame", new { });
             startable = true;
-            OtherPlayerController[] players = FindObjectsByType<OtherPlayerController>(FindObjectsSortMode.None);
-            int[] ids = new int[players.Length + 1];
-            for (int i = 0; i < players.Length; i++)
-            {
-                ids[i] = int.Parse(players[i].gameObject.name.Substring(6));
-            }
-            ids[ids.Length - 1] = networkManager.clientId;
-            // Set current ID to last index
-            int demonID = ids[UnityEngine.Random.Range(0, ids.Length)];
-            networkManager.BroadcastNewMessage("demonID", new { 
-                id = demonID
-            });
-            Debug.Log("The demon is: " + demonID);
-            SceneManager.LoadScene("Game");
-            if (SceneManager.GetActiveScene().name == "Game")
-            if (demonID == networkManager.clientId)
-            {
-                FindFirstObjectByType<PlayerController>().gameObject.SetActive(false);
-                FindFirstObjectByType<DemonController>().gameObject.SetActive(true);
-            }
-            else
-            {
-                Destroy(GameObject.Find("Player" + demonID));
-                GameObject newDemon = Instantiate(newDemonInstance);
-                newDemon.name = "Player" + demonID;
-            }
-            return;
         }
         Debug.Log("Unable to start game, not enough players");
     }
@@ -127,9 +100,6 @@ public class MultiplayerManager : MonoBehaviour
         } else if (scene.name == "MainMenu")
         {
             networkManager.Reconnect();
-        } else if (scene.name.Contains("Game"))
-        {
-
         }
     }
 
@@ -174,29 +144,11 @@ public class MultiplayerManager : MonoBehaviour
             {
                 startable = true;
                 SceneManager.LoadScene("Game");
-            } else if (newMessage.msg.message == "demonID")
-            {
-                SetDemonToID(JsonConvert.DeserializeObject<DemonData>(newMessage.msg.value.ToString()).id);
             }
         } else
         {
             GameObject newPlayer = Instantiate(newPlayerInstance);
             newPlayer.name = "Player" + newMessage.msg.from;
-        }
-    }
-    public void SetDemonToID(int id)
-    {
-        Debug.Log("Recieved demon as: " + id);
-        if (id == networkManager.clientId)
-        {
-            FindFirstObjectByType<PlayerController>().gameObject.SetActive(false);
-            FindFirstObjectByType<DemonController>(FindObjectsInactive.Include).gameObject.SetActive(true);
-        }
-        else
-        {
-            Destroy(GameObject.Find("Player" + id));
-            GameObject newDemon = Instantiate(newDemonInstance);
-            newDemon.name = "Player" + id;
         }
     }
 

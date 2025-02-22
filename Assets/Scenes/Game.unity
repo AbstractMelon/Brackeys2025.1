@@ -8696,15 +8696,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2941792931393151832, guid: 928691f5b496a924fb71c04ebd714b52, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 581.35
+      value: 552.87
       objectReference: {fileID: 0}
     - target: {fileID: 2941792931393151832, guid: 928691f5b496a924fb71c04ebd714b52, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.7
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2941792931393151832, guid: 928691f5b496a924fb71c04ebd714b52, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 445.2
+      value: 434.55
       objectReference: {fileID: 0}
     - target: {fileID: 2941792931393151832, guid: 928691f5b496a924fb71c04ebd714b52, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8740,7 +8740,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3922044743862069382, guid: 928691f5b496a924fb71c04ebd714b52, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8139195213989363768, guid: 928691f5b496a924fb71c04ebd714b52, type: 3}
+      propertyPath: mouseSensitivity
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13534,6 +13538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92dd9bf62508e0fb2bc246039caea160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  newDemonInstance: {fileID: 3922044743862069382, guid: 341823c0306bcb54ca44acd1f8a06789, type: 3}
 --- !u!1001 &1996137336
 PrefabInstance:
   m_ObjectHideFlags: 0
