@@ -59,10 +59,6 @@ public class MultiplayerManager : MonoBehaviour
         numPlayers = GameObject.FindGameObjectsWithTag("Player").Length;
         if (multiplayerUIManager)
         {
-            if(Input.GetKeyDown(KeyCode.B))
-            {
-                StartGame();
-            }
             multiplayerUIManager.SetPlayerCount(numPlayers);
         }
     }
