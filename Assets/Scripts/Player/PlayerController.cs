@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private HealthSystem healthSystem;
     private CharacterController controller;
     private Vector3 velocity;
+    private static bool startedGame;
 
     // Components
     private Camera cam;
@@ -32,6 +33,10 @@ public class PlayerController : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
+            if (startedGame)
+            {
+                StartCoroutine(GameManager.instance.DecideDemon());
+            }
             GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
             Transform spawnPos = spawnPositions[UnityEngine.Random.Range(0, spawnPositions.Length)].transform;
             transform.position = spawnPos.transform.position;
@@ -64,11 +69,8 @@ public class PlayerController : MonoBehaviour
             Debug.DrawRay(cam.transform.position, cam.transform.forward * interactDistance, Color.red, 10f);
             if (Physics.Raycast(ray, out RaycastHit hit, interactDistance) && hit.transform.gameObject.layer == 11)
             {
+                startedGame = true;
                 MultiplayerManager.instance.StartGame();
-                if (GameManager.instance != null)
-                    GameManager.instance.DecideDemon();
-                else
-                    GameManager.DoDecideDemonOnLoad();
             }
         }
     }

@@ -126,14 +126,20 @@ public class VampireTCP : MonoBehaviour
 
     async void Start()
     {
-        await ConnectToServer();
+        if (client != null && client.Connected)
+        {
+            await ConnectToServer();
+        }
     }
 
     async Task ConnectToServer()
     {
-        try
+        if (client == null)
         {
             client = new TcpClient();
+        }
+        try
+        {
             await client.ConnectAsync(serverAddress, serverPort);
             stream = client.GetStream();
             Debug.Log("Connected to server");
@@ -175,7 +181,7 @@ public class VampireTCP : MonoBehaviour
     async void StartReceiving()
     {
         byte[] buffer = new byte[4096];
-        while (client.Connected)
+        while (client != null && client.Connected)
         {
             try
             {
@@ -197,14 +203,17 @@ public class VampireTCP : MonoBehaviour
             }
             catch (Exception ex)
             {
-                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                if (bytesRead == 0)
+                if (client != null && client.Connected)
                 {
-                    Debug.Log("Disconnected from server.");
-                    break;
+                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                    if (bytesRead == 0)
+                    {
+                        Debug.Log("Disconnected from server.");
+                        break;
+                    }
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    Debug.LogError("Receive error: " + ex.Message + " | Recieved: " + message);
                 }
-                string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                Debug.LogError("Receive error: " + ex.Message + " | Recieved: "+ message);
             }
             
         }
@@ -212,6 +221,10 @@ public class VampireTCP : MonoBehaviour
 
     void ProcessMessage(string jsonMessage)
     {
+        if (string.IsNullOrEmpty(jsonMessage))
+        {
+            return;
+        }
         BaseMessage baseMsg = JsonConvert.DeserializeObject<BaseMessage>(jsonMessage);
 
         switch (baseMsg.action)
@@ -224,6 +237,10 @@ public class VampireTCP : MonoBehaviour
                 RoomCreatedMessage roomCreated = JsonConvert.DeserializeObject<RoomCreatedMessage>(jsonMessage);
                 Debug.Log("Room created with code: " + roomCreated.room_code);
                 LobbyManager.instance.UpdateRoomCode(roomCreated.room_code);
+                break;
+            case "leave":
+                BroadcastMessage leave = JsonConvert.DeserializeObject<BroadcastMessage>(jsonMessage);
+                Destroy(GameObject.Find("Player" + leave.from));
                 break;
             case "joinedRoom":
                 JoinedRoomMessage joinedRoom = JsonConvert.DeserializeObject<JoinedRoomMessage>(jsonMessage);
@@ -260,72 +277,96 @@ public class VampireTCP : MonoBehaviour
 
     public void OnRecieveNewMessage(BroadcastMessage msg, ErrorMessage err)
     {
-        onRecieveNewMessage?.Invoke(new MessageWrapper(msg, err));
+        if (onRecieveNewMessage != null)
+        {
+            onRecieveNewMessage.Invoke(new MessageWrapper(msg, err));
+        }
     }
 
     public void OnRecieveNewAudioMessage(AudioBroadcastMessage msg, ErrorMessage err)
     {
-        onRecieveNewAudioMessage?.Invoke(new AudioMessageWrapper(msg, err));
+        if (onRecieveNewAudioMessage != null)
+        {
+            onRecieveNewAudioMessage.Invoke(new AudioMessageWrapper(msg, err));
+        }
     }
 
     public void CreateRoom(bool isPublic)
     {
-        var msg = new
+        if (client != null && client.Connected)
         {
-            action = "createRoom",
-            publicRoom = isPublic
-        };
-        SendNewMessage(JsonConvert.SerializeObject(msg));
+            var msg = new
+            {
+                action = "createRoom",
+                publicRoom = isPublic
+            };
+            SendNewMessage(JsonConvert.SerializeObject(msg));
+        }
     }
 
     public void SendVoiceMessage(byte[] audioData)
     {
-        var msg = new
+        if (client != null && client.Connected)
         {
-            action = "voice",
-            audio = Convert.ToBase64String(audioData)
-        };
-        SendNewMessage(JsonConvert.SerializeObject(msg));
+            var msg = new
+            {
+                action = "voice",
+                audio = Convert.ToBase64String(audioData)
+            };
+            SendNewMessage(JsonConvert.SerializeObject(msg));
+        }
     }
 
     public void refreshToken(string roomCode)
     {
-        var msg = new
+        if (client != null && client.Connected)
         {
-            action = "createRoom",
-            room_code = roomCode
-        };
-        SendNewMessage(JsonConvert.SerializeObject(msg));
+            var msg = new
+            {
+                action = "createRoom",
+                room_code = roomCode
+            };
+            SendNewMessage(JsonConvert.SerializeObject(msg));
+        }
     }
 
     public void JoinRoom(string roomCode)
     {
-        var msg = new
+        if (client != null && client.Connected)
         {
-            action = "joinRoom",
-            room_code = roomCode
-        };
-        SendNewMessage(JsonConvert.SerializeObject(msg));
+            var msg = new
+            {
+                action = "joinRoom",
+                room_code = roomCode
+            };
+            SendNewMessage(JsonConvert.SerializeObject(msg));
+        }
     }
 
     public void RequestRoomsList()
     {
-        var msg = new
+        if (client != null && client.Connected)
         {
-            action = "listRooms"
-        };
-        SendNewMessage(JsonConvert.SerializeObject(msg));
+            var msg = new
+            {
+                action = "listRooms"
+            };
+            SendNewMessage(JsonConvert.SerializeObject(msg));
+        }
     }
 
     public void BroadcastNewMessage(string messageText, object value)
     {
-        var msg = new
+        if (client != null && client.Connected)
         {
-            action = "broadcast",
-            message = messageText,
-            value = value
-        };
-        SendNewMessage(JsonConvert.SerializeObject(msg));
+            var msg = new
+            {
+                action = "broadcast",
+                message = messageText,
+                value = value
+            };
+            SendNewMessage(JsonConvert.SerializeObject(msg));
+        }
     }
 
     async void SendNewMessage(string json)
@@ -353,6 +394,4 @@ public class VampireTCP : MonoBehaviour
         }
     }
 }
-
-
 
