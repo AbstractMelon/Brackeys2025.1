@@ -15,6 +15,8 @@ public class OtherPlayerController : MonoBehaviour
 
     private GameObject Player;
 
+    public HealthSystem health;
+
     private void Start()
     {
         Player = GameObject.Find("Player");
@@ -43,7 +45,13 @@ public class OtherPlayerController : MonoBehaviour
 
     private void Update()
     {
-        audioSource.volume = GetScaledDistance(gameObject, Player);
+        if (Player.GetComponent<HealthSystem>().currentHealth > 0 && health.currentHealth <= 0)
+        {
+            audioSource.volume = 0;
+        } else
+        {
+            audioSource.volume = GetScaledDistance(gameObject, Player);
+        }
     }
 
     public void OnVoiceDataReceived(byte[] data)

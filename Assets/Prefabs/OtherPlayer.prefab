@@ -154,7 +154,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -164,7 +164,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 50
+  MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de2a8d49c1ba1894ab1c8c83e0396d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 6530288137386728034}
 --- !u!114 &6530288137386728034
 MonoBehaviour:
   m_ObjectHideFlags: 0
