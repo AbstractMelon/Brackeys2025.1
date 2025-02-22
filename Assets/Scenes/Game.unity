@@ -14964,10 +14964,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4986764271759364003, guid: bc787485472cc6b209187f719ca5aea9, type: 3}
-      propertyPath: beginSFX
-      value: 
-      objectReference: {fileID: 8300000, guid: b73079d6931ba9040ab3ed8b32f65220, type: 3}
     - target: {fileID: 7265787415937534239, guid: bc787485472cc6b209187f719ca5aea9, type: 3}
       propertyPath: m_Volume
       value: 0.569

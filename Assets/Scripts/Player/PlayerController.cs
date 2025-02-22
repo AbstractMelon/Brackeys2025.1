@@ -32,8 +32,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource.clip = beginSFX;
-        audioSource.Play();
         if (SceneManager.GetActiveScene().name == "Game")
         {
             if (startedGame)
@@ -43,6 +41,9 @@ public class PlayerController : MonoBehaviour
             GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
             Transform spawnPos = spawnPositions[UnityEngine.Random.Range(0, spawnPositions.Length)].transform;
             transform.position = spawnPos.transform.position;
+            AudioSource audioSource2 = gameObject.AddComponent<AudioSource>();
+            audioSource2.clip = beginSFX;
+            audioSource2.Play();
         }
         try
         {
