@@ -11,19 +11,22 @@ public class DemonController : MonoBehaviour
     [SerializeField] private float jumpForce = 7f; // Force of the jump
     [SerializeField] private float maxSpeed = 15f; // Maximum speed when walking
     [SerializeField] private float maxSpeedSprint = 25f; // Maximum speed when sprinting
-    [SerializeField] public float mouseSensitivity = 3f; // Speed of the mouse
+    [SerializeField] public float mouseSensitivity = 2f; // Speed of the mouse
     [SerializeField] private float attackPlayerDistance = 5f;
     [SerializeField] private int playerLayer = 6;
     [SerializeField] private int attackPower = 20;
     [SerializeField] private float shrinkSpeed = 0.01f;
     [SerializeField] private float endOnceReachedSize = 1f;
-
+    [SerializeField] private float accelerationMultiplyer = 1f;
+    [SerializeField] private float gravity = -9f;
+    [SerializeField] private float friction = 7f;
+    [SerializeField] private float interactDistance;
+    private Vector3 velocity;
     private VampireTCP networkManager;
 
     // Components
-    private Rigidbody rb;
     private Camera cam;
-    private Vector3 lastGroundedVelocity;
+    private CharacterController controller;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +39,7 @@ public class DemonController : MonoBehaviour
 
         // Get components
         cam = GetComponentInChildren<Camera>();
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
 
         // Lock the cursor
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the screen
@@ -54,31 +57,7 @@ public class DemonController : MonoBehaviour
             Die();
             return;
         }
-        // Sprinting
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift); // Check if the left shift key is pressed
-
-        // Inputs
-        float horizontalInput = Input.GetAxis("Horizontal"); // Get the horizontal input
-        float verticalInput = Input.GetAxis("Vertical"); // Get the vertical input
-
-        // Movement
-        Vector3 movement = new Vector3(horizontalInput, 0, verticalInput); // Create a new vector with the inputs
-        rb.AddForce(transform.rotation * movement * moveSpeed, ForceMode.Acceleration); // Apply the movement to the demon
-
-        // Limiting Velocity
-        Vector2 velocity2D = Vector2.ClampMagnitude(new Vector2(rb.linearVelocity.x, rb.linearVelocity.z), isSprinting ? maxSpeedSprint : maxSpeed); // Clamp the velocity to the maximum speed
-        rb.linearVelocity = new Vector3(velocity2D.x, rb.linearVelocity.y, velocity2D.y); // Set the linear velocity of the demon
-
-        // Jump
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded()) // Check if the space key is pressed and if the demon is on the ground
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Apply a force up to make the player jump
-        }
-
-        // Look
-        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the demon based on the mouse input
-
-        // Inventory
+        UpdateMovement();
         if (Input.GetKeyDown(KeyCode.Mouse0))
             Attack();
 
@@ -111,18 +90,13 @@ public class DemonController : MonoBehaviour
     }
 
     // Check if the player is on the ground
-    bool IsGrounded()
-    {
-        // Raycast to check if the player is on the ground
-        return Physics.Raycast(transform.position, Vector3.down, 1.1f * transform.localScale.y); // Check if there is a collision within 1.1f units down from the player
-    }
     void HighlightPlayer()
     {
         Ray ray = new(cam.transform.position, cam.transform.forward);
         //Debug.DrawRay(cam.transform.position, cam.transform.forward * collectItemDistance, Color.red, 10f);
         if (Physics.Raycast(ray, out RaycastHit hit, attackPlayerDistance) && hit.transform.gameObject.layer == playerLayer)
         {
-            Debug.Log("Raycast successful");
+            //Debug.Log("Raycast successful");
             GameObject player = hit.transform.gameObject;
             player.GetComponent<Renderer>().material.color = Color.red;
         }
@@ -133,9 +107,58 @@ public class DemonController : MonoBehaviour
             {
                 player.GetComponent<Renderer>().material.color = Color.white;
             }
-            PlayerController localPlayer = FindFirstObjectByType<PlayerController>();
-            if (localPlayer != null) localPlayer.GetComponent<Renderer>().material.color = Color.white;
         }
+    }
+    private void UpdateMovement()
+    {
+        // Sprinting
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift); // Check if the left shift key is pressed
+
+        // Look
+        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the player based on the mouse input
+
+        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        
+        
+        velocity += movement * accelerationMultiplyer * Time.deltaTime * 100 * (isSprinting ? 2f : 1f);
+
+        Vector2 vec = new Vector2(velocity.x, velocity.z);
+
+        float frictionFactor = 1 - (friction * Time.deltaTime);
+        if (frictionFactor < 0) frictionFactor = 0;
+        vec *= frictionFactor;
+
+        vec = LimitMagnitude(vec, isSprinting ? maxSpeedSprint : maxSpeed);
+        velocity = new Vector3(vec.x, velocity.y, vec.y);
+        if ((velocity.x <= 0.1 && velocity.x > 0) || (velocity.x >= -0.1 && velocity.x < 0)) velocity.x = 0;
+        if ((velocity.z <= 0.1 && velocity.z > 0) || (velocity.z >= -0.1 && velocity.z < 0)) velocity.z = 0;
+        if (controller.isGrounded)
+        {
+            velocity.y = -1f;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                velocity.y += jumpForce;
+            }
+        }
+        else
+        {
+            velocity.y -= gravity * -2f * Time.deltaTime;
+        }
+        velocity.y = Mathf.Max(velocity.y, -20);
+        controller.Move(transform.rotation * velocity * Time.deltaTime);
+
+    }
+    //private bool CheckGrounded()
+    //{
+    //    return Physics.CheckSphere(transform.position - new Vector3(0, collider.height / 2 + collider.radius - 0.1f, 0), collider.radius, groundLayer);
+    //}
+    private Vector2 LimitMagnitude(Vector2 vector, float maxMagnitude)
+    {
+        if (vector.sqrMagnitude > maxMagnitude * maxMagnitude)
+        {
+            return vector.normalized * maxMagnitude;
+        }
+        return vector;
     }
 }
 

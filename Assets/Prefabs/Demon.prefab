@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 5449332907943389728}
   - component: {fileID: 940920247136046527}
   - component: {fileID: 8139195213989363768}
-  - component: {fileID: 297183902845404070}
+  - component: {fileID: 5623242946011333368}
   m_Layer: 0
   m_Name: Demon
   m_TagString: spectatorschat
@@ -268,7 +268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   multiplayerManager: {fileID: 0}
   moveSpeed: 7
-  jumpForce: 8
+  jumpForce: 12
   maxSpeed: 15
   maxSpeedSprint: 30
   mouseSensitivity: 2
@@ -277,30 +277,32 @@ MonoBehaviour:
   attackPower: 20
   shrinkSpeed: 0.01
   endOnceReachedSize: 1
---- !u!54 &297183902845404070
-Rigidbody:
+  accelerationMultiplyer: 1
+  gravity: -9
+  friction: 7
+  interactDistance: 0
+--- !u!143 &5623242946011333368
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3922044743862069382}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 4
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 1
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 2, z: 0}
