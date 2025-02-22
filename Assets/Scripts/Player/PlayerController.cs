@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityOpus;
 
 public class PlayerController : MonoBehaviour
@@ -87,6 +88,12 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            GameObject[] spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
+            Transform spawnPos = spawnPositions[UnityEngine.Random.Range(0, spawnPositions.Length)].transform;
+            transform.position = spawnPos.transform.position;
+        }
         try
         {
             networkManager = FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];

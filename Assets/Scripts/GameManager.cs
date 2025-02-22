@@ -110,17 +110,14 @@ public class GameManager : MonoBehaviour
     // Check if the game is over
     public void CheckGameOver()
     {
-        
-        if (multiplayerManager.numPlayers <= 0)
-        {
-            EndGame();
-        }
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        if (players.Length == 0) EndGame(true);
     }
 
     // Ends the game and declares the winner
-    public void EndGame()
+    public void EndGame(bool demonWins)
     {
-        string winner = (multiplayerManager.numPlayers >= 1) ? "Survivors" : "Demon";
+        string winner = !demonWins ? "Survivors" : "Demon";
         Debug.Log($"{winner} wins!");
     }
 }

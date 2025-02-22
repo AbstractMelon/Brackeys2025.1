@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - GoTime
   - spectatorschat
+  - SpawnLocation
+  - SpawnPosition
   layers:
   - Default
   - TransparentFX
