@@ -5310,7 +5310,7 @@ MonoBehaviour:
   accelerationMultiplyer: 1
   gravity: -9
   friction: 7
-  interactDistance: 0
+  interactDistance: 5
 --- !u!114 &4405345808299831212
 MonoBehaviour:
   m_ObjectHideFlags: 0
