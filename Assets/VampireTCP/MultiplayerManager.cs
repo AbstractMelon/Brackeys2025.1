@@ -13,10 +13,6 @@ public class PositionData
     public string r { get; set; }
     public string s { get; set; }
 }
-public class DemonData
-{
-    public int id { get; set; }
-}
 
 public class MultiplayerManager : MonoBehaviour
 {

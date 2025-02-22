@@ -5,6 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public class DemonData
+    {
+        public int id { get; set; }
+    }
+    public class HurtData
+    {
+        public int id { get; set; }
+        public int d { get; set; }
+    }
     private MultiplayerManager multiplayerManager;
     private VampireTCP networkManager;
     public GameObject newDemonInstance;
@@ -20,7 +29,7 @@ public class GameManager : MonoBehaviour
         multiplayerManager = FindObjectsByType<MultiplayerManager>(FindObjectsSortMode.None)[0];
         networkManager = FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
 
-        networkManager.onRecieveNewMessage.AddListener(CheckUpdateDemon);
+        networkManager.onRecieveNewMessage.AddListener(GetBroadcast);
         if (decideDemonOnLoad) DecideDemon();
     }
 
@@ -37,7 +46,7 @@ public class GameManager : MonoBehaviour
     {
         decideDemonOnLoad = true;
     }
-    public void CheckUpdateDemon(MessageWrapper newMessage)
+    public void GetBroadcast(MessageWrapper newMessage)
     {
         if (newMessage.msg.message == "demonID")
         {
@@ -46,6 +55,18 @@ public class GameManager : MonoBehaviour
             else
             {
                 demonId = JsonConvert.DeserializeObject<DemonData>(newMessage.msg.value.ToString()).id;
+            }
+        }
+        else if (newMessage.msg.message == "hurtPlayer")
+        {
+            HurtData data = JsonConvert.DeserializeObject<HurtData>(newMessage.msg.value.ToString());
+            if (data.id == networkManager.clientId)
+            {
+                GameObject.Find("Player").GetComponent<HealthSystem>().TakeDamage(data.d);
+            }
+            else
+            {
+                GameObject.Find("Player" + data.id).GetComponent<HealthSystem>().TakeDamage(data.d);
             }
         }
     }
@@ -71,6 +92,7 @@ public class GameManager : MonoBehaviour
     public void SetDemonToID(int id)
     {
         demonSet = true;
+        demonId = id;
         Debug.Log("Setting demon to: " + id);
         if (id == networkManager.clientId)
         {
@@ -88,7 +110,7 @@ public class GameManager : MonoBehaviour
     // Check if the game is over
     public void CheckGameOver()
     {
-        Debug.Log(multiplayerManager.numPlayers);
+        
         if (multiplayerManager.numPlayers <= 0)
         {
             EndGame();

@@ -189,11 +189,16 @@ public class PlayerController : MonoBehaviour
     {
         // Raycast to check if the player is on the ground
         return Physics.Raycast(transform.position, Vector3.down, 1.1f); // Check if there is a collision within 1.1f units down from the player
+        //return Physics.SphereCast(transform.GetChild(4).position, 0.3f, Vector3.down, out _, 0.3f);
     }
 
     public bool IsDead()
     {
         return healthSystem.currentHealth <= 0;
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.GetChild(4).position, 0.3f);
     }
 }
 

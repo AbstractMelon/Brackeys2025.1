@@ -44,9 +44,9 @@ public class HealthSystem : MonoBehaviour
 
     private void Die()
     {
-        GameManager.instance.CheckGameOver();
         Debug.Log("Player Died");
         Destroy(gameObject);
+        GameManager.instance.CheckGameOver();
     }
 }
 

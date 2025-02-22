@@ -98,7 +98,7 @@ public class DemonController : MonoBehaviour
         {
             Debug.Log("Raycast successful");
             hit.transform.GetComponent<HealthSystem>().TakeDamage(attackPower);
-            
+            networkManager.BroadcastNewMessage( "hurtPlayer", new { id = hit.transform.gameObject.name.Substring(6), d = attackPower} );
             return true;
         }
         Debug.Log("Raycast failure");
@@ -114,7 +114,7 @@ public class DemonController : MonoBehaviour
     bool IsGrounded()
     {
         // Raycast to check if the player is on the ground
-        return Physics.Raycast(transform.position, Vector3.down, 2.1f); // Check if there is a collision within 1.1f units down from the player
+        return Physics.Raycast(transform.position, Vector3.down, 1.1f * transform.localScale.y); // Check if there is a collision within 1.1f units down from the player
     }
     void HighlightPlayer()
     {
