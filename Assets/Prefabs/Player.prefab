@@ -5185,6 +5185,7 @@ GameObject:
   - component: {fileID: 4986764271759364003}
   - component: {fileID: 4405345808299831212}
   - component: {fileID: 2073017239566551760}
+  - component: {fileID: 615083257472929066}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -5306,6 +5307,10 @@ MonoBehaviour:
   stepParticles: {fileID: 8837588298922581805}
   walkingSFX: {fileID: 8300000, guid: 19709514d2d9f38ca9f057484fbbf4b2, type: 3}
   audioSource: {fileID: 7265787415937534239}
+  accelerationMultiplyer: 1
+  gravity: -9
+  friction: 7
+  interactDistance: 0
 --- !u!114 &4405345808299831212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5333,6 +5338,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkManager: {fileID: 0}
+--- !u!143 &615083257472929066
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3917788537246358859}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 4.916663
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 1
+  m_SkinWidth: 0.0001
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 2.402624, z: 0}
 --- !u!1 &4254528920522364866
 GameObject:
   m_ObjectHideFlags: 0
