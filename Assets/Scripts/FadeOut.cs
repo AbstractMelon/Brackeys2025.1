@@ -3,27 +3,18 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Letter : MonoBehaviour
+public class FadeOut : MonoBehaviour
 {
-    public string nextScene;
     public Image fadeImage;
     public float fadeDuration = 1.5f;
-    public GameObject text;
 
-    private bool isFading = false;
-
-    void Update()
+    void Start()
     {
-        if (!isFading && (Input.anyKeyDown || Input.GetMouseButtonDown(0)))
-        {
-            text.SetActive(false);
-            StartCoroutine(FadeOut());
-        }
+        StartCoroutine(Begin());
     }
 
-    IEnumerator FadeOut()
+    IEnumerator Begin()
     {
-        isFading = true;
         float elapsedTime = 0f;
         Color color = fadeImage.color;
 
@@ -35,6 +26,6 @@ public class Letter : MonoBehaviour
             yield return null;
         }
 
-        SceneManager.LoadScene(nextScene);
+        Destroy(fadeImage);
     }
 }

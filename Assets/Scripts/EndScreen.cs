@@ -34,7 +34,9 @@ public class EndScreen : MonoBehaviour
             while (elapsedTime < fadeDuration)
             {
                 elapsedTime += Time.deltaTime;
-                color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
+                color.r = Mathf.Clamp01(elapsedTime / fadeDuration);
+                color.g = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
+                color.b = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
                 fadeImage.color = color;
                 yield return null;
             }
@@ -52,7 +54,9 @@ public class EndScreen : MonoBehaviour
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            color.a = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
+            color.r = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
+            color.g = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
+            color.b = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
             fadeImage.color = color;
             yield return null;
         }
