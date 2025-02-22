@@ -4783,8 +4783,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flickerChance: 0.95
   updateDelay: 0.1
-  syncWithOtherLights: 0
-  otherLights: []
+  syncWithOtherLights: 1
+  otherLights:
+  - {fileID: 1844760235}
   minOffTime: 0.3
   maxOffTime: 1
 --- !u!108 &1072714074
@@ -10251,7 +10252,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_Intensity: 3
+  m_Intensity: 2
   m_Range: 500
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
