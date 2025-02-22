@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System;
-using Mono.Cecil.Cil;
 
 public class PositionData
 {
@@ -153,7 +152,7 @@ public class MultiplayerManager : MonoBehaviour
         if (GameObject.Find("Player" + newAudioMessage.msg.from))
         {
             OtherPlayerController otherPlayerScript = GameObject.Find("Player" + newAudioMessage.msg.from).GetComponent<OtherPlayerController>();
-            otherPlayerScript.PlayAudio(newAudioMessage.msg.audio);
+            otherPlayerScript.OnVoiceDataReceived(newAudioMessage.msg.audio);
         }
     }
 

@@ -1,38 +1,52 @@
+using System;
 using System.Net;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityOpus;
 
 public class OtherPlayerController : MonoBehaviour
 {
+    private const int ChunkSize = 160; // Must match sender's chunk size
+    private const int SamplingFrequency = 16000;
+    private const int BufferSize = ChunkSize * 4; // Buffer 4 chunks
+
     private AudioSource audioSource;
+    private AudioClip audioClip;
+    private float[] audioBuffer;
+    private int writePosition = 0;
 
-    private int sampleRate = 48000;         // Recommended sample rate for Opus
-    private int channels = 1;               // Mono is typical for voice chat
-    private int frameSize;
-    private Decoder decoder;
-
-    void Start()
+    private void Start()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
-        decoder = new Decoder(SamplingFrequency.Frequency_48000, NumChannels.Mono);
+        audioClip = AudioClip.Create("VoiceChat", BufferSize, 1, SamplingFrequency, false);
+        audioSource.clip = audioClip;
+        audioSource.loop = true;
+        audioSource.Play();
+
+        audioBuffer = new float[ChunkSize];
     }
 
-    public void PlayAudio(byte[] data)
+    public void OnVoiceDataReceived(byte[] data)
     {
-        // Allocate a buffer for the decoded PCM data (float samples)
-        float[] decodedPcm = new float[frameSize * channels];
-        // Decode the data into the buffer. The Decoder.Decode method returns the total number of samples (across channels)
-        int decodedSamples = decoder.Decode(data, data.Length, decodedPcm);
-        if (decodedSamples <= 0)
+        // Decompress audio data from bytes back to float
+        for (int i = 0; i < ChunkSize; i++)
         {
-            Debug.LogWarning("Decoding failed or produced no samples.");
-            return;
+            audioBuffer[i] = (data[i] / 127.5f) - 1f;
         }
 
-        // Create an AudioClip from the decoded PCM data.
-        AudioClip clip = AudioClip.Create("ReceivedVoice", decodedSamples, channels, sampleRate, false);
-        clip.SetData(decodedPcm, 0);
-        audioSource.PlayOneShot(clip);
+        // Write the chunk to the AudioClip
+        audioClip.SetData(audioBuffer, writePosition);
+
+        writePosition += ChunkSize;
+        if (writePosition >= audioClip.samples)
+        {
+            writePosition = 0;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
     }
 }
