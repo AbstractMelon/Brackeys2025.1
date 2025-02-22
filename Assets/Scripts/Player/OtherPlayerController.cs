@@ -51,7 +51,7 @@ public class OtherPlayerController : MonoBehaviour
             audioSource.volume = 0;
         } else
         {
-            audioSource.volume = GetScaledDistance(gameObject, Player);
+            if (SceneManager.GetActiveScene().name != "MainMenu") audioSource.volume = GetScaledDistance(gameObject, Player);
         }
     }
 
