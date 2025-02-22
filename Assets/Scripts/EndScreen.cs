@@ -1,58 +1,62 @@
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EndScreen : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI messageText;
-    [SerializeField] private Animator animator;
+    public string nextScene;
+    public Image fadeImage;
+    public float fadeDuration = 1.5f;
 
-    private bool demonWon = true;
+    private bool fadedIn = false;
 
-    // Parameter names for the Animator
-    private const string DemonWonParam = "DemonWon";
-    private const string ShowTrigger = "Show";
-
-    private void Start()
-    {
-        ShowEndScreen(demonWon);
-    }
+    public Sprite PLSPRITE;
 
     public void ShowEndScreen(bool demonWon)
     {
-        // Update the message text
-        messageText.text = demonWon ? "Demon Wins! - Killed all survivors!" : "Players Win! - Survived for " + (int)Time.time + " minutes";
-        
-        // Update the Animator parameters
-        if (animator != null)
+        if(!demonWon)
         {
-            animator.SetBool(DemonWonParam, demonWon);
-            animator.SetTrigger(ShowTrigger);
+            fadeImage.sprite = PLSPRITE;
         }
-        else
-        {
-            Debug.LogWarning("Animator reference not set in EndScreen.", this);
-        }
+        StartCoroutine(FadeIn());
     }
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(EndScreen))]
-    public class EndScreenEditor : Editor
+    IEnumerator FadeIn()
     {
-        public override void OnInspectorGUI()
+        if (!fadedIn)
         {
-            DrawDefaultInspector();
+            float elapsedTime = 0f;
+            Color color = fadeImage.color;
 
-            EndScreen endScreen = (EndScreen)target;
-            if (GUILayout.Button("Toggle End Screen"))
+            while (elapsedTime < fadeDuration)
             {
-                // Toggle the demonWon state and update the screen
-                endScreen.demonWon = !endScreen.demonWon;
-                endScreen.ShowEndScreen(endScreen.demonWon);
-                EditorUtility.SetDirty(endScreen); // Save the state change
+                elapsedTime += Time.deltaTime;
+                color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
+                fadeImage.color = color;
+                yield return null;
             }
+
+            fadedIn = true;
+            StartCoroutine(FadeOut());
         }
     }
-#endif
+
+    IEnumerator FadeOut()
+    {
+        float elapsedTime = 0f;
+        Color color = fadeImage.color;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            color.a = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
+            fadeImage.color = color;
+            yield return null;
+        }
+
+        SceneManager.LoadScene(nextScene);
+    }
 }
