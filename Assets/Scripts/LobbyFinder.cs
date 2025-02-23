@@ -107,6 +107,9 @@ public class RoomFinder : MonoBehaviour
         if (networkManager != null)
         {
             Debug.Log("Adding listener to network manager.");
+            networkManager.onRecieveNewBaseMessage.AddListener(HandleRoomListUpdate);
+            RefreshRoomList();
+            Debug.Log("Network manager set.");
         }
         else
         {
@@ -114,4 +117,7 @@ public class RoomFinder : MonoBehaviour
         }
     }
 }
+
+
+
 

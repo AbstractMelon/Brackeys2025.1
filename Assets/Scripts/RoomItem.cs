@@ -16,10 +16,14 @@ public class RoomListItem : MonoBehaviour
         multiplayerManager = manager;
         roomCodeText.text = $"Room: {code}";
         joinButton.onClick.AddListener(OnJoinClicked);
+
+        Debug.Log("Initialized room list item with code: " + code);
     }
 
     private void OnJoinClicked()
     {
+        multiplayerManager = MultiplayerManager.instance;
+        Debug.Log("Join button clicked for room code: " + roomCode);
         multiplayerManager.JoinGame(roomCode);
     }
 }
