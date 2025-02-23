@@ -69,6 +69,10 @@ public class GameManager : MonoBehaviour
                 GameObject.Find("Player" + data.id).GetComponent<HealthSystem>().TakeDamage(data.d);
             }
         }
+        else if (newMessage.msg.message == "demonDied")
+        {
+            EndGame(false);
+        }
     }
     public IEnumerator DecideDemon()
     {
