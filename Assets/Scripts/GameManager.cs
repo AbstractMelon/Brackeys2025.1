@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private float timeSinceStart;
     private int demonId;
     private bool demonSet;
+    private bool gameOver;
 
     public EndScreen endScreenManager;
 
@@ -117,6 +118,7 @@ public class GameManager : MonoBehaviour
     // Check if the game is over
     public void CheckGameOver()
     {
+        if (gameOver) return;
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (players.Length == 0) EndGame(true);
     }
@@ -124,6 +126,8 @@ public class GameManager : MonoBehaviour
     // Ends the game and declares the winner
     public void EndGame(bool demonWins)
     {
+        if (gameOver) return;
+        gameOver = true;
         endScreenManager.ShowEndScreen(demonWins);
         string winner = !demonWins ? "Survivors" : "Demon";
         Debug.Log($"{winner} wins!");
