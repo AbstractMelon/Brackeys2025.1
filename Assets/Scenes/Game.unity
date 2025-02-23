@@ -20915,9 +20915,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1392572750111108481, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: fadeDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392572750111108481, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: demonWinSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cd1fe537db8a7eb4a8a394886c686430, type: 3}
+    - target: {fileID: 1392572750111108481, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: playerWinSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a1339e469b4ad09409db1b46bb7fc989, type: 3}
     - target: {fileID: 2882046658159302145, guid: 537316fadead5ad40876010a10d8879e, type: 3}
       propertyPath: m_Name
       value: EndScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 4134070243076221571, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: m_Name
+      value: Screen
       objectReference: {fileID: 0}
     - target: {fileID: 4153650018589770172, guid: 537316fadead5ad40876010a10d8879e, type: 3}
       propertyPath: m_LocalPosition.x

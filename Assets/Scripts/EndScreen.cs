@@ -1,9 +1,10 @@
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+
 
 public class EndScreen : MonoBehaviour
 {
@@ -13,14 +14,12 @@ public class EndScreen : MonoBehaviour
 
     private bool fadedIn = false;
 
-    public Sprite PLSPRITE;
+    public Sprite demonWinSprite;
+    public Sprite playerWinSprite;
 
     public void ShowEndScreen(bool demonWon)
     {
-        if(!demonWon)
-        {
-            fadeImage.sprite = PLSPRITE;
-        }
+        fadeImage.sprite = demonWon ? demonWinSprite : playerWinSprite;
         StartCoroutine(FadeIn());
     }
 
@@ -34,14 +33,13 @@ public class EndScreen : MonoBehaviour
             while (elapsedTime < fadeDuration)
             {
                 elapsedTime += Time.deltaTime;
-                color.r = Mathf.Clamp01(elapsedTime / fadeDuration);
-                color.g = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
-                color.b = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
+                color.a = Mathf.Clamp01(elapsedTime / fadeDuration);
                 fadeImage.color = color;
                 yield return null;
             }
 
             fadedIn = true;
+            yield return new WaitForSeconds(3f);
             StartCoroutine(FadeOut());
         }
     }
@@ -54,9 +52,7 @@ public class EndScreen : MonoBehaviour
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            color.r = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
-            color.g = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
-            color.b = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
+            color.a = Mathf.Clamp01(1 - elapsedTime / fadeDuration);
             fadeImage.color = color;
             yield return null;
         }
