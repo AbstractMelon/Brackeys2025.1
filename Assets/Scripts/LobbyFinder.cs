@@ -17,7 +17,7 @@ public class RoomFinder : MonoBehaviour
 
     private void Awake()
     {
-        networkManager = FindObjectOfType<VampireTCP>();
+        networkManager = Object.FindFirstObjectByType<VampireTCP>();
         multiplayerManager = MultiplayerManager.instance;
         
         refreshButton.onClick.AddListener(RefreshRoomList);
@@ -25,18 +25,25 @@ public class RoomFinder : MonoBehaviour
 
     private void OnEnable()
     {
-        networkManager.onRecieveNewBaseMessage.AddListener(HandleRoomListUpdate);
+        if (networkManager != null)
+        {
+            networkManager.onRecieveNewBaseMessage.AddListener(HandleRoomListUpdate);
+        }
         RefreshRoomList();
     }
 
     private void OnDisable()
     {
-        networkManager.onRecieveNewBaseMessage.RemoveListener(HandleRoomListUpdate);
+        if (networkManager != null)
+        {
+            networkManager.onRecieveNewBaseMessage.RemoveListener(HandleRoomListUpdate);
+        }
     }
+
 
     private void HandleRoomListUpdate(GenericMessageWrapper message)
     {
-        if (message.msg != null && message.msg.msg != null)
+        if (message != null && message.msg != null && message.msg.msg != null)
         {
             UpdateRoomList(message.msg.msg);
         }
@@ -45,20 +52,45 @@ public class RoomFinder : MonoBehaviour
     public void RefreshRoomList()
     {
         ClearRoomList();
-        networkManager.RequestRoomsList();
+        if (networkManager != null)
+        {
+            networkManager.RequestRoomsList();
+        }
     }
 
     private void UpdateRoomList(string[] roomCodes)
     {
+        Debug.Log($"Updating UI with {(roomCodes?.Length ?? 0)} rooms.");
         ClearRoomList();
 
-        noRoomsMessage.SetActive(roomCodes.Length == 0);
+        if (noRoomsMessage != null)
+        {
+            noRoomsMessage.SetActive(roomCodes == null || roomCodes.Length == 0);
+        }
+
+        if (roomCodes == null) return;
 
         foreach (string roomCode in roomCodes)
         {
-            GameObject roomItem = Instantiate(roomListItemPrefab, roomListContent);
-            roomItem.GetComponent<RoomListItem>().Initialize(roomCode, multiplayerManager);
-            currentRoomItems.Add(roomItem);
+            if (roomListItemPrefab != null)
+            {
+                GameObject roomItem = Instantiate(roomListItemPrefab, roomListContent);
+                RoomListItem itemComponent = roomItem.GetComponent<RoomListItem>();
+                if (itemComponent != null)
+                {
+                    itemComponent.Initialize(roomCode, multiplayerManager);
+                    currentRoomItems.Add(roomItem);
+                }
+                else
+                {
+                    Debug.LogError("RoomListItem component missing on prefab.");
+                    Destroy(roomItem);
+                }
+            }
+            else
+            {
+                Debug.LogError("Room list item prefab is missing.");
+            }
         }
     }
 
@@ -71,3 +103,4 @@ public class RoomFinder : MonoBehaviour
         currentRoomItems.Clear();
     }
 }
+
