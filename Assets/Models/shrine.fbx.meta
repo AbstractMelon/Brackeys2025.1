@@ -3,7 +3,12 @@ guid: 24a29711500464f44b8f31a6566699de
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HalloweenBits
+    second: {fileID: 2100000, guid: e9c87e3ee834c49469f0b2d93872b85b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
