@@ -155,7 +155,8 @@ public class PlayerController : MonoBehaviour
 
 
         // Show the demon indicator if the demon is nearby
-        float distanceToDemon = Vector3.Distance(transform.position, GameObject.Find("Demon").transform.position);
+        if (GameObject.Find("Player" + GameManager.instance.demonId) == null) return;
+        float distanceToDemon = Vector3.Distance(transform.position, GameObject.Find("Player" + GameManager.instance.demonId).transform.position);
 
         if (distanceToDemon < 25f)
         {

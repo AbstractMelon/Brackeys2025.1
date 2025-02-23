@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject newDemonInstance;
     public static GameManager instance;
     private float timeSinceStart;
-    private int demonId;
+    public int demonId;
     private bool demonSet;
     private bool gameOver;
 
