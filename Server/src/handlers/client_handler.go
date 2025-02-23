@@ -175,6 +175,12 @@ func (h *ClientHandler) handleBroadcast(msg models.Message, clientID int) {
 			sendToClient(client, broadcastMsg)
 		}
 	}
+
+	if msg.Message == "startGame" {
+		h.state.Mu.Lock()
+		delete(h.state.PublicRooms, roomCode)
+		h.state.Mu.Unlock()
+	}
 }
 
 func (h *ClientHandler) handleVoice(msg models.Message, clientID int) {
@@ -270,10 +276,3 @@ func sendToClient(conn net.Conn, response models.Response) {
 	conn.Write(jsonData)
 	log.Printf("Sent response: %v", response)
 }
-
-
-
-
-
-
-
