@@ -66,6 +66,10 @@ public class RoomFinder : MonoBehaviour
         if (noRoomsMessage != null)
         {
             noRoomsMessage.SetActive(roomCodes == null || roomCodes.Length == 0);
+            if (roomCodes == null)
+            {
+                noRoomsMessage.GetComponentInChildren<Text>().text = "No rooms found.";
+            }
         }
 
         if (roomCodes == null) return;
