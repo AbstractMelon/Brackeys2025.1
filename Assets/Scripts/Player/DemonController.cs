@@ -15,7 +15,7 @@ public class DemonController : MonoBehaviour
     [SerializeField] private float attackPlayerDistance = 5f;
     [SerializeField] private int playerLayer = 6;
     [SerializeField] private int attackPower = 20;
-    [SerializeField] private float shrinkSpeed = 0.01f;
+    [SerializeField] private float shrinkSpeed = 0.005f;
     [SerializeField] private float endOnceReachedSize = 1f;
     [SerializeField] private float accelerationMultiplyer = 1f;
     [SerializeField] private float gravity = -9f;

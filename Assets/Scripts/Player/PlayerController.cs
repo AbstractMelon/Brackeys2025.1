@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviour
 
         if (distanceToDemon < 25f)
         {
-            demonOverlay.color = new Color(1f, 0f, 0f, 1f - (distanceToDemon / 25f));
+            demonOverlay.color = new Color(1f, 0f, 0f, Mathf.Min(0.25f - (distanceToDemon / 100f), 0.25f));
             demonIndicator.SetActive(true);
         }
         else
