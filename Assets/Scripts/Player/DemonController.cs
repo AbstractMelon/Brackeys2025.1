@@ -69,8 +69,8 @@ public class DemonController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Demon has died!");
+        networkManager.BroadcastNewMessage("demonDied", new { a = "he di do da die doh" });
         GameManager.instance.EndGame(false);
-        Destroy(gameObject);
     }
     private bool Attack()
     {
