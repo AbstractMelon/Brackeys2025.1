@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Vector3 velocity;
     private static bool startedGame;
+    public bool allowControl = true;
 
     // Components
     private Camera cam;
@@ -95,9 +96,12 @@ public class PlayerController : MonoBehaviour
         bool isSprinting = Input.GetKey(KeyCode.LeftShift); // Check if the left shift key is pressed
 
         // Look
-        transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the player based on the mouse input
-
-        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Vector3 movement = Vector3.zero;
+        if (allowControl) 
+        {
+            transform.Rotate(Vector3.up * Input.GetAxis("Mouse X") * mouseSensitivity); // Rotate the player based on the mouse input
+            movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        }
         
         
         velocity += movement * accelerationMultiplyer * Time.deltaTime * 100 * (isSprinting ? 2f : 1f);

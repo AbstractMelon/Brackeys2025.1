@@ -46,9 +46,9 @@ public class HealthSystem : MonoBehaviour
     {
         Debug.Log("Player Died");
         gameObject.tag = "spectatorschat";
-        gameObject.transform.position = GameObject.Find("SpectatorPosition").transform.position;
-        gameObject.transform.rotation = GameObject.Find("SpectatorPosition").transform.rotation;
         gameObject.transform.SetParent(GameObject.Find("SpectatorPosition").transform);
+        transform.localPosition = Vector3.zero;
+        transform.GetChild(0).gameObject.SetActive(false);
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         GameManager.instance.CheckGameOver();
     }
