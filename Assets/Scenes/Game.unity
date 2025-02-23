@@ -828,6 +828,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 24a29711500464f44b8f31a6566699de, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 24a29711500464f44b8f31a6566699de, type: 3}
       propertyPath: m_Name
       value: shrine (3)
@@ -1309,6 +1313,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 24a29711500464f44b8f31a6566699de, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 24a29711500464f44b8f31a6566699de, type: 3}
       propertyPath: m_Name
       value: shrine
@@ -1670,6 +1678,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 478137bf906c13b41861c41f869e7976, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 478137bf906c13b41861c41f869e7976, type: 3}
       propertyPath: m_Name
       value: crypt
@@ -3347,6 +3359,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5cab74a71541e184aa9a20cb34b7a0cc, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 5cab74a71541e184aa9a20cb34b7a0cc, type: 3}
       propertyPath: m_Name
       value: grave_A (1)
@@ -5207,6 +5223,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d7ec409bbfd925844ab6f262b12e41f9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: d7ec409bbfd925844ab6f262b12e41f9, type: 3}
       propertyPath: m_Name
       value: grave_B (2)
@@ -5276,6 +5296,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 24a29711500464f44b8f31a6566699de, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 24a29711500464f44b8f31a6566699de, type: 3}
       propertyPath: m_Name
       value: shrine (5)
@@ -6232,6 +6256,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e97a1f892f34f9348afc7ae4e62d5441, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: e97a1f892f34f9348afc7ae4e62d5441, type: 3}
       propertyPath: m_Name
       value: grave_A_destroyed (1)
@@ -6788,6 +6816,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e97a1f892f34f9348afc7ae4e62d5441, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: e97a1f892f34f9348afc7ae4e62d5441, type: 3}
       propertyPath: m_Name
       value: grave_A_destroyed (2)
@@ -6939,6 +6971,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 24a29711500464f44b8f31a6566699de, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 24a29711500464f44b8f31a6566699de, type: 3}
       propertyPath: m_Name
       value: shrine (1)
@@ -7983,6 +8019,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d7ec409bbfd925844ab6f262b12e41f9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: d7ec409bbfd925844ab6f262b12e41f9, type: 3}
       propertyPath: m_Name
       value: grave_B
@@ -9919,6 +9959,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5cab74a71541e184aa9a20cb34b7a0cc, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 5cab74a71541e184aa9a20cb34b7a0cc, type: 3}
       propertyPath: m_Name
       value: grave_A (2)
@@ -10660,6 +10704,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 478137bf906c13b41861c41f869e7976, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 478137bf906c13b41861c41f869e7976, type: 3}
       propertyPath: m_Name
       value: crypt (1)
@@ -10806,6 +10854,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e97a1f892f34f9348afc7ae4e62d5441, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: e97a1f892f34f9348afc7ae4e62d5441, type: 3}
       propertyPath: m_Name
       value: grave_A_destroyed
@@ -11041,6 +11093,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 24a29711500464f44b8f31a6566699de, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 24a29711500464f44b8f31a6566699de, type: 3}
       propertyPath: m_Name
       value: shrine (2)
@@ -11473,6 +11529,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d7ec409bbfd925844ab6f262b12e41f9, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: d7ec409bbfd925844ab6f262b12e41f9, type: 3}
       propertyPath: m_Name
       value: grave_B (1)
@@ -29019,6 +29079,114 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.05890129, y: 0.03, z: 0.0016550608}
   m_Center: {x: -5.196159e-17, y: 0.005773478, z: -1.6409203e-16}
+--- !u!1 &1732491006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1732491010}
+  - component: {fileID: 1732491009}
+  - component: {fileID: 1732491008}
+  - component: {fileID: 1732491007}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1732491007
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732491006}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1732491008
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732491006}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1732491009
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732491006}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1732491010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732491006}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 462.99, y: 13.55, z: 485.58}
+  m_LocalScale: {x: 5, y: 5, z: 0.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &1733019804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32344,6 +32512,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 24a29711500464f44b8f31a6566699de, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 24a29711500464f44b8f31a6566699de, type: 3}
       propertyPath: m_Name
       value: shrine (4)
@@ -35139,6 +35311,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5cab74a71541e184aa9a20cb34b7a0cc, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a37f728b954e8fd3c880f603217f30ed, type: 2}
     - target: {fileID: 919132149155446097, guid: 5cab74a71541e184aa9a20cb34b7a0cc, type: 3}
       propertyPath: m_Name
       value: grave_A
@@ -35284,3 +35460,4 @@ SceneRoots:
   - {fileID: 1287932941}
   - {fileID: 1299837132}
   - {fileID: 1876050929}
+  - {fileID: 1732491010}
