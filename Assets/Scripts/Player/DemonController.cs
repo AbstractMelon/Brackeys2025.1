@@ -33,6 +33,7 @@ public class DemonController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject.Find("HealthIndicator").GetComponent<LinearIndicator>().maxValue = transform.localScale.y - 1;
         try
         {
             networkManager = FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
@@ -55,6 +56,7 @@ public class DemonController : MonoBehaviour
             return;
         }
         transform.localScale -= new Vector3(shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime);
+        GameObject.Find("HealthIndicator").GetComponent<LinearIndicator>().SetValue(transform.localScale.y - 1);
         if (transform.localScale.y <= endOnceReachedSize)
         {
             Die();

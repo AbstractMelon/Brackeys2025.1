@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class HealthSystem : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        if (SceneManager.GetActiveScene().name == "Game") GameObject.Find("HealthIndicator").GetComponent<LinearIndicator>().SetValue(100);
     }
 
     // Update is called once per frame
@@ -26,6 +28,7 @@ public class HealthSystem : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        if (GameObject.Find("Player").GetComponent<PlayerController>() != null) GameObject.Find("HealthIndicator").GetComponent<LinearIndicator>().SetValue(currentHealth);
         Debug.Log("Health: " + currentHealth);
 
         if (hurtSFX != null)
