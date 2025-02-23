@@ -1713,16 +1713,46 @@ MonoBehaviour:
   panels:
   - name: Main
     panel: {fileID: 9866070}
+    onPanelLoad:
+      m_PersistentCalls:
+        m_Calls: []
   - name: Play
     panel: {fileID: 912522208}
+    onPanelLoad:
+      m_PersistentCalls:
+        m_Calls: []
   - name: Settings
     panel: {fileID: 810601516}
+    onPanelLoad:
+      m_PersistentCalls:
+        m_Calls: []
   - name: Credits
     panel: {fileID: 376381727}
+    onPanelLoad:
+      m_PersistentCalls:
+        m_Calls: []
   - name: Host
     panel: {fileID: 2049157869}
+    onPanelLoad:
+      m_PersistentCalls:
+        m_Calls: []
   - name: Join
     panel: {fileID: 1264755693}
+    onPanelLoad:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 22767462}
+          m_TargetAssemblyTypeName: RoomFinder, Assembly-CSharp
+          m_MethodName: SetNetworkManager
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!4 &357085295
 Transform:
   m_ObjectHideFlags: 0
@@ -3907,7 +3937,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 760182015}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 22767462}
+        m_TargetAssemblyTypeName: RoomFinder, Assembly-CSharp
+        m_MethodName: RefreshRoomList
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &760182015
 MonoBehaviour:
   m_ObjectHideFlags: 0
