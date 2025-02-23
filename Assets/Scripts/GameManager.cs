@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         multiplayerManager = FindObjectsByType<MultiplayerManager>(FindObjectsSortMode.None)[0];
         networkManager = FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
+        endScreenManager = FindObjectsByType<EndScreen>(FindObjectsSortMode.None)[0];
 
         networkManager.onRecieveNewMessage.AddListener(GetBroadcast);
     }
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckGameOver();
         timeSinceStart += Time.deltaTime;
         if (timeSinceStart >= 2 && !demonSet)
         {
