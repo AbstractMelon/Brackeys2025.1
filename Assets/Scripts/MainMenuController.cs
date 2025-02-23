@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class MainMenuController : MonoBehaviour
 
         currentPanel = panels[0];
         currentPanel.panel.SetActive(true);
+        currentPanel.OnPanelLoad?.Invoke();
     }
 
     public void ShowPanel(int index)
@@ -27,6 +29,7 @@ public class MainMenuController : MonoBehaviour
 
         currentPanel = panels[index];
         currentPanel.panel.SetActive(true);
+        currentPanel.OnPanelLoad?.Invoke();
     }
 
     public void ShowPanel(MainMenuPanel panel)
@@ -38,6 +41,7 @@ public class MainMenuController : MonoBehaviour
 
         currentPanel = panel;
         currentPanel.panel.SetActive(true);
+        currentPanel.OnPanelLoad?.Invoke();
     }
 
     [ContextMenu("Exit")]
@@ -57,5 +61,10 @@ public class MainMenuPanel
 {
     public string name;
     public GameObject panel;
+
+    [SerializeField]
+    private UnityEvent onPanelLoad;
+
+    public UnityEvent OnPanelLoad => onPanelLoad;
 }
 

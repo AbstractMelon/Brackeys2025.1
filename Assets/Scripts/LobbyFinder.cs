@@ -17,44 +17,35 @@ public class RoomFinder : MonoBehaviour
 
     private void Awake()
     {
-        networkManager = Object.FindFirstObjectByType<VampireTCP>();
+        Debug.Log("Awake called on RoomFinder.");
         multiplayerManager = MultiplayerManager.instance;
-        
-        refreshButton.onClick.AddListener(RefreshRoomList);
     }
-
-    private void OnEnable()
-    {
-        if (networkManager != null)
-        {
-            networkManager.onRecieveNewBaseMessage.AddListener(HandleRoomListUpdate);
-        }
-        RefreshRoomList();
-    }
-
-    private void OnDisable()
-    {
-        if (networkManager != null)
-        {
-            networkManager.onRecieveNewBaseMessage.RemoveListener(HandleRoomListUpdate);
-        }
-    }
-
 
     private void HandleRoomListUpdate(GenericMessageWrapper message)
     {
         if (message != null && message.msg != null && message.msg.msg != null)
         {
+            Debug.Log("Received room list message.");
             UpdateRoomList(message.msg.msg);
+        }
+        else
+        {
+            Debug.LogError("HandleRoomListUpdate() received null or empty message.");
         }
     }
 
     public void RefreshRoomList()
     {
+        Debug.Log("Refreshing room list.");
         ClearRoomList();
         if (networkManager != null)
         {
+            Debug.Log("Requesting room list from network manager.");
             networkManager.RequestRoomsList();
+        }
+        else
+        {
+            Debug.LogError("No network manager found to request rooms list.");
         }
     }
 
@@ -82,6 +73,7 @@ public class RoomFinder : MonoBehaviour
                 RoomListItem itemComponent = roomItem.GetComponent<RoomListItem>();
                 if (itemComponent != null)
                 {
+                    Debug.Log($"Initializing room list item for room code: {roomCode}");
                     itemComponent.Initialize(roomCode, multiplayerManager);
                     currentRoomItems.Add(roomItem);
                 }
@@ -100,11 +92,26 @@ public class RoomFinder : MonoBehaviour
 
     private void ClearRoomList()
     {
+        Debug.Log("Clearing room list.");
         foreach (GameObject item in currentRoomItems)
         {
             Destroy(item);
         }
         currentRoomItems.Clear();
+    }
+
+    public void SetNetworkManager()
+    {
+        Debug.Log("Setting network manager.");
+        networkManager = FindFirstObjectByType<VampireTCP>();
+        if (networkManager != null)
+        {
+            Debug.Log("Adding listener to network manager.");
+        }
+        else
+        {
+            Debug.LogError("VampireTCP network manager not found.");
+        }
     }
 }
 
