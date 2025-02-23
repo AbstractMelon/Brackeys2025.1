@@ -320,6 +320,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  hurtSFX: {fileID: 8300000, guid: eac53cf7db5776dd0b53ec99607ee64a, type: 3}
+  audioSource: {fileID: 1611693251752602338}
 --- !u!1001 &778790180270444871
 PrefabInstance:
   m_ObjectHideFlags: 0

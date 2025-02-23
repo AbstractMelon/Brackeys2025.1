@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,12 +19,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravity = -9f;
     [SerializeField] private float friction = 7f;
     [SerializeField] private float interactDistance;
+    [SerializeField] private GameObject demonIndicator;
     private VampireTCP networkManager;
     private MultiplayerManager multiplayerManager;
     private HealthSystem healthSystem;
     private CharacterController controller;
     private Vector3 velocity;
     private static bool startedGame;
+    [SerializeField] private Image demonOverlay;
 
     // Components
     private Camera cam;
@@ -146,6 +149,20 @@ public class PlayerController : MonoBehaviour
             stepParticles.Stop();
         }
 
+
+        // Show the demon indicator if the demon is nearby
+        float distanceToDemon = Vector3.Distance(transform.position, GameObject.Find("Demon").transform.position);
+
+        if (distanceToDemon < 25f)
+        {
+            demonOverlay.color = new Color(1f, 0f, 0f, 1f - (distanceToDemon / 25f));
+            demonIndicator.SetActive(true);
+        }
+        else
+        {
+            demonOverlay.color = new Color(1f, 0f, 0f, 0f);
+            demonIndicator.SetActive(false);
+        }
     }
     //private bool CheckGrounded()
     //{
