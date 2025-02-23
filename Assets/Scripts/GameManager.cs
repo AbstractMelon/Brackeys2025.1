@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
         instance = this;
         multiplayerManager = FindObjectsByType<MultiplayerManager>(FindObjectsSortMode.None)[0];
         networkManager = FindObjectsByType<VampireTCP>(FindObjectsSortMode.None)[0];
-        endScreenManager = FindObjectsByType<EndScreen>(FindObjectsSortMode.None)[0];
 
         networkManager.onRecieveNewMessage.AddListener(GetBroadcast);
     }
