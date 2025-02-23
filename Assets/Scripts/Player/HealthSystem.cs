@@ -4,6 +4,8 @@ public class HealthSystem : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
+    public AudioClip hurtSFX;
+    public AudioSource audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,6 +27,11 @@ public class HealthSystem : MonoBehaviour
     {
         currentHealth -= damage;
         Debug.Log("Health: " + currentHealth);
+
+        if (hurtSFX != null)
+        {
+            audioSource.PlayOneShot(hurtSFX);
+        }
 
         if (currentHealth <= 0)
         {
@@ -53,4 +60,5 @@ public class HealthSystem : MonoBehaviour
         GameManager.instance.CheckGameOver();
     }
 }
+
 
