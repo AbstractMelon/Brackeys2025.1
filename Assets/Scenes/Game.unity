@@ -20935,6 +20935,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Screen
       objectReference: {fileID: 0}
+    - target: {fileID: 4134070243076221571, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4153650018589770172, guid: 537316fadead5ad40876010a10d8879e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 542.0989
@@ -20973,6 +20977,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4153650018589770172, guid: 537316fadead5ad40876010a10d8879e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8726209416514302083, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8726209416514302083, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8726209416514302083, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8726209416514302083, guid: 537316fadead5ad40876010a10d8879e, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9103120148559180261, guid: 537316fadead5ad40876010a10d8879e, type: 3}

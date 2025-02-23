@@ -1,10 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
-
 
 public class EndScreen : MonoBehaviour
 {
@@ -20,6 +17,7 @@ public class EndScreen : MonoBehaviour
     public void ShowEndScreen(bool demonWon)
     {
         fadeImage.sprite = demonWon ? demonWinSprite : playerWinSprite;
+        fadeImage.enabled = true;
         StartCoroutine(FadeIn());
     }
 
