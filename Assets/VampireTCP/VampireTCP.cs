@@ -245,9 +245,26 @@ public class VampireTCP : MonoBehaviour
                 LobbyManager.instance.UpdateRoomCode(joinedRoom.room_code);
                 break;
             case "roomsList":
-                RoomsListMessage roomsList = JsonConvert.DeserializeObject<RoomsListMessage>(jsonMessage);
-                onRecieveNewBaseMessage?.Invoke(new GenericMessageWrapper(new GenericMessage(roomsList.value), new ErrorMessage()));
-                Debug.Log("Available rooms: " + string.Join(", ", roomsList.value));
+                try
+                {
+                    RoomsListMessage roomsList = JsonConvert.DeserializeObject<RoomsListMessage>(jsonMessage);
+                    if (roomsList != null && roomsList.value != null)
+                    {
+                        Debug.Log($"Rooms list updated: {string.Join(", ", roomsList.value)}");
+                        onRecieveNewBaseMessage?.Invoke(new GenericMessageWrapper(
+                            new GenericMessage(roomsList.value), 
+                            new ErrorMessage()
+                        ));
+                    }
+                    else
+                    {
+                        Debug.LogError("RoomsListMessage is null or has no value.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Failed to process roomsList: {ex.Message}");
+                }
                 break;
             case "broadcast":
                 BroadcastMessage broadcast = JsonConvert.DeserializeObject<BroadcastMessage>(jsonMessage);
