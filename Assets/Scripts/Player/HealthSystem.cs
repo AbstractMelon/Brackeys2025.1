@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class HealthSystem : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        GameObject.Find("HealthIndicator").GetComponent<LinearIndicator>().SetValue(100);
+        if (SceneManager.GetActiveScene().name == "Game") GameObject.Find("HealthIndicator").GetComponent<LinearIndicator>().SetValue(100);
     }
 
     // Update is called once per frame
